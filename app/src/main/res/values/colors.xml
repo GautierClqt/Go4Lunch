@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- Bottom Navigation View colors -->
+    <color name="activeItem">#D84315</color>
+    <color name="inactiveItem">#000000</color>"
 </resources>
