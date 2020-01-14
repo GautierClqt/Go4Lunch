@@ -1,4 +1,4 @@
-package com.example.go4lunch;
+package com.cliquet.gautier.go4lunch;
 
 import org.junit.Test;
 

@@ -1,17 +1,19 @@
-package com.example.go4lunch.Activities;
+package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.go4lunch.Fragments.ListFragment;
-import com.example.go4lunch.Fragments.MapFragment;
-import com.example.go4lunch.Fragments.WorkmatesFragment;
-import com.example.go4lunch.R;
+import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
+import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
+import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
+import com.cliquet.gautier.go4lunch.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
 
@@ -62,15 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    private Boolean updateMainFragement(Integer integer){
-        switch(integer) {
-            case R.id.bottom_navigation_menu_map:
-
-        }
-
-            return true;
     }
 
 }
