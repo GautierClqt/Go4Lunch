@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
 
+    <!-- this will appear if the location permission is not activated -->
+    <string name="permissions_required">This app required the Location permission in order to work. Please check the app\'s or device\'s settings to grant the permission.</string>
+
     <!-- Bottom Navigation View titles -->
     <string name="bottom_navigation_view_map">Map View</string>
     <string name="bottom_navigation_view_list">List View</string>

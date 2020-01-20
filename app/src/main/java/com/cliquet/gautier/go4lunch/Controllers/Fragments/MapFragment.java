@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.GoogleMapCalls;
 import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
 import com.cliquet.gautier.go4lunch.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,6 +23,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +40,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private GoogleMap mGoogleMap;
     private String nextPageToken;
     private int i;
+    private double mUserLat;
+    private double mUserLng;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,6 +73,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         return view;
     }
 
+    private void getUserLocation() {
+        FusedLocationProviderClient location = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this.getActivity()));
+        location.getLastLocation().addOnSuccessListener(this.getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                mUserLat = location.getLatitude();
+                mUserLng = location.getLongitude();
+                LatLng latlng = new LatLng(mUserLat, mUserLng);
+                setCameraOnUser(mGoogleMap, latlng);
+            }
+        });
+    }
+
+    private void setCameraOnUser(GoogleMap googleMap, LatLng latLng) {
+        float zoomLevel = 16.0f;
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -91,8 +117,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setOnPoiClickListener(this);
+        this.mGoogleMap = googleMap;
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.setOnPoiClickListener(this);
+
+        getUserLocation();
     }
 
     @Override

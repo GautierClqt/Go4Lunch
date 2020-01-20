@@ -2,8 +2,6 @@ package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi;
 
 import androidx.annotation.NonNull;
 
-
-import com.cliquet.gautier.go4lunch.BuildConfig;
 import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
 import com.cliquet.gautier.go4lunch.R;
 
@@ -22,7 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 
 public interface GoogleMapsLocationService {
-    //String apiKey = BuildConfig.GOOGLE_MAPS_KEY;
+
     String apiKey = Integer.toString(R.string.google_maps_key);
 
     //add api-key to every url
