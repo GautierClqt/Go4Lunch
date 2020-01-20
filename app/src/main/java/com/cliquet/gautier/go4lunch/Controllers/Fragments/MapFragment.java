@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.GoogleMapCalls;
 import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -25,6 +26,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,6 +45,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private int i;
     private double mUserLat;
     private double mUserLng;
+    private HashMap<String, String> mRequestParametersHM = new HashMap<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,7 +61,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -82,13 +85,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 mUserLng = location.getLongitude();
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
                 setCameraOnUser(mGoogleMap, latlng);
+                googleMapApiRequest();
             }
         });
     }
 
     private void setCameraOnUser(GoogleMap googleMap, LatLng latLng) {
-        float zoomLevel = 16.0f;
+        float zoomLevel = 15.5f;
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+    }
+
+    private void googleMapApiRequest() {
+        mRequestParametersHM.put("location", mUserLat+","+mUserLng);
+        mRequestParametersHM.put("radius", Integer.toString(500));
+        mRequestParametersHM.put("type", "restaurant");
+        mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
+
+        GoogleMapCalls.fetchLocations(this, mRequestParametersHM);
+    }
+
+    private void putPinsOnPlaces(GoogleMapsPojo googleMapsPojo) {
+        List<Results> results = googleMapsPojo.getResults();
+
+        for(int i = 0; i < results.size(); i++) {
+            double placeLat = results.get(i).getGeometry().getLocation().getLat();
+            double placeLong = results.get(i).getGeometry().getLocation().getLng();
+            String placeName = results.get(i).getName();
+            LatLng marker = new LatLng(placeLat, placeLong);
+            mGoogleMap.addMarker(new MarkerOptions().position(marker).title(placeName));
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -122,11 +147,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mGoogleMap.setOnPoiClickListener(this);
 
         getUserLocation();
+
     }
 
     @Override
-    public void onResponse(GoogleMapsPojo pojoMain) {
-
+    public void onResponse(GoogleMapsPojo googleMapsPojo) {
+        putPinsOnPlaces(googleMapsPojo);
+        if(googleMapsPojo.getResults().size() != 0) {
+            putPinsOnPlaces(googleMapsPojo);
+        }
     }
 
     @Override
