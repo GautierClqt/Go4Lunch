@@ -8,14 +8,17 @@ import java.util.List;
 public class GoogleMapsPojo {
     @SerializedName("results")
     @Expose
-    private List<Results> results = null;
+    private List<Results> results;
 
     public List<Results> getResults() {
+        int TEST = 400;
         return results;
     }
     public void setResults(List<Results> results) {
         this.results = results;
+        int test = 300;
     }
+
 
     @SerializedName("next_page_token")
     @Expose

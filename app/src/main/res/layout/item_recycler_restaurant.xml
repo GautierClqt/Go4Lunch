@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_recycler_restaurant_relativelayout_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="5">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/item_recycler_restaurant_linearlayout_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical" >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/item_recycler_restaurant_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="Bonne Maman" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/item_recycler_restaurant_adress_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="15, rue de la confiture" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/item_recycler_restaurant_hours_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="9h - 18h" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/item_recycler_restaurant_linearlayout_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_alignEnd="@+id/item_recycler_restaurant_linearlayout_left">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/item_recycler_restaurant_distance_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:text="60 m"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/item_recycler_restaurant_workmates_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/item_recycler_restaurant_stars_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/item_recycler_restaurant_workmates_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:text="(2)"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_recycler_restaurant_picture_imageview"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignEnd="@+id/item_recycler_restaurant_linearlayout_right"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

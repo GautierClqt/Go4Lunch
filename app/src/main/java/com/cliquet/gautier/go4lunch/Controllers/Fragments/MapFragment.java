@@ -25,7 +25,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -38,14 +41,15 @@ import java.util.Objects;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener, GoogleMapCalls.Callback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
-    private GoogleMap mGoogleMap;
+    private GoogleMap mGoogleMaps;
+    private GoogleMapsPojo mGoogleMapsPojo = new GoogleMapsPojo();
+    private List<Results> mResults = new ArrayList<>();
     private String nextPageToken;
     private int i;
     private double mUserLat;
     private double mUserLng;
-    private HashMap<String, String> mRequestParametersHM = new HashMap<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -69,6 +73,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        Gson gson = new Gson();
+
+        String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
+        mGoogleMapsPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<GoogleMapsPojo>(){}.getType());
+
         SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
@@ -84,8 +93,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 mUserLat = location.getLatitude();
                 mUserLng = location.getLongitude();
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
-                setCameraOnUser(mGoogleMap, latlng);
-                googleMapApiRequest();
+                setCameraOnUser(mGoogleMaps, latlng);
+
+                mResults = mGoogleMapsPojo.getResults();
+
+                if(mGoogleMapsPojo.getResults().size() != 0) {
+                    putPinsOnPlaces(mGoogleMapsPojo);
+                }
             }
         });
     }
@@ -95,14 +109,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
 
-    private void googleMapApiRequest() {
-        mRequestParametersHM.put("location", mUserLat+","+mUserLng);
-        mRequestParametersHM.put("radius", Integer.toString(500));
-        mRequestParametersHM.put("type", "restaurant");
-        mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
-
-        GoogleMapCalls.fetchLocations(this, mRequestParametersHM);
-    }
 
     private void putPinsOnPlaces(GoogleMapsPojo googleMapsPojo) {
         List<Results> results = googleMapsPojo.getResults();
@@ -112,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             double placeLong = results.get(i).getGeometry().getLocation().getLng();
             String placeName = results.get(i).getName();
             LatLng marker = new LatLng(placeLat, placeLong);
-            mGoogleMap.addMarker(new MarkerOptions().position(marker).title(placeName));
+            mGoogleMaps.addMarker(new MarkerOptions().position(marker).title(placeName));
         }
     }
 
@@ -142,24 +148,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.mGoogleMap = googleMap;
-        mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.setOnPoiClickListener(this);
+        this.mGoogleMaps = googleMap;
+        mGoogleMaps.setMyLocationEnabled(true);
+        mGoogleMaps.setOnPoiClickListener(this);
 
         getUserLocation();
-
-    }
-
-    @Override
-    public void onResponse(GoogleMapsPojo googleMapsPojo) {
-        putPinsOnPlaces(googleMapsPojo);
-        if(googleMapsPojo.getResults().size() != 0) {
-            putPinsOnPlaces(googleMapsPojo);
-        }
-    }
-
-    @Override
-    public void onFailure() {
 
     }
 

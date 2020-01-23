@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +18,19 @@ import android.widget.TextView;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.GoogleMapCalls;
+import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
 import com.cliquet.gautier.go4lunch.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Objects;
+
+public class MainActivity extends AppCompatActivity implements GoogleMapCalls.Callback {
 
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
@@ -31,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentMangager = getSupportFragmentManager();
     Fragment activeFragment = mapFragment;
 
+    private HashMap<String, String> mRequestParametersHM = new HashMap<>();
+    private double mUserLat;
+    private double mUserLng;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         bindViews();
         permissionsChecking();
+        getUserLocation();
     }
 
     private void configureBottomView() {
@@ -76,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
-        configureFragmentsDefaultDisplay();
-        configureBottomView();
     }
 
     private void configureFragmentsDefaultDisplay() {
@@ -91,6 +104,27 @@ public class MainActivity extends AppCompatActivity {
         textViewPermissions = findViewById(R.id.activity_main_textview_permissions);
     }
 
+    private void getUserLocation() {
+        FusedLocationProviderClient location = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
+        location.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                mUserLat = location.getLatitude();
+                mUserLng = location.getLongitude();
+                googleMapApiRequest();
+            }
+        });
+    }
+
+    private void googleMapApiRequest() {
+        mRequestParametersHM.put("location", mUserLat+","+mUserLng);
+        mRequestParametersHM.put("radius", Integer.toString(500));
+        mRequestParametersHM.put("type", "restaurant");
+        mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
+
+        GoogleMapCalls.fetchLocations(this, mRequestParametersHM);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -101,5 +135,32 @@ public class MainActivity extends AppCompatActivity {
         else {
             permissionsNotGranted();
         }
+    }
+
+    @Override
+    public void onResponse(GoogleMapsPojo googleMapsPojo) {
+
+        Gson gson = new Gson();
+        String gsonGoogleMapsPojo;
+
+        if(googleMapsPojo.getResults().size() != 0) {
+            googleMapsPojo.setResults(googleMapsPojo.getResults());
+
+            gsonGoogleMapsPojo = gson.toJson(googleMapsPojo);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("googleMapsPojo", gsonGoogleMapsPojo);
+
+            mapFragment.setArguments(bundle);
+            listFragment.setArguments(bundle);
+
+            configureFragmentsDefaultDisplay();
+            configureBottomView();
+        }
+    }
+
+    @Override
+    public void onFailure() {
+
     }
 }
