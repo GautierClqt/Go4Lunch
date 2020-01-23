@@ -3,6 +3,8 @@ package com.cliquet.gautier.go4lunch.Models.Pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Results {
     @SerializedName("name")
     @Expose
@@ -51,12 +53,12 @@ public class Results {
 
     @SerializedName("photos")
     @Expose
-    private Photos photos = null;
+    private List<Photos> photos;
 
-    public Photos getPhotos() {
+    public List<Photos> getPhotos() {
         return photos;
     }
-    public void setPhotos(Photos photos) {
+    public void setPhotos(List<Photos> photos) {
         this.photos = photos;
     }
 }

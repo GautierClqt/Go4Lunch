@@ -43,9 +43,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.workmatesCount.setText("(2)");
         //viewHolder.stars...
         //viewHolder.picture...
-        //String photoReference = mResults.get(i).getPhotos().getPhotoReference();
-        //Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+photoReference+"&maxwidth=600").into(viewHolder.picture);
-        Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key=CmRaAAAAmhuDmplnwAMPpBwb1FSTpcotETEDDE1oZQMOYS1FpPdUzR7zhlNtWfMibMAiqArwniqAEiglb4XAsinlqRJusxWcNWqfxjzB1oyh8Rmiwx6v6vvutu0h6C0_54abCsxjEhB7efg2UbhxtXOn00O8tDt2GhTJdRUlIMJY104MLKr4S0CIzvibtA&maxwidth=600").into(viewHolder.picture);
+        String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
+        String apiKey = mContext.getString(R.string.google_maps_key);
+        Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
     }
 
 
