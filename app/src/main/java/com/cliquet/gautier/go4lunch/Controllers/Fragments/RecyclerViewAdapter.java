@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
 import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
 import com.cliquet.gautier.go4lunch.R;
 
@@ -43,8 +42,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.distance.setText("160");
         viewHolder.workmatesCount.setText("(2)");
         //viewHolder.stars...
-        //viewHolder.pictures...
-        Glide.with(viewHolder.workmatesIcon).load("https://www.athenaspahotel.com/media/cache/jadro_resize/rc/tnxrezCu1579080551/jadroRoot/medias/_a1a8429.jpg").into(viewHolder.workmatesIcon);
+        //viewHolder.picture...
+        //String photoReference = mResults.get(i).getPhotos().getPhotoReference();
+        //Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+photoReference+"&maxwidth=600").into(viewHolder.picture);
+        Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key=CmRaAAAAmhuDmplnwAMPpBwb1FSTpcotETEDDE1oZQMOYS1FpPdUzR7zhlNtWfMibMAiqArwniqAEiglb4XAsinlqRJusxWcNWqfxjzB1oyh8Rmiwx6v6vvutu0h6C0_54abCsxjEhB7efg2UbhxtXOn00O8tDt2GhTJdRUlIMJY104MLKr4S0CIzvibtA&maxwidth=600").into(viewHolder.picture);
     }
 
 
@@ -62,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView workmatesCount;
         ImageView workmatesIcon;
         ImageView stars;
-        ImageView pictures;
+        ImageView picture;
 
 
         ViewHolder(@NonNull View itemView) {
@@ -75,7 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
             workmatesIcon = itemView.findViewById(R.id.item_recycler_restaurant_workmates_imageview);
             stars = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
-            pictures = itemView.findViewById(R.id.item_recycler_restaurant_picture_imageview);
+            picture = itemView.findViewById(R.id.item_recycler_restaurant_picture_imageview);
         }
     }
 }

@@ -27,7 +27,6 @@ public class GoogleMapCalls {
             @Override
             public void onResponse(Call<GoogleMapsPojo> call, Response<GoogleMapsPojo> response) {
                 if(callbacksWeakReference.get() != null) callbacksWeakReference.get().onResponse(response.body());
-                int test = 1;
             }
 
             @Override

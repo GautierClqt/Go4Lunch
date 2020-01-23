@@ -11,12 +11,10 @@ public class GoogleMapsPojo {
     private List<Results> results;
 
     public List<Results> getResults() {
-        int TEST = 400;
         return results;
     }
     public void setResults(List<Results> results) {
         this.results = results;
-        int test = 300;
     }
 
 

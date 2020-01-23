@@ -48,4 +48,15 @@ public class Results {
 
     public OpeningHours getOpeningHours() { return openingHours; }
     public void setOpeningHours(OpeningHours openingHours) { this.openingHours = openingHours; }
+
+    @SerializedName("photos")
+    @Expose
+    private Photos photos = null;
+
+    public Photos getPhotos() {
+        return photos;
+    }
+    public void setPhotos(Photos photos) {
+        this.photos = photos;
+    }
 }

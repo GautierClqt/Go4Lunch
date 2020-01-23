@@ -56,9 +56,13 @@ public class ListFragment extends Fragment {
 
         Gson gson = new Gson();
 
-        String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
-        mGoogleMapsPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<GoogleMapsPojo>(){}.getType());
-        mResults = mGoogleMapsPojo.getResults();
+        if (getArguments() != null) {
+            String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
+            mGoogleMapsPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<GoogleMapsPojo>(){}.getType());
+            if(mGoogleMapsPojo != null){
+                mResults = mGoogleMapsPojo.getResults();
+            }
+        }
 
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
 
@@ -86,7 +90,7 @@ public class ListFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
