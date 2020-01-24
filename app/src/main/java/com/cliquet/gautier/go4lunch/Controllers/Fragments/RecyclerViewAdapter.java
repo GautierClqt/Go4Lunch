@@ -38,9 +38,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.name.setText(mResults.get(i).getName());
         viewHolder.adress.setText(mResults.get(i).getVicinity());
-        viewHolder.hours.setText(mResults.get(i).getOpeningHours().getOpenNow());
+        if(mResults.get(i).getOpeningHours() != null) {
+            viewHolder.hours.setText(mResults.get(i).getOpeningHours().getOpenNow());
+        }
         viewHolder.distance.setText("160");
-        viewHolder.workmatesCount.setText("(2)");
+        //viewHolder.workmatesCount.setText("(2)");
         //viewHolder.stars...
         //viewHolder.picture...
         String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
@@ -73,9 +75,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             adress = itemView.findViewById(R.id.item_recycler_restaurant_adress_textview);
             hours = itemView.findViewById(R.id.item_recycler_restaurant_hours_textview);
             distance = itemView.findViewById(R.id.item_recycler_restaurant_distance_textview);
-            workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
+            //workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
             workmatesIcon = itemView.findViewById(R.id.item_recycler_restaurant_workmates_imageview);
-            stars = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+            //stars = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
             picture = itemView.findViewById(R.id.item_recycler_restaurant_picture_imageview);
         }
     }

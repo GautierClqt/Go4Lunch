@@ -1,78 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_recycler_restaurant_relativelayout_main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="5">
+    android:layout_height="100dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    app:layout_constraintHorizontal_chainStyle="spread_inside"
+    app:layout_constraintHorizontal_weight="5">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_recycler_restaurant_linearlayout_left"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical" >
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/item_recycler_restaurant_name_textview"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:text="Bonne Maman" />
+            android:layout_height="wrap_content"
+            android:text="Nom"
+            app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_hours_textview"
+            app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_hours_textview"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/item_recycler_restaurant_adress_textview"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:text="15, rue de la confiture" />
+            android:layout_height="wrap_content"
+            android:text="horaire"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_hours_textview" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/item_recycler_restaurant_hours_textview"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:text="9h - 18h" />
+            android:layout_height="wrap_content"
+            android:text="adresse"
+            app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_adress_textview"
+            app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_adress_textview"
+            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_name_textview" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/item_recycler_restaurant_linearlayout_right"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_alignEnd="@+id/item_recycler_restaurant_linearlayout_left">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="60dp"
+        android:layout_height="88dp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_linearlayout_left"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_picture_imageview"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_linearlayout_left"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_linearlayout_left">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/item_recycler_restaurant_distance_textview"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            tools:text="60 m"/>
+            android:layout_height="wrap_content"
+            android:text="120m"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/item_recycler_restaurant_workmates_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout5"
+            android:layout_width="50dp"
+            android:layout_height="26dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_distance_textview">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/item_recycler_restaurant_stars_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:text="(2)"
+                app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_workmates_imageview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_workmates_imageview"
+                app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_workmates_imageview" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/item_recycler_restaurant_workmates_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            tools:text="(2)"/>
+            <ImageView
+                android:id="@+id/item_recycler_restaurant_workmates_imageview"
+                android:layout_width="20dp"
+                android:layout_height="21dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/ic_launcher" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="58dp"
+            android:layout_height="26dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="18dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="@+id/imageView4"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="18dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="@+id/imageView5"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="18dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
         android:id="@+id/item_recycler_restaurant_picture_imageview"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignEnd="@+id/item_recycler_restaurant_linearlayout_right"/>
+        android:layout_width="84dp"
+        android:layout_height="81dp"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        app:srcCompat="@drawable/ic_launcher_background"
+        tools:ignore="VectorDrawableCompat" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
