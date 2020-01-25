@@ -7,19 +7,19 @@
         android:id="@+id/bottom_navigation_menu_map"
         android:title="@string/bottom_navigation_view_map"
         android:enabled="true"
-        android:icon="@drawable/baseline_map_black_18dp"
+        android:icon="@drawable/bottomnavigationview_map"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/bottom_navigation_menu_list"
         android:title="@string/bottom_navigation_view_list"
         android:enabled="true"
-        android:icon="@drawable/baseline_list_black_18dp"
+        android:icon="@drawable/bottomnavigationview_list"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/bottom_navigation_menu_workmates"
         android:title="@string/bottom_navigation_view_workmates"
         android:enabled="true"
-        android:icon="@drawable/baseline_people_black_18dp"
+        android:icon="@drawable/bottomnavigationview_workmates"
         app:showAsAction="ifRoom"/>
 
 

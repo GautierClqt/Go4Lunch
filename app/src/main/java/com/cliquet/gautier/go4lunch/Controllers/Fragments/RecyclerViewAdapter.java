@@ -39,10 +39,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.name.setText(mResults.get(i).getName());
         viewHolder.adress.setText(mResults.get(i).getVicinity());
         if(mResults.get(i).getOpeningHours() != null) {
-            viewHolder.hours.setText(mResults.get(i).getOpeningHours().getOpenNow());
+            if(!mResults.get(i).getOpeningHours().getOpenNow()) {
+                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
+            }
+            else {
+                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
+            }
         }
         viewHolder.distance.setText("160");
         //viewHolder.workmatesCount.setText("(2)");
+        viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
         //viewHolder.stars...
         //viewHolder.picture...
         String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
