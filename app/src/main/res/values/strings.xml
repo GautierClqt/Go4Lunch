@@ -22,6 +22,6 @@
     <string name="restaurant_restaurantpictures_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>restaurant picture</font></string>
 
     <!-- restaurants open/close strings -->
-    <string name="restaurant_hours_isopen">open</string>
-    <string name="restaurant_hours_notopen">close</string>
+    <string name="restaurant_hours_isopen"><font fgcolor='#00FF00'>open</font></string>
+    <string name="restaurant_hours_notopen"><font fgcolor='#FF0000'>close</font></string>
 </resources>

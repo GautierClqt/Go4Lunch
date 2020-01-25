@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +42,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         if(mResults.get(i).getOpeningHours() != null) {
             if(!mResults.get(i).getOpeningHours().getOpenNow()) {
                 viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
+                viewHolder.hours.setTextColor(Color.parseColor("#00cc00"));
             }
             else {
                 viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
+                viewHolder.hours.setTextColor(Color.parseColor("#ff0000"));
             }
         }
         viewHolder.distance.setText("160");
-        //viewHolder.workmatesCount.setText("(2)");
+        viewHolder.workmatesCount.setText("(2)");
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
         //viewHolder.stars...
         //viewHolder.picture...
@@ -81,9 +84,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             adress = itemView.findViewById(R.id.item_recycler_restaurant_adress_textview);
             hours = itemView.findViewById(R.id.item_recycler_restaurant_hours_textview);
             distance = itemView.findViewById(R.id.item_recycler_restaurant_distance_textview);
-            //workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
+            workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
             workmatesIcon = itemView.findViewById(R.id.item_recycler_restaurant_workmates_imageview);
-            //stars = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
             picture = itemView.findViewById(R.id.item_recycler_restaurant_picture_imageview);
         }
     }
