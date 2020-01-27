@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
 import com.cliquet.gautier.go4lunch.R;
 
@@ -36,7 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.name.setText(mResults.get(i).getName());
         viewHolder.adress.setText(mResults.get(i).getVicinity());
         if(mResults.get(i).getOpeningHours() != null) {
@@ -57,6 +60,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
         String apiKey = mContext.getString(R.string.google_maps_key);
         Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
+
+        viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent restaurantDetailsActivityIntent = new Intent(viewHolder.mainLayout.getContext(), RestaurantDetails.class);
+                restaurantDetailsActivityIntent.putExtra("restaurant", mRestaurant);
+
+                mContext.startActivity(restaurantDetailsActivityIntent);
+            }
+        });
     }
 
 
@@ -67,6 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        Constraints mainLayout;
         TextView name;
         TextView adress;
         TextView hours;
@@ -76,19 +90,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageView stars;
         ImageView picture;
 
-
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            mainLayout = itemView.findViewById(R.id.item_recycler_restaurant_constraintlayout_main);
             name = itemView.findViewById(R.id.item_recycler_restaurant_name_textview);
             adress = itemView.findViewById(R.id.item_recycler_restaurant_adress_textview);
             hours = itemView.findViewById(R.id.item_recycler_restaurant_hours_textview);
             distance = itemView.findViewById(R.id.item_recycler_restaurant_distance_textview);
             workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
             workmatesIcon = itemView.findViewById(R.id.item_recycler_restaurant_workmates_imageview);
-            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
-            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
-            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+//            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+//            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+//            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
             picture = itemView.findViewById(R.id.item_recycler_restaurant_picture_imageview);
         }
     }
