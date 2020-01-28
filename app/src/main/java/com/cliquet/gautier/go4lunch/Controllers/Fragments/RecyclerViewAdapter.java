@@ -10,13 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext;
     private List<Results> mResults;
+    private Restaurant mRestaurant;
+
+    private String stringRestaurant;
 
     public RecyclerViewAdapter(Context context, List<Results> mResults) {
         this.mContext = context;
@@ -57,15 +63,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
         //viewHolder.stars...
         //viewHolder.picture...
-        String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
+        final String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
         String apiKey = mContext.getString(R.string.google_maps_key);
         Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
+
+        mRestaurant = new Restaurant("Le Restaurant("+i+")", "5 rue de la Sirène", false, false, "00.00.78.98.52", "https://www.restaurant.fr", photoReference);
 
         viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //mRestaurant = new Restaurant("Le Restaurant", "5 rue de la Sirène", false, false, "06.07.78.98.52", "https://www.restaurant.fr", photoReference);
+
+                Gson gson = new Gson();
+                stringRestaurant = gson.toJson(mRestaurant);
+
                 Intent restaurantDetailsActivityIntent = new Intent(viewHolder.mainLayout.getContext(), RestaurantDetails.class);
-                restaurantDetailsActivityIntent.putExtra("restaurant", mRestaurant);
+                restaurantDetailsActivityIntent.putExtra("restaurant", stringRestaurant);
 
                 mContext.startActivity(restaurantDetailsActivityIntent);
             }
@@ -80,7 +94,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        Constraints mainLayout;
+        ConstraintLayout mainLayout;
         TextView name;
         TextView adress;
         TextView hours;

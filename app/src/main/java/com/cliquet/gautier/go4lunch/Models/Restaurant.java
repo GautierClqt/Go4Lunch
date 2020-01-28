@@ -10,7 +10,11 @@ public class Restaurant {
     private String mWebsiteUrl;
     private String mPhotoReference;
 
-    Restaurant(String name, String address, boolean liked, boolean selected, String phone, String websiteUrl, String photoReference) {
+    public Restaurant() {
+
+    }
+
+    public Restaurant(String name, String address, boolean liked, boolean selected, String phone, String websiteUrl, String photoReference) {
         this.mName = name;
         this.mAddress = address;
         this.mLiked = liked;
