@@ -10,165 +10,148 @@
     app:layout_constraintHorizontal_chainStyle="spread_inside"
     app:layout_constraintHorizontal_weight="5">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_recycler_restaurant_constraintlayout_left"
-        android:layout_width="0dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_constraintlayout_right"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintHorizontal_weight="3"
+    <TextView
+        android:id="@+id/item_recycler_restaurant_hours_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="172dp"
+        android:text="@string/restaurant_adress_placeholder"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_distance_verticalguideline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_address_horizontalguideline" />
 
-        <TextView
-            android:id="@+id/item_recycler_restaurant_name_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restaurant_name_placeholder"
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_hours_textview"
-            app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_hours_textview"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/item_recycler_restaurant_name_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/restaurant_name_placeholder"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_distance_verticalguideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_name_horizontalguideline" />
 
-        <TextView
-            android:id="@+id/item_recycler_restaurant_adress_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restaurant_hours_placeholder"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_hours_textview" />
+    <TextView
+        android:id="@+id/item_recycler_restaurant_adress_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/restaurant_hours_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_distance_verticalguideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_hours_horizontalguideline"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/item_recycler_restaurant_hours_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restaurant_adress_placeholder"
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_adress_textview"
-            app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_adress_textview"
-            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_name_textview" />
+    <ImageView
+        android:id="@+id/item_recycler_restaurant_workmates_imageview"
+        android:layout_width="20dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/restaurant_workmates_imageview_contentdescription_placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_hours_horizontalguideline"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_workmates_textview"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_distance_verticalguideline"
+        app:srcCompat="@mipmap/ic_launcher" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/item_recycler_restaurant_workmates_textview"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/restaurant_workmates_placeholder"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_picture_verticalguideline"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_address_horizontalguideline" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_recycler_restaurant_constraintlayout_right"
-        android:layout_width="60dp"
-        android:layout_height="88dp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_constraintlayout_left"
-        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_picture_imageview"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_constraintlayout_left"
-        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_constraintlayout_left">
+    <TextView
+        android:id="@+id/item_recycler_restaurant_distance_textview"
+        android:layout_width="44dp"
+        android:layout_height="20dp"
+        android:text="@string/restaurant_distance_placeholder"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_picture_verticalguideline"
+        app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_distance_verticalguideline"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_name_horizontalguideline" />
 
-        <TextView
-            android:id="@+id/item_recycler_restaurant_distance_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restaurant_distance_placeholder"
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_workmates_constraintlayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/item_recycler_restaurant_firststar_imageview"
+        android:layout_width="18dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/restaurant_firststar_imageview_contentdescription_placeholder"
+        app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_picture_verticalguideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_secondstar_imageview"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_hours_horizontalguideline"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item_recycler_restaurant_workmates_constraintlayout"
-            android:layout_width="50dp"
-            android:layout_height="26dp"
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_stars_constraintlayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_distance_textview">
+    <ImageView
+        android:id="@+id/item_recycler_restaurant_secondstar_imageview"
+        android:layout_width="18dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/restaurant_secondstar_imageview_contentdescription_placeholder"
+        app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_thirdstar_imageview"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_hours_horizontalguideline"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
-            <ImageView
-                android:id="@+id/item_recycler_restaurant_workmates_imageview"
-                android:layout_width="20dp"
-                android:layout_height="21dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_workmates_textview"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:contentDescription="@string/restaurant_workmates_imageview_contentdescription_placeholder" />
-
-            <TextView
-                android:id="@+id/item_recycler_restaurant_workmates_textview"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:text="@string/restaurant_workmates_placeholder"
-                app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_workmates_imageview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_workmates_imageview"
-                app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_workmates_imageview" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item_recycler_restaurant_stars_constraintlayout"
-            android:layout_width="58dp"
-            android:layout_height="26dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_workmates_constraintlayout">
-
-            <ImageView
-                android:id="@+id/item_recycler_restaurant_firststar_imageview"
-                android:layout_width="18dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_secondstar_imageview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_secondstar_imageview"
-                app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_secondstar_imageview"
-                app:srcCompat="@android:drawable/btn_star_big_on"
-                android:contentDescription="@string/restaurant_firststar_imageview_contentdescription_placeholder"/>
-
-            <ImageView
-                android:id="@+id/item_recycler_restaurant_secondstar_imageview"
-                android:layout_width="18dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_thirdstar_imageview"
-                app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_firststar_imageview"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_thirdstar_imageview"
-                app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_thirdstar_imageview"
-                app:srcCompat="@android:drawable/btn_star_big_on"
-                android:contentDescription="@string/restaurant_secondstar_imageview_contentdescription_placeholder"/>
-
-            <ImageView
-                android:id="@+id/item_recycler_restaurant_thirdstar_imageview"
-                android:layout_width="18dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_secondstar_imageview"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/btn_star_big_on"
-                android:contentDescription="@string/restaurant_thirdstar_imageview_contentdescription_placeholder"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/item_recycler_restaurant_thirdstar_imageview"
+        android:layout_width="18dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/restaurant_thirdstar_imageview_contentdescription_placeholder"
+        app:layout_constraintStart_toStartOf="@+id/item_recycler_restaurant_distance_verticalguideline"
+        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_hours_horizontalguideline"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <ImageView
         android:id="@+id/item_recycler_restaurant_picture_imageview"
         android:layout_width="84dp"
         android:layout_height="81dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
         android:src="@drawable/recyclerview_default_restaurant_picture"
-        app:layout_constraintBottom_toBottomOf="@+id/item_recycler_restaurant_constraintlayout_right"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/item_recycler_restaurant_constraintlayout_right"
-        app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_constraintlayout_right"
-        tools:ignore="VectorDrawableCompat"
-        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473"
+        tools:ignore="VectorDrawableCompat" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/item_recycler_restaurant_name_horizontalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="9dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/item_recycler_restaurant_address_horizontalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="38dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/item_recycler_restaurant_hours_horizontalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="67dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/item_recycler_restaurant_distance_verticalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="245dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/item_recycler_restaurant_picture_verticalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="299dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
