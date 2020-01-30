@@ -29,4 +29,9 @@
     <!-- restaurants open/close strings -->
     <string name="restaurant_hours_isopen"><font fgcolor='#00FF00'>open</font></string>
     <string name="restaurant_hours_notopen"><font fgcolor='#FF0000'>close</font></string>
+
+    <!-- item_recycler_restaurant.xml strings -->
+    <string name="workmate_isconnected">Workmate is connected</string>
+    <string name="workmate_joining">Workmate is joining!</string>
+    <string name="workmate_picture_imageview_contentdescription">workmate's picture</string>
 </resources>
