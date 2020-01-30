@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,9 +24,9 @@ public class RestaurantDetails extends AppCompatActivity {
     TextView address;
     ImageView starLiked;
     ImageView selected;
-    ImageView iconPhone;
-    ImageView iconLike;
-    ImageView iconWebsite;
+    Button call;
+    Button like;
+    Button website;
     ImageView picture;
     RecyclerView recyclerView;
 
@@ -51,9 +52,9 @@ public class RestaurantDetails extends AppCompatActivity {
         address = findViewById(R.id.activity_restaurant_details_address_textview);
         starLiked = findViewById(R.id.activity_restaurant_details_star_imageview);
         selected = findViewById(R.id.activity_restaurant_details_isselected_imageview);
-        iconPhone = findViewById(R.id.activity_restaurant_details_phone_imageview);
-        iconLike = findViewById(R.id.activity_restaurant_details_like_imageview);
-        iconWebsite = findViewById(R.id.activity_restaurant_details_website_imageview);
+        call = findViewById(R.id.button);
+        like = findViewById(R.id.button2);
+        website = findViewById(R.id.button3);
         picture = findViewById(R.id.activity_restaurant_details_picture_imageview);
         recyclerView = findViewById(R.id.activity_restaurant_details_workmates_recyclerview);
     }
