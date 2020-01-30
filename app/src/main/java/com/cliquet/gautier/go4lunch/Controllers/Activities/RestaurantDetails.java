@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
@@ -50,11 +49,11 @@ public class RestaurantDetails extends AppCompatActivity {
     private void initViews() {
         name = findViewById(R.id.activity_restaurant_details_name_textview);
         address = findViewById(R.id.activity_restaurant_details_address_textview);
-        starLiked = findViewById(R.id.activity_restaurant_details_star_imageview);
-        selected = findViewById(R.id.activity_restaurant_details_isselected_imageview);
-        call = findViewById(R.id.button);
-        like = findViewById(R.id.button2);
-        website = findViewById(R.id.button3);
+        starLiked = findViewById(R.id.activity_restaurant_details_firststar_imageview);
+        selected = findViewById(R.id.activity_restaurant_selectrestaurant_button);
+        call = findViewById(R.id.activity_restaurant_call_button);
+        like = findViewById(R.id.activity_restaurant_like_button);
+        website = findViewById(R.id.activity_restaurant_website_button);
         picture = findViewById(R.id.activity_restaurant_details_picture_imageview);
         recyclerView = findViewById(R.id.activity_restaurant_details_workmates_recyclerview);
     }

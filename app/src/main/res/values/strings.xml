@@ -12,7 +12,7 @@
     <!-- item_recycler_restaurant.xml placeholders strings -->
     <string name="restaurant_name_placeholder"><font fgcolor='#FF0000'>name</font></string>
     <string name="restaurant_hours_placeholder"><font fgcolor='#FF0000'>hours</font></string>
-    <string name="restaurant_adress_placeholder"><font fgcolor='#FF0000'>address</font></string>
+    <string name="restaurant_address_placeholder"><font fgcolor='#FF0000'>address</font></string>
     <string name="restaurant_distance_placeholder"><font fgcolor='#FF0000'>distance</font></string>
     <string name="restaurant_workmates_placeholder"><font fgcolor='#FF0000'>(?)</font></string>
     <string name="restaurant_workmates_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>workmates\' icon</font></string>
@@ -20,6 +20,11 @@
     <string name="restaurant_secondstar_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>second star rating</font></string>
     <string name="restaurant_thirdstar_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>third star rating</font></string>
     <string name="restaurant_restaurantpictures_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>restaurant picture</font></string>
+
+    <!--activity_restaurant_details.xml strings -->
+    <string name="restaurant_call_button">CALL</string>
+    <string name="restaurant_like_button">LIKE</string>
+    <string name="restaurant_WEBSITE_button">WEBSITE</string>
 
     <!-- restaurants open/close strings -->
     <string name="restaurant_hours_isopen"><font fgcolor='#00FF00'>open</font></string>
