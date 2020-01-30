@@ -74,17 +74,6 @@
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_name_horizontalguideline"
         app:srcCompat="@drawable/star_outline_filled" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_restaurant_details_workmates_recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="299dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_recyclerview_horizontalguideline" />
-
     <ImageView
         android:id="@+id/activity_restaurant_details_picture_imageview"
         android:layout_width="472dp"
@@ -140,6 +129,18 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/activity_restaurant_like_button"
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_buttons_horizontalguideline" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_restaurant_details_workmates_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="299dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_recyclerview_horizontalguideline" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/activity_restaurant_picture_horizontalguideline"
