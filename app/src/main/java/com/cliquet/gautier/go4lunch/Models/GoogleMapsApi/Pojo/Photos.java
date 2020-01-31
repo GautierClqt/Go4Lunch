@@ -1,4 +1,4 @@
-package com.cliquet.gautier.go4lunch.Models.Pojo;
+package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

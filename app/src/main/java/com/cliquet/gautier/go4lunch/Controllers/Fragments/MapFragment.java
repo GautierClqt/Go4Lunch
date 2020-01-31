@@ -11,9 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.GoogleMapCalls;
-import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
-import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.Results;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,7 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 

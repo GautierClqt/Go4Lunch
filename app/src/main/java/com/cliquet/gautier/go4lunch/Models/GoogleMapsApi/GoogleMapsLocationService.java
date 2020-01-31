@@ -1,6 +1,6 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi;
 
-import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
 import java.util.Map;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;

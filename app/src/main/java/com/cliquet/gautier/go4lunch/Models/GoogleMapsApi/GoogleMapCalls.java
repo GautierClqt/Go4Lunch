@@ -1,6 +1,6 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi;
 
-import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;

@@ -11,12 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
-import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.Results;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;

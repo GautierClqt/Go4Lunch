@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cliquet.gautier.go4lunch.Models.Pojo.GoogleMapsPojo;
-import com.cliquet.gautier.go4lunch.Models.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.Results;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
