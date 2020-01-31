@@ -33,5 +33,5 @@
     <!-- item_recycler_restaurant.xml strings -->
     <string name="workmate_isconnected">Workmate is connected</string>
     <string name="workmate_joining">Workmate is joining!</string>
-    <string name="workmate_picture_imageview_contentdescription">workmate's picture</string>
+    <string name="workmate_picture_imageview_contentdescription">workmate\'s picture</string>
 </resources>

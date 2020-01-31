@@ -83,6 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
