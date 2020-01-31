@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.GoogleMapCalls;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements GoogleMapCalls.Callback {
+public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Callback {
 
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMapCalls.Ca
         mRequestParametersHM.put("type", "restaurant");
         mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
 
-        GoogleMapCalls.fetchLocations(this, mRequestParametersHM);
+        PlacesApiCalls.fetchLocations(this, mRequestParametersHM);
     }
 
     @Override

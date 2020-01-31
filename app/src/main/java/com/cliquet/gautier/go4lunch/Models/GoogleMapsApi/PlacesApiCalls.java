@@ -8,7 +8,7 @@ import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class GoogleMapCalls {
+public class PlacesApiCalls {
 
     public interface Callback {
         void onResponse(GoogleMapsPojo pojoMain);
