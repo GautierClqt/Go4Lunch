@@ -25,14 +25,14 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<NearbySearchResults> mResults;
+    private List<NearbySearchResults> mNearbySearch;
     private Restaurant mRestaurant;
 
     private String stringRestaurant;
 
-    public RecyclerViewAdapter(Context context, List<NearbySearchResults> mResults) {
+    public RecyclerViewAdapter(Context context, List<NearbySearchResults> mNearbySearch) {
         this.mContext = context;
-        this.mResults = mResults;
+        this.mNearbySearch = mNearbySearch;
     }
 
     @NonNull
@@ -45,10 +45,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.name.setText(mResults.get(i).getName());
-        viewHolder.adress.setText(mResults.get(i).getVicinity());
-        if(mResults.get(i).getOpeningHours() != null) {
-            if(!mResults.get(i).getOpeningHours().getOpenNow()) {
+        viewHolder.name.setText(mNearbySearch.get(i).getName());
+        viewHolder.adress.setText(mNearbySearch.get(i).getVicinity());
+        if(mNearbySearch.get(i).getOpeningHours() != null) {
+            if(!mNearbySearch.get(i).getOpeningHours().getOpenNow()) {
                 viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
                 viewHolder.hours.setTextColor(Color.parseColor("#00cc00"));
             }
@@ -60,9 +60,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.distance.setText("160");
         viewHolder.workmatesCount.setText("(2)");
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
-        //viewHolder.stars...
-        //viewHolder.picture...
-        final String photoReference = mResults.get(i).getPhotos().get(0).getPhotoReference();
+        
+        final String photoReference = mNearbySearch.get(i).getPhotos().get(0).getPhotoReference();
         String apiKey = mContext.getString(R.string.google_maps_key);
         Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
 
@@ -88,7 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return mResults.size();
+        return mNearbySearch.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -100,7 +99,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView distance;
         TextView workmatesCount;
         ImageView workmatesIcon;
-        ImageView stars;
+        ImageView firstStar;
+        ImageView secondStar;
+        ImageView thirdStar;
         ImageView picture;
 
         ViewHolder(@NonNull View itemView) {
@@ -113,9 +114,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             distance = itemView.findViewById(R.id.item_recycler_restaurant_distance_textview);
             workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);
             workmatesIcon = itemView.findViewById(R.id.item_recycler_restaurant_workmates_imageview);
-//            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
-//            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
-//            firststar = itemView.findViewById(R.id.item_recycler_restaurant_stars_imageview);
+            firstStar = itemView.findViewById(R.id.item_recycler_restaurant_firststar_imageview);
+            secondStar = itemView.findViewById(R.id.item_recycler_restaurant_secondstar_imageview);
+            thirdStar = itemView.findViewById(R.id.item_recycler_restaurant_thirdstar_imageview);
             picture = itemView.findViewById(R.id.item_recycler_restaurant_picture_imageview);
         }
     }
