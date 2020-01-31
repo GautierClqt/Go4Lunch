@@ -8,13 +8,13 @@ import java.util.List;
 public class GoogleMapsPojo {
     @SerializedName("results")
     @Expose
-    private List<Results> results;
+    private List<NearbySearchResults> nearbySearchResults;
 
-    public List<Results> getResults() {
-        return results;
+    public List<NearbySearchResults> getNearbySearchResults() {
+        return nearbySearchResults;
     }
-    public void setResults(List<Results> results) {
-        this.results = results;
+    public void setNearbySearchResults(List<NearbySearchResults> nearbySearchResults) {
+        this.nearbySearchResults = nearbySearchResults;
     }
 
 

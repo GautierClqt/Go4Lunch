@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
@@ -25,12 +25,12 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Results> mResults;
+    private List<NearbySearchResults> mResults;
     private Restaurant mRestaurant;
 
     private String stringRestaurant;
 
-    public RecyclerViewAdapter(Context context, List<Results> mResults) {
+    public RecyclerViewAdapter(Context context, List<NearbySearchResults> mResults) {
         this.mContext = context;
         this.mResults = mResults;
     }

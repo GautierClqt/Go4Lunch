@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Ca
         Gson gson = new Gson();
         String gsonGoogleMapsPojo;
 
-        if(googleMapsPojo.getResults().size() != 0) {
-            googleMapsPojo.setResults(googleMapsPojo.getResults());
+        if(googleMapsPojo.getNearbySearchResults().size() != 0) {
+            googleMapsPojo.setNearbySearchResults(googleMapsPojo.getNearbySearchResults());
 
             gsonGoogleMapsPojo = gson.toJson(googleMapsPojo);
 

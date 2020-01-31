@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,7 +43,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private GoogleMap mGoogleMaps;
     private GoogleMapsPojo mGoogleMapsPojo = new GoogleMapsPojo();
-    private List<Results> mResults = new ArrayList<>();
+    private List<NearbySearchResults> mResults = new ArrayList<>();
     private String nextPageToken;
     private int i;
     private double mUserLat;
@@ -93,9 +93,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
                 setCameraOnUser(mGoogleMaps, latlng);
 
-                mResults = mGoogleMapsPojo.getResults();
+                mResults = mGoogleMapsPojo.getNearbySearchResults();
 
-                if(mGoogleMapsPojo.getResults().size() != 0) {
+                if(mGoogleMapsPojo.getNearbySearchResults().size() != 0) {
                     putPinsOnPlaces(mGoogleMapsPojo);
                 }
             }
@@ -109,7 +109,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
 
     private void putPinsOnPlaces(GoogleMapsPojo googleMapsPojo) {
-        List<Results> results = googleMapsPojo.getResults();
+        List<NearbySearchResults> results = googleMapsPojo.getNearbySearchResults();
 
         for(int i = 0; i < results.size(); i++) {
             double placeLat = results.get(i).getGeometry().getLocation().getLat();

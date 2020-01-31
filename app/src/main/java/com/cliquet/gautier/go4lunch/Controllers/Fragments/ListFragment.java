@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.Results;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,7 +26,7 @@ public class ListFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private GoogleMapsPojo mGoogleMapsPojo = new GoogleMapsPojo();
-    private List<Results> mResults = new ArrayList<>();
+    private List<NearbySearchResults> mResults = new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,7 +60,7 @@ public class ListFragment extends Fragment {
             String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
             mGoogleMapsPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<GoogleMapsPojo>(){}.getType());
             if(mGoogleMapsPojo != null){
-                mResults = mGoogleMapsPojo.getResults();
+                mResults = mGoogleMapsPojo.getNearbySearchResults();
             }
         }
 
