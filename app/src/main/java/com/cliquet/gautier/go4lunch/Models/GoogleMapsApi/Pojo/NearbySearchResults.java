@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+//DetailsResults stores the respons of the GoogleMaps Nearby Search Api
 public class NearbySearchResults {
     @SerializedName("name")
     @Expose
