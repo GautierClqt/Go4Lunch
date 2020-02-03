@@ -15,24 +15,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
+import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+    Callback listener;
+
     private Context mContext;
     private List<NearbySearchResults> mNearbySearch;
     private Restaurant mRestaurant;
+    private List<Restaurant> mRestaurantsList = new ArrayList<>();
+    private int mPosition;
 
-    private String stringRestaurant;
 
-    public RecyclerViewAdapter(Context context, List<NearbySearchResults> mNearbySearch) {
+
+    public RecyclerViewAdapter(Context context, List<NearbySearchResults> mNearbySearch, Callback listener) {
         this.mContext = context;
         this.mNearbySearch = mNearbySearch;
+        this.listener = listener;
     }
 
     @NonNull
@@ -65,25 +72,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String apiKey = mContext.getString(R.string.google_maps_key);
         Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
 
-        mRestaurant = new Restaurant("Le Restaurant("+i+")", "5 rue de la Sirène", false, false, "00.00.78.98.52", "https://www.restaurant.fr", photoReference);
+        mRestaurant = new Restaurant(mNearbySearch.get(i).getName(), mNearbySearch.get(i).getVicinity(), false, false, "00.00.78.98.52", "https://www.restaurant.fr", photoReference);
+        mRestaurantsList.add(mRestaurant);
 
         viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //mRestaurant = new Restaurant("Le Restaurant", "5 rue de la Sirène", false, false, "06.07.78.98.52", "https://www.restaurant.fr", photoReference);
-
-                Gson gson = new Gson();
-                stringRestaurant = gson.toJson(mRestaurant);
-
-                Intent restaurantDetailsActivityIntent = new Intent(viewHolder.mainLayout.getContext(), RestaurantDetails.class);
-                restaurantDetailsActivityIntent.putExtra("restaurant", stringRestaurant);
-
-                mContext.startActivity(restaurantDetailsActivityIntent);
+                listener.onItemClicked(viewHolder.getAdapterPosition(), mRestaurantsList.get(viewHolder.getAdapterPosition()));
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

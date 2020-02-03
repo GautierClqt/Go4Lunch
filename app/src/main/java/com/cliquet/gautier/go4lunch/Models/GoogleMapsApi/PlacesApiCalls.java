@@ -34,6 +34,5 @@ public class PlacesApiCalls {
                 if(callbacksWeakReference.get() != null) callbacksWeakReference.get().onFailure();
             }
         });
-
     }
 }
