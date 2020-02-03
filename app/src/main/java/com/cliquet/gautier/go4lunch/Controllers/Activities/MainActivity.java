@@ -18,7 +18,7 @@ import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -137,18 +137,18 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Ca
     }
 
     @Override
-    public void onResponse(GoogleMapsPojo googleMapsPojo) {
+    public void onResponse(NearbySearchPojo nearbySearchPojo) {
 
         Gson gson = new Gson();
         String gsonGoogleMapsPojo;
 
-        if(googleMapsPojo.getNearbySearchResults().size() != 0) {
-            googleMapsPojo.setNearbySearchResults(googleMapsPojo.getNearbySearchResults());
+        if(nearbySearchPojo.getNearbySearchResults().size() != 0) {
+            nearbySearchPojo.setNearbySearchResults(nearbySearchPojo.getNearbySearchResults());
 
-            gsonGoogleMapsPojo = gson.toJson(googleMapsPojo);
+            gsonGoogleMapsPojo = gson.toJson(nearbySearchPojo);
 
             Bundle bundle = new Bundle();
-            bundle.putString("googleMapsPojo", gsonGoogleMapsPojo);
+            bundle.putString("nearbySearchPojo", gsonGoogleMapsPojo);
 
             mapFragment.setArguments(bundle);
             listFragment.setArguments(bundle);

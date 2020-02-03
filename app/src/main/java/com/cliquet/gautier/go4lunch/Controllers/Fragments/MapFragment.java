@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,7 +42,7 @@ import java.util.Objects;
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private GoogleMap mGoogleMaps;
-    private GoogleMapsPojo mGoogleMapsPojo = new GoogleMapsPojo();
+    private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
     private List<NearbySearchResults> mResults = new ArrayList<>();
     private String nextPageToken;
     private int i;
@@ -74,7 +74,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         Gson gson = new Gson();
 
         String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
-        mGoogleMapsPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<GoogleMapsPojo>(){}.getType());
+        mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -93,10 +93,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
                 setCameraOnUser(mGoogleMaps, latlng);
 
-                mResults = mGoogleMapsPojo.getNearbySearchResults();
+                mResults = mNearbySearchPojo.getNearbySearchResults();
 
-                if(mGoogleMapsPojo.getNearbySearchResults().size() != 0) {
-                    putPinsOnPlaces(mGoogleMapsPojo);
+                if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
+                    putPinsOnPlaces(mNearbySearchPojo);
                 }
             }
         });
@@ -108,8 +108,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
 
-    private void putPinsOnPlaces(GoogleMapsPojo googleMapsPojo) {
-        List<NearbySearchResults> results = googleMapsPojo.getNearbySearchResults();
+    private void putPinsOnPlaces(NearbySearchPojo nearbySearchPojo) {
+        List<NearbySearchResults> results = nearbySearchPojo.getNearbySearchResults();
 
         for(int i = 0; i < results.size(); i++) {
             double placeLat = results.get(i).getGeometry().getLocation().getLat();

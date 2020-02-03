@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi;
 
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
+
 import java.util.Map;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -20,5 +21,5 @@ public interface GoogleMapsLocationService {
             .build();
 
     @GET("maps/api/place/nearbysearch/json")
-    Call<GoogleMapsPojo> getGoogleMapDatas(@QueryMap Map<String, String> map);
+    Call<NearbySearchPojo> getGoogleMapDatas(@QueryMap Map<String, String> map);
 }

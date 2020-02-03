@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.GoogleMapsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
@@ -29,7 +29,7 @@ public class ListFragment extends Fragment implements Callback {
 
     private RecyclerView recyclerView;
 
-    private GoogleMapsPojo mGoogleMapsPojo = new GoogleMapsPojo();
+    private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
     private List<NearbySearchResults> mResults = new ArrayList<>();
     private String stringRestaurant;
 
@@ -63,9 +63,9 @@ public class ListFragment extends Fragment implements Callback {
 
         if (getArguments() != null) {
             String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
-            mGoogleMapsPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<GoogleMapsPojo>(){}.getType());
-            if(mGoogleMapsPojo != null){
-                mResults = mGoogleMapsPojo.getNearbySearchResults();
+            mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
+            if(mNearbySearchPojo != null){
+                mResults = mNearbySearchPojo.getNearbySearchResults();
             }
         }
 
