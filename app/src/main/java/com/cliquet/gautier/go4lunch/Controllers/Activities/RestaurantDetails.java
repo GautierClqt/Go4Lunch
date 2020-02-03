@@ -37,8 +37,9 @@ public class RestaurantDetails extends AppCompatActivity {
 
         initViews();
 
-        String stringRestaurant = getIntent().getStringExtra("restaurant");
-        restaurant = gson.fromJson(stringRestaurant, new TypeToken<Restaurant>(){}.getType());
+        Restaurant restaurant = getIntent().getParcelableExtra("restaurant");
+        //String stringRestaurant = getIntent().getStringExtra("restaurant");
+        //restaurant = gson.fromJson(stringRestaurant, new TypeToken<Restaurant>(){}.getType());
 
         name.setText(restaurant.getName());
         address.setText(restaurant.getAddress());

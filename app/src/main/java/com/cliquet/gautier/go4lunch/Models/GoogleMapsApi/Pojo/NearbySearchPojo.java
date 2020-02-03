@@ -1,5 +1,6 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo;
 
+import com.google.android.libraries.places.api.model.OpeningHours;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,7 +26,7 @@ public class NearbySearchPojo {
     public String getNextPageToken() { return nextPageToken; }
     public void setNextPageToken(String nextPageToken) { this.nextPageToken = nextPageToken; }
 
-    private class NearbySearchResults {
+    public class NearbySearchResults {
         @SerializedName("name")
         @Expose
         private String name;

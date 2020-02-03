@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
@@ -29,14 +29,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Callback listener;
 
     private Context mContext;
-    private List<NearbySearchResults> mNearbySearch;
+    private List<NearbySearchPojo.NearbySearchResults> mNearbySearch;
     private Restaurant mRestaurant;
     private List<Restaurant> mRestaurantsList = new ArrayList<>();
     private int mPosition;
 
 
 
-    public RecyclerViewAdapter(Context context, List<NearbySearchResults> mNearbySearch, Callback listener) {
+    public RecyclerViewAdapter(Context context, List<NearbySearchPojo.NearbySearchResults> mNearbySearch, Callback listener) {
         this.mContext = context;
         this.mNearbySearch = mNearbySearch;
         this.listener = listener;
@@ -55,14 +55,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.name.setText(mNearbySearch.get(i).getName());
         viewHolder.adress.setText(mNearbySearch.get(i).getVicinity());
         if(mNearbySearch.get(i).getOpeningHours() != null) {
-            if(!mNearbySearch.get(i).getOpeningHours().getOpenNow()) {
-                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
-                viewHolder.hours.setTextColor(Color.parseColor("#00cc00"));
-            }
-            else {
-                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
-                viewHolder.hours.setTextColor(Color.parseColor("#ff0000"));
-            }
+//            if(!mNearbySearch.get(i).getOpeningHours().getOpenNow()) {
+//                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
+//                viewHolder.hours.setTextColor(Color.parseColor("#00cc00"));
+//            }
+//            else {
+//                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
+//                viewHolder.hours.setTextColor(Color.parseColor("#ff0000"));
+//            }
+            viewHolder.hours.setText("close");
         }
         viewHolder.distance.setText("160");
         viewHolder.workmatesCount.setText("(2)");

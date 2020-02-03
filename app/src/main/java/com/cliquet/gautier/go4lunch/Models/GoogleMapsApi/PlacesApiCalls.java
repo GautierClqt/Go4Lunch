@@ -1,5 +1,6 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi;
 
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 
 import java.lang.ref.WeakReference;
@@ -10,14 +11,20 @@ import retrofit2.Response;
 
 public class PlacesApiCalls {
 
-    public interface Callback {
-        void onResponse(NearbySearchPojo pojoMain);
+    public interface NearbySearchCallback {
+        void onResponse(NearbySearchPojo nearbySearchPojo);
+        void onResponse(DetailsPojo detailsPojo);
         void onFailure();
     }
 
-    public static void fetchLocations(Callback callback, HashMap<String, String> mapQueries) {
+    public interface DetailsCallback {
+        void onResponse(DetailsPojo detailsPojo);
+        void onFailure();
+    }
 
-        final WeakReference<Callback> callbacksWeakReference = new WeakReference<>(callback);
+    public static void fetchNearbySearch(NearbySearchCallback nearbySearchCallback, HashMap<String, String> mapQueries) {
+
+        final WeakReference<NearbySearchCallback> callbacksWeakReference = new WeakReference<>(nearbySearchCallback);
         GoogleMapsLocationService googleMapLocationService = GoogleMapsLocationService.retrofit.create(GoogleMapsLocationService.class);
 
         Call<NearbySearchPojo> call;
@@ -34,5 +41,27 @@ public class PlacesApiCalls {
                 if(callbacksWeakReference.get() != null) callbacksWeakReference.get().onFailure();
             }
         });
+    }
+
+    public static void fetchDetails(DetailsCallback detailsCallback, HashMap<String, String> placeId) {
+        final WeakReference<DetailsCallback> callbackskWeakReference = new WeakReference<>(detailsCallback);
+        GoogleMapsLocationService googleMapsLocationService = GoogleMapsLocationService.retrofit.create(GoogleMapsLocationService.class);
+
+        Call<DetailsPojo> call;
+        call = googleMapsLocationService.getDetails(placeId);
+
+        call.enqueue(new retrofit2.Callback<DetailsPojo>() {
+            @Override
+            public void onResponse(Call<DetailsPojo> call, Response<DetailsPojo> response) {
+                if(callbackskWeakReference.get() != null) callbackskWeakReference.get().onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<DetailsPojo> call, Throwable t) {
+                if(callbackskWeakReference.get() != null) callbackskWeakReference.get().onFailure();
+            }
+        });
+
+
     }
 }

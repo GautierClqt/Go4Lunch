@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
@@ -30,7 +29,6 @@ public class ListFragment extends Fragment implements Callback {
     private RecyclerView recyclerView;
 
     private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
-    private List<NearbySearchResults> mResults = new ArrayList<>();
     private String stringRestaurant;
 
     private OnFragmentInteractionListener mListener;
@@ -65,13 +63,13 @@ public class ListFragment extends Fragment implements Callback {
             String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
             mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
             if(mNearbySearchPojo != null){
-                mResults = mNearbySearchPojo.getNearbySearchResults();
+                //mNearbySearchPojo = mNearbySearchPojo.getNearbySearchResults();
             }
         }
 
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(), mResults, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(),  mNearbySearchPojo.getNearbySearchResults(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -102,7 +100,7 @@ public class ListFragment extends Fragment implements Callback {
         stringRestaurant = gson.toJson(restaurant);
 
         Intent restaurantDetailsActivityIntent = new Intent(getContext(), RestaurantDetails.class);
-        restaurantDetailsActivityIntent.putExtra("restaurant", stringRestaurant);
+        restaurantDetailsActivityIntent.putExtra("restaurant", restaurant);
 
         startActivity(restaurantDetailsActivityIntent);
     }

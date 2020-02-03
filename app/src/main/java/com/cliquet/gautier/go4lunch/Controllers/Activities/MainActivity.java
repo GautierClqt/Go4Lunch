@@ -18,6 +18,7 @@ import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,7 +30,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Callback {
+public class MainActivity extends AppCompatActivity implements PlacesApiCalls.NearbySearchCallback {
 
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Ca
         mRequestParametersHM.put("type", "restaurant");
         mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
 
-        PlacesApiCalls.fetchLocations(this, mRequestParametersHM);
+        PlacesApiCalls.fetchNearbySearch(this, mRequestParametersHM);
     }
 
     @Override
@@ -156,6 +157,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Ca
             configureFragmentsDefaultDisplay();
             configureBottomView();
         }
+    }
+
+    @Override
+    public void onResponse(DetailsPojo detailsPojo) {
+
     }
 
     @Override

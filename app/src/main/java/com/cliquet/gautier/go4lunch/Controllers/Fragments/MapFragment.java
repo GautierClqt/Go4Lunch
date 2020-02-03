@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchResults;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,7 +42,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private GoogleMap mGoogleMaps;
     private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
-    private List<NearbySearchResults> mResults = new ArrayList<>();
+    private List<NearbySearchPojo.NearbySearchResults> mResults = new ArrayList<>();
     private String nextPageToken;
     private int i;
     private double mUserLat;
@@ -109,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
 
     private void putPinsOnPlaces(NearbySearchPojo nearbySearchPojo) {
-        List<NearbySearchResults> results = nearbySearchPojo.getNearbySearchResults();
+        List<NearbySearchPojo.NearbySearchResults> results = nearbySearchPojo.getNearbySearchResults();
 
         for(int i = 0; i < results.size(); i++) {
             double placeLat = results.get(i).getGeometry().getLocation().getLat();
