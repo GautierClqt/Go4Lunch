@@ -7,6 +7,7 @@
     android:background="#FE5722"
     tools:context="com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails">
 
+
     <TextView
         android:id="@+id/activity_restaurant_details_name_textview"
         android:layout_width="wrap_content"
@@ -90,7 +91,7 @@
         android:id="@+id/activity_restaurant_call_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@null"
         android:drawableTop="@drawable/restaurant_phone"
         android:drawableTint="#FE5722"
         android:text="@string/restaurant_call_button"
