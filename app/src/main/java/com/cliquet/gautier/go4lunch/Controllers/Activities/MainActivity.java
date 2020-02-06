@@ -30,7 +30,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements PlacesApiCalls.NearbySearchCallback {
+public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback {
 
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;

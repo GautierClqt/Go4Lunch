@@ -29,7 +29,7 @@ public class ListFragment extends Fragment implements Callback {
     private RecyclerView recyclerView;
 
     private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
-    private String stringRestaurant;
+    private List<NearbySearchPojo.NearbySearchResults> mNearbySearchResults = new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,16 +60,16 @@ public class ListFragment extends Fragment implements Callback {
         Gson gson = new Gson();
 
         if (getArguments() != null) {
-            String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
+            String gsonGoogleMapsPojo = getArguments().getString("nearbySearchPojo");
             mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
             if(mNearbySearchPojo != null){
-                //mNearbySearchPojo = mNearbySearchPojo.getNearbySearchResults();
+                mNearbySearchResults = mNearbySearchPojo.getNearbySearchResults();
             }
         }
 
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(),  mNearbySearchPojo.getNearbySearchResults(), this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(),  mNearbySearchResults, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -97,7 +97,6 @@ public class ListFragment extends Fragment implements Callback {
     @Override
     public void onItemClicked(int position, Restaurant restaurant) {
         Gson gson = new Gson();
-        stringRestaurant = gson.toJson(restaurant);
 
         Intent restaurantDetailsActivityIntent = new Intent(getContext(), RestaurantDetails.class);
         restaurantDetailsActivityIntent.putExtra("restaurant", restaurant);

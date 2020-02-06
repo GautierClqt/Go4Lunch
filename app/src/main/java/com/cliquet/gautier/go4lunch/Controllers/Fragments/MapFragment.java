@@ -72,7 +72,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         Gson gson = new Gson();
 
-        String gsonGoogleMapsPojo = getArguments().getString("googleMapsPojo");
+        String gsonGoogleMapsPojo = getArguments().getString("nearbySearchPojo");
         mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()

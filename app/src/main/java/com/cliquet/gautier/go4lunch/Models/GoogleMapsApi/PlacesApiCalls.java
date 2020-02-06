@@ -11,20 +11,15 @@ import retrofit2.Response;
 
 public class PlacesApiCalls {
 
-    public interface NearbySearchCallback {
+    public interface GoogleMapsCallback {
         void onResponse(NearbySearchPojo nearbySearchPojo);
         void onResponse(DetailsPojo detailsPojo);
         void onFailure();
     }
 
-    public interface DetailsCallback {
-        void onResponse(DetailsPojo detailsPojo);
-        void onFailure();
-    }
+    public static void fetchNearbySearch(GoogleMapsCallback googleMapsCallback, HashMap<String, String> mapQueries) {
 
-    public static void fetchNearbySearch(NearbySearchCallback nearbySearchCallback, HashMap<String, String> mapQueries) {
-
-        final WeakReference<NearbySearchCallback> callbacksWeakReference = new WeakReference<>(nearbySearchCallback);
+        final WeakReference<GoogleMapsCallback> callbacksWeakReference = new WeakReference<>(googleMapsCallback);
         GoogleMapsLocationService googleMapLocationService = GoogleMapsLocationService.retrofit.create(GoogleMapsLocationService.class);
 
         Call<NearbySearchPojo> call;
@@ -43,8 +38,8 @@ public class PlacesApiCalls {
         });
     }
 
-    public static void fetchDetails(DetailsCallback detailsCallback, HashMap<String, String> placeId) {
-        final WeakReference<DetailsCallback> callbackskWeakReference = new WeakReference<>(detailsCallback);
+    public static void fetchDetails(GoogleMapsCallback detailsCallback, HashMap<String, String> placeId) {
+        final WeakReference<GoogleMapsCallback> callbackskWeakReference = new WeakReference<>(detailsCallback);
         GoogleMapsLocationService googleMapsLocationService = GoogleMapsLocationService.retrofit.create(GoogleMapsLocationService.class);
 
         Call<DetailsPojo> call;

@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo;
 
-import com.google.android.libraries.places.api.model.OpeningHours;
+
+import com.cliquet.gautier.go4lunch.Models.OpeningHours;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
