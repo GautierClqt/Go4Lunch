@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class DetailsPojo {
-    @SerializedName("results")
+    @SerializedName("result")
     @Expose
     private Results results;
 
