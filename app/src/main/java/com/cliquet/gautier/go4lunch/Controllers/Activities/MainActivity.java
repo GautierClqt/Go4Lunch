@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
 
+    private NearbySearchPojo mNearbySearchPojo;
+    private DetailsPojo mDetailsPojo;
+
     final Fragment mapFragment = new MapFragment();
     final Fragment listFragment = new ListFragment();
     final Fragment workmatesFragment = new WorkmatesFragment();
@@ -147,16 +150,17 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     @Override
     public void onResponse(NearbySearchPojo nearbySearchPojo) {
 
+        mNearbySearchPojo = nearbySearchPojo;
+
         Gson gson = new Gson();
         String gsonGoogleMapsPojo;
 
-        if(nearbySearchPojo.getNearbySearchResults().size() != 0) {
-            nearbySearchPojo.setNearbySearchResults(nearbySearchPojo.getNearbySearchResults());
+        if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
+            mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
+            
+            detailsRequest(mNearbySearchPojo);
 
-            ArrayList<String> detailsList = new ArrayList<>();
-            detailsRequest(nearbySearchPojo);
-
-            gsonGoogleMapsPojo = gson.toJson(nearbySearchPojo);
+            gsonGoogleMapsPojo = gson.toJson(mNearbySearchPojo);
 
             Bundle bundle = new Bundle();
             bundle.putString("nearbySearchPojo", gsonGoogleMapsPojo);
@@ -171,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     @Override
     public void onResponse(DetailsPojo detailsPojo) {
-        int TEST = 0;
+        mDetailsPojo = detailsPojo;
     }
 
     @Override
