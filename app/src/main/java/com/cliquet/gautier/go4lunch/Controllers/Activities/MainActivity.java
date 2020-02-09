@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private Restaurant mRestaurant;
     private NearbySearchPojo mNearbySearchPojo;
     private DetailsPojo mDetailsPojo;
-    private ArrayList<Restaurant> restaurantList = new ArrayList<>();
+    private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
     private int mCurrentRequest;
 
     final Fragment mapFragment = new MapFragment();
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo) {
-        restaurantList.add(new Restaurant(
+        mRestaurantList.add(new Restaurant(
                 nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getName(),
                 nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getVicinity(),
                 false,
@@ -150,6 +151,23 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 detailsPojo.getResults().getWebsite(),
                 nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getPhotos().get(0).getPhotoReference(),
                 detailsPojo.getResults().getOpeningHours().getPeriods()));
+    }
+
+    private void configureBundle(List<Restaurant> restaurantList) {
+        restaurantList = mRestaurantList;
+        Gson gson = new Gson();
+        String gsonRestaurantList;
+
+        gsonRestaurantList = gson.toJson(restaurantList);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("restaurant_list", gsonRestaurantList);
+
+        mapFragment.setArguments(bundle);
+        listFragment.setArguments(bundle);
+
+        configureFragmentsDefaultDisplay();
+        configureBottomView();
     }
 
     @Override
@@ -169,25 +187,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
         mNearbySearchPojo = nearbySearchPojo;
 
-        Gson gson = new Gson();
-        String gsonGoogleMapsPojo;
-
         if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
-
             detailsRequest(mNearbySearchPojo);
-
-            gsonGoogleMapsPojo = gson.toJson(mNearbySearchPojo);
-
-            Bundle bundle = new Bundle();
-            bundle.putString("nearbySearchPojo", gsonGoogleMapsPojo);
-
-            mapFragment.setArguments(bundle);
-            listFragment.setArguments(bundle);
-
-            configureFragmentsDefaultDisplay();
-            configureBottomView();
         }
+        configureBundle(mRestaurantList);
     }
 
     @Override
