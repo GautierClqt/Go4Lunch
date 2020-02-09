@@ -63,6 +63,7 @@ public class Restaurant implements Parcelable {
     public String getPhone() { return mPhone; }
     public String getUrl() { return mWebsiteUrl; }
     public String getPhotoReference() { return mPhotoReference; }
+    public List<DetailsPojo.Periods> getPeriods() { return mPeriods; }
 
     @Override
     public int describeContents() {

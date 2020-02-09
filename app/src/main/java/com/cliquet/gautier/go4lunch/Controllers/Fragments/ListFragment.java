@@ -28,8 +28,8 @@ public class ListFragment extends Fragment implements Callback {
 
     private RecyclerView recyclerView;
 
-    private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
-    private List<NearbySearchPojo.NearbySearchResults> mNearbySearchResults = new ArrayList<>();
+    private List<Restaurant> mRestaurantList = new ArrayList<>();
+    //private List<NearbySearchPojo.NearbySearchResults> mNearbySearchResults = new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,16 +60,18 @@ public class ListFragment extends Fragment implements Callback {
         Gson gson = new Gson();
 
         if (getArguments() != null) {
-            String gsonGoogleMapsPojo = getArguments().getString("nearbySearchPojo");
-            mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
-            if(mNearbySearchPojo != null){
-                mNearbySearchResults = mNearbySearchPojo.getNearbySearchResults();
-            }
+            String gsonRestaurantList = getArguments().getString("restaurant_list");
+            mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
+
+            //A EFFACER!!!
+//            if(mRestaurantList != null){
+//                mNearbySearchResults = mRestaurantList.getNearbySearchResults();
+//            }
         }
 
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(),  mNearbySearchResults, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(),  mRestaurantList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 

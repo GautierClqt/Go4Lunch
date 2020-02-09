@@ -19,9 +19,11 @@ import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
+import com.google.android.libraries.places.api.model.DayOfWeek;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -29,16 +31,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Callback listener;
 
     private Context mContext;
-    private List<NearbySearchPojo.NearbySearchResults> mNearbySearch;
+    //private List<NearbySearchPojo.NearbySearchResults> mNearbySearch;
     private Restaurant mRestaurant;
     private List<Restaurant> mRestaurantsList = new ArrayList<>();
     private int mPosition;
 
 
 
-    public RecyclerViewAdapter(Context context, List<NearbySearchPojo.NearbySearchResults> mNearbySearch, Callback listener) {
+    public RecyclerViewAdapter(Context context, List<Restaurant> restaurantList, Callback listener) {
         this.mContext = context;
-        this.mNearbySearch = mNearbySearch;
+        this.mRestaurantsList = restaurantList;
         this.listener = listener;
     }
 
@@ -52,9 +54,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.name.setText(mNearbySearch.get(i).getName());
-        viewHolder.adress.setText(mNearbySearch.get(i).getVicinity());
-        if(mNearbySearch.get(i).getOpeningHours() != null) {
+        viewHolder.name.setText(mRestaurantsList.get(i).getName());
+        viewHolder.adress.setText(mRestaurantsList.get(i).getAddress());
+        if(mRestaurantsList.get(i).getPeriods() != null) {
 //            if(!mNearbySearch.get(i).getOpeningHours().getOpenNow()) {
 //                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
 //                viewHolder.hours.setTextColor(Color.parseColor("#00cc00"));
@@ -63,18 +65,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
 //                viewHolder.hours.setTextColor(Color.parseColor("#ff0000"));
 //            }
-            viewHolder.hours.setText("close");
+            viewHolder.hours.setText(mRestaurantsList.get(i).getPeriods().get(0).getClose().getTime());
         }
         viewHolder.distance.setText("160");
         viewHolder.workmatesCount.setText("(2)");
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
 
-        final String photoReference = mNearbySearch.get(i).getPhotos().get(0).getPhotoReference();
+        final String photoReference = mRestaurantsList.get(i).getPhotoReference();
         String apiKey = mContext.getString(R.string.google_maps_key);
         Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
-
-        //mRestaurant = new Restaurant(mNearbySearch.get(i).getName(), mNearbySearch.get(i).getVicinity(), false, false, "00.00.78.98.52", "https://www.restaurant.fr", photoReference);
-        //mRestaurantsList.add(mRestaurant);
 
         viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return mNearbySearch.size();
+        return mRestaurantsList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
