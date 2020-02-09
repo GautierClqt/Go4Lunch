@@ -64,11 +64,11 @@ public class DetailsPojo {
     }
 
     public class Periods {
-        @SerializedName("Open")
+        @SerializedName("open")
         @Expose
         private Open open;
 
-        @SerializedName("Close")
+        @SerializedName("close")
         @Expose
         private Close close;
 
