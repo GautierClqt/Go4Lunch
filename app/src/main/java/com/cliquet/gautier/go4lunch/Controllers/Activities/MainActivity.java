@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private Restaurant mRestaurant;
     private NearbySearchPojo mNearbySearchPojo;
     private DetailsPojo mDetailsPojo;
+    private ArrayList<Restaurant> restaurantList = new ArrayList<>();
+    private int mCurrentRequest;
 
     final Fragment mapFragment = new MapFragment();
     final Fragment listFragment = new ListFragment();
@@ -133,12 +135,21 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
         for(int i=0; i <= nearbySearchPojo.getNearbySearchResults().size()-1; i++) {
+            mCurrentRequest = i;
             PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId());
         }
     }
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo) {
-        ArrayList<Restaurant> restaurantList = mRestaurant.creatingRestaurant(nearbySearchPojo, detailsPojo);
+        restaurantList.add(new Restaurant(
+                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getName(),
+                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getVicinity(),
+                false,
+                false,
+                detailsPojo.getResults().getPhoneNumber(),
+                detailsPojo.getResults().getWebsite(),
+                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getPhotos().get(0).getPhotoReference(),
+                detailsPojo.getResults().getOpeningHours().getPeriods()));
     }
 
     @Override

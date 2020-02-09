@@ -73,8 +73,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String apiKey = mContext.getString(R.string.google_maps_key);
         Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
 
-        mRestaurant = new Restaurant(mNearbySearch.get(i).getName(), mNearbySearch.get(i).getVicinity(), false, false, "00.00.78.98.52", "https://www.restaurant.fr", photoReference);
-        mRestaurantsList.add(mRestaurant);
+        //mRestaurant = new Restaurant(mNearbySearch.get(i).getName(), mNearbySearch.get(i).getVicinity(), false, false, "00.00.78.98.52", "https://www.restaurant.fr", photoReference);
+        //mRestaurantsList.add(mRestaurant);
 
         viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,6 +3,11 @@ package com.cliquet.gautier.go4lunch.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
+import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
+
+import java.util.List;
+
 public class Restaurant implements Parcelable {
 
     private String mName;
@@ -12,12 +17,13 @@ public class Restaurant implements Parcelable {
     private String mPhone;
     private String mWebsiteUrl;
     private String mPhotoReference;
+    private List<DetailsPojo.Periods> mPeriods;
 
     public Restaurant() {
 
     }
 
-    public Restaurant(String name, String address, boolean liked, boolean selected, String phone, String websiteUrl, String photoReference) {
+    public Restaurant(String name, String address, boolean liked, boolean selected, String phone, String websiteUrl, String photoReference, List<DetailsPojo.Periods> periods) {
         this.mName = name;
         this.mAddress = address;
         this.mLiked = liked;
@@ -25,6 +31,7 @@ public class Restaurant implements Parcelable {
         this.mPhone = phone;
         this.mWebsiteUrl = websiteUrl;
         this.mPhotoReference = photoReference;
+        this.mPeriods = periods;
     }
 
     protected Restaurant(Parcel in) {
