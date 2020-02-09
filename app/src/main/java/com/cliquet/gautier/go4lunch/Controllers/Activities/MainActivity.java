@@ -20,6 +20,7 @@ import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
+import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
 
+    private Restaurant mRestaurant;
     private NearbySearchPojo mNearbySearchPojo;
     private DetailsPojo mDetailsPojo;
 
@@ -135,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         }
     }
 
+    private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo) {
+        ArrayList<Restaurant> restaurantList = mRestaurant.creatingRestaurant(nearbySearchPojo, detailsPojo);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -157,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
         if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
-            
+
             detailsRequest(mNearbySearchPojo);
 
             gsonGoogleMapsPojo = gson.toJson(mNearbySearchPojo);
@@ -176,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     @Override
     public void onResponse(DetailsPojo detailsPojo) {
         mDetailsPojo = detailsPojo;
+        fillingRestaurantsList(mNearbySearchPojo, mDetailsPojo);
     }
 
     @Override
