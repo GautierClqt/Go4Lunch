@@ -39,14 +39,14 @@ public class NearbySearchPojo {
             this.name = name;
         }
 
-        @SerializedName("id")
+        @SerializedName("place_id")
         @Expose
-        private String id;
+        private String placeId;
 
         public String getId() {
-            return id;
+            return placeId;
         }
-        public void setId(String id) { this.id = id; }
+        public void setId(String placeId) { this.placeId = placeId; }
 
         @SerializedName("vicinity")
         @Expose

@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -125,6 +126,12 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         PlacesApiCalls.fetchNearbySearch(this, mRequestParametersHM);
     }
 
+    private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
+        for(int i=0; i <= nearbySearchPojo.getNearbySearchResults().size()-1; i++) {
+            PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId());
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -146,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         if(nearbySearchPojo.getNearbySearchResults().size() != 0) {
             nearbySearchPojo.setNearbySearchResults(nearbySearchPojo.getNearbySearchResults());
 
+            ArrayList<String> detailsList = new ArrayList<>();
+            detailsRequest(nearbySearchPojo);
+
             gsonGoogleMapsPojo = gson.toJson(nearbySearchPojo);
 
             Bundle bundle = new Bundle();
@@ -161,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     @Override
     public void onResponse(DetailsPojo detailsPojo) {
-
+        int TEST = 0;
     }
 
     @Override

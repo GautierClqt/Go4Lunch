@@ -38,7 +38,7 @@ public class PlacesApiCalls {
         });
     }
 
-    public static void fetchDetails(GoogleMapsCallback detailsCallback, HashMap<String, String> placeId) {
+    public static void fetchDetails(GoogleMapsCallback detailsCallback, String placeId) {
         final WeakReference<GoogleMapsCallback> callbackskWeakReference = new WeakReference<>(detailsCallback);
         GoogleMapsLocationService googleMapsLocationService = GoogleMapsLocationService.retrofit.create(GoogleMapsLocationService.class);
 
