@@ -11,6 +11,8 @@ import java.util.List;
 public class Restaurant implements Parcelable {
 
     private String mName;
+    private double mLatitude;
+    private double mLongitude;
     private String mAddress;
     private boolean mLiked;
     private boolean mSelected;
@@ -23,8 +25,10 @@ public class Restaurant implements Parcelable {
 
     }
 
-    public Restaurant(String name, String address, boolean liked, boolean selected, String phone, String websiteUrl, String photoReference, List<DetailsPojo.Periods> periods) {
+    public Restaurant(String name, double latitude, double longitude, String address, boolean liked, boolean selected, String phone, String websiteUrl, String photoReference, List<DetailsPojo.Periods> periods) {
         this.mName = name;
+        this.mLatitude = latitude;
+        this.mLongitude = longitude;
         this.mAddress = address;
         this.mLiked = liked;
         this.mSelected = selected;
@@ -57,6 +61,8 @@ public class Restaurant implements Parcelable {
     };
 
     public String getName() { return mName; }
+    public double getLatitude() { return mLatitude; }
+    public double getLongitude() { return mLongitude; }
     public String getAddress() { return mAddress; }
     public boolean getLiked() { return mLiked; }
     public boolean getSelected() { return mSelected; }

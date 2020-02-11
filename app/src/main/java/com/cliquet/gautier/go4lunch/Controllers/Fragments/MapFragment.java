@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
+import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -41,7 +42,8 @@ import java.util.Objects;
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private GoogleMap mGoogleMaps;
-    private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
+    private List<Restaurant> mRestaurantList = new ArrayList<>();
+    //private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
     private List<NearbySearchPojo.NearbySearchResults> mResults = new ArrayList<>();
     private String nextPageToken;
     private int i;
@@ -72,8 +74,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         Gson gson = new Gson();
 
-        String gsonGoogleMapsPojo = getArguments().getString("nearbySearchPojo");
-        mNearbySearchPojo = gson.fromJson(gsonGoogleMapsPojo, new TypeToken<NearbySearchPojo>(){}.getType());
+        String gsonRestaurantList = getArguments().getString("restaurant_list");
+        mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -92,10 +94,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
                 setCameraOnUser(mGoogleMaps, latlng);
 
-                mResults = mNearbySearchPojo.getNearbySearchResults();
-
-                if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
-                    putPinsOnPlaces(mNearbySearchPojo);
+                if(mRestaurantList.size() != 0) {
+                    putPinsOnPlaces(mRestaurantList);
                 }
             }
         });
@@ -107,13 +107,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
 
-    private void putPinsOnPlaces(NearbySearchPojo nearbySearchPojo) {
-        List<NearbySearchPojo.NearbySearchResults> results = nearbySearchPojo.getNearbySearchResults();
+    private void putPinsOnPlaces(List<Restaurant> mRestaurantList) {
 
-        for(int i = 0; i < results.size(); i++) {
-            double placeLat = results.get(i).getGeometry().getLocation().getLat();
-            double placeLong = results.get(i).getGeometry().getLocation().getLng();
-            String placeName = results.get(i).getName();
+        for(int i = 0; i < mRestaurantList.size(); i++) {
+            double placeLat = mRestaurantList.get(i).getLatitude();
+            double placeLong = mRestaurantList.get(i).getLongitude();
+            String placeName = mRestaurantList.get(i).getName();
             LatLng marker = new LatLng(placeLat, placeLong);
             mGoogleMaps.addMarker(new MarkerOptions().position(marker).title(placeName));
         }

@@ -107,7 +107,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             mainLayout = itemView.findViewById(R.id.item_recycler_restaurant_constraintlayout_main);
             name = itemView.findViewById(R.id.item_recycler_restaurant_name_textview);
-            adress = itemView.findViewById(R.id.item_recycler_restaurant_adress_textview);
+            adress = itemView.findViewById(R.id.item_recycler_restaurant_address_textview);
             hours = itemView.findViewById(R.id.item_recycler_restaurant_hours_textview);
             distance = itemView.findViewById(R.id.item_recycler_restaurant_distance_textview);
             workmatesCount = itemView.findViewById(R.id.item_recycler_restaurant_workmates_textview);

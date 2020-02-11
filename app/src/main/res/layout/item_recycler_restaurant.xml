@@ -12,7 +12,7 @@
     app:layout_constraintHorizontal_weight="5">
 
     <TextView
-        android:id="@+id/item_recycler_restaurant_hours_textview"
+        android:id="@+id/item_recycler_restaurant_address_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="172dp"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="@+id/item_recycler_restaurant_name_horizontalguideline" />
 
     <TextView
-        android:id="@+id/item_recycler_restaurant_adress_textview"
+        android:id="@+id/item_recycler_restaurant_hours_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

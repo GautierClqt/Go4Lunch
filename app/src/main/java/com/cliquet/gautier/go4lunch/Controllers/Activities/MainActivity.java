@@ -138,19 +138,25 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         for(int i=0; i <= nearbySearchPojo.getNearbySearchResults().size()-1; i++) {
             mCurrentRequest = i;
             PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId());
+            fillingRestaurantsList(mNearbySearchPojo, mDetailsPojo);
         }
     }
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo) {
         mRestaurantList.add(new Restaurant(
                 nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getName(),
+                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLat(),
+                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLng(),
                 nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getVicinity(),
                 false,
                 false,
-                detailsPojo.getResults().getPhoneNumber(),
-                detailsPojo.getResults().getWebsite(),
+                //detailsPojo.getResults().getPhoneNumber(),
+                "06.07.08.09.10",
+                //detailsPojo.getResults().getWebsite(),
+                "www.website.com",
                 nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getPhotos().get(0).getPhotoReference(),
-                detailsPojo.getResults().getOpeningHours().getPeriods()));
+                //detailsPojo.getResults().getOpeningHours().getPeriods()));
+                null));
     }
 
     private void configureBundle(List<Restaurant> restaurantList) {
@@ -197,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     @Override
     public void onResponse(DetailsPojo detailsPojo) {
         mDetailsPojo = detailsPojo;
-        fillingRestaurantsList(mNearbySearchPojo, mDetailsPojo);
+        //fillingRestaurantsList(mNearbySearchPojo, mDetailsPojo);
     }
 
     @Override
