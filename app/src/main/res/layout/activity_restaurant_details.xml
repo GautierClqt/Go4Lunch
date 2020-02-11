@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FE5722"
     tools:context="com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails">
 
 
@@ -22,14 +21,14 @@
 
     <TextView
         android:id="@+id/activity_restaurant_details_address_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
         android:text="@string/restaurant_address_placeholder"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_buttons_horizontalguideline"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_name_horizontalguideline" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/activity_restaurant_selectrestaurant_button"
@@ -75,16 +74,17 @@
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_name_horizontalguideline"
         app:srcCompat="@drawable/star_outline_filled" />
 
+
     <ImageView
         android:id="@+id/activity_restaurant_details_picture_imageview"
         android:layout_width="472dp"
         android:layout_height="324dp"
         android:background="#FFFFFF"
+        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
         app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_picture_horizontalguideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -106,7 +106,7 @@
         android:id="@+id/activity_restaurant_like_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@null"
         android:drawableTop="@drawable/restaurant_like"
         android:drawableTint="#FE5722"
         android:text="@string/restaurant_like_button"
@@ -117,11 +117,12 @@
         app:layout_constraintStart_toEndOf="@+id/activity_restaurant_call_button"
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_buttons_horizontalguideline" />
 
+
     <Button
         android:id="@+id/activity_restaurant_website_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@null"
         android:drawableTop="@drawable/restaurant_website"
         android:drawableTint="#FE5722"
         android:text="@string/restaurant_WEBSITE_button"

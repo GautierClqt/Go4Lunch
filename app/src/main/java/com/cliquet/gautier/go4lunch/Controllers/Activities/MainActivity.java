@@ -144,19 +144,19 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo) {
         mRestaurantList.add(new Restaurant(
-                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getName(),
-                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLat(),
-                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLng(),
-                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getVicinity(),
-                false,
-                false,
-                //detailsPojo.getResults().getPhoneNumber(),
-                "06.07.08.09.10",
-                //detailsPojo.getResults().getWebsite(),
-                "www.website.com",
-                nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getPhotos().get(0).getPhotoReference(),
-                //detailsPojo.getResults().getOpeningHours().getPeriods()));
-                null));
+            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getName(),
+            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLat(),
+            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLng(),
+            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getVicinity(),
+            false,
+            false,
+            //detailsPojo.getResults().getPhoneNumber(),
+            "06.00.00.00.00",
+            //detailsPojo.getResults().getWebsite(),
+            "www.website.com",
+            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getPhotos().get(0).getPhotoReference(),
+            //detailsPojo.getResults().getOpeningHours().getPeriods()));
+            null));
     }
 
     private void configureBundle(List<Restaurant> restaurantList) {
