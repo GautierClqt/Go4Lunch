@@ -55,7 +55,6 @@ public class RestaurantDetails extends AppCompatActivity {
         String apiKey = getString(R.string.google_maps_key);
         Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + restaurant.getPhotoReference() + "&maxwidth=600").into(picture);
 
-
         if(restaurant.getPhone() == null || restaurant.getPhone().equals("")) {
             call.setEnabled(false);
         }
@@ -68,13 +67,17 @@ public class RestaurantDetails extends AppCompatActivity {
             });
         }
 
-
-        website.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startWebsiteActivity();
-            }
-        });
+        if(restaurant.getUrl() == null || restaurant.getPhone().equals("")) {
+            website.setEnabled(false);
+        }
+        else {
+            website.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startWebsiteActivity();
+                }
+            });
+        }
     }
 
     private void startCallActivity() {
