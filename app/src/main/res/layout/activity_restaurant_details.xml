@@ -46,6 +46,11 @@
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_picture_horizontalguideline"
         app:layout_constraintVertical_bias="0.448" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="#FE5722" />
+
     <ImageView
         android:id="@+id/activity_restaurant_details_firststar_imageview"
         android:layout_width="19dp"

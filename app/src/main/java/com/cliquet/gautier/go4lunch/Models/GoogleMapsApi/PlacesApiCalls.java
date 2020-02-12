@@ -13,7 +13,7 @@ public class PlacesApiCalls {
 
     public interface GoogleMapsCallback {
         void onResponse(NearbySearchPojo nearbySearchPojo);
-        void onResponse(DetailsPojo detailsPojo);
+        void onResponse(DetailsPojo detailsPojo, int index);
         void onFailure();
     }
 
@@ -38,7 +38,7 @@ public class PlacesApiCalls {
         });
     }
 
-    public static void fetchDetails(GoogleMapsCallback detailsCallback, String placeId) {
+    public static void fetchDetails(GoogleMapsCallback detailsCallback, String placeId, final int index) {
         final WeakReference<GoogleMapsCallback> callbackskWeakReference = new WeakReference<>(detailsCallback);
         GoogleMapsLocationService googleMapsLocationService = GoogleMapsLocationService.retrofit.create(GoogleMapsLocationService.class);
 
@@ -48,7 +48,7 @@ public class PlacesApiCalls {
         call.enqueue(new retrofit2.Callback<DetailsPojo>() {
             @Override
             public void onResponse(Call<DetailsPojo> call, Response<DetailsPojo> response) {
-                if(callbackskWeakReference.get() != null) callbackskWeakReference.get().onResponse(response.body());
+                if(callbackskWeakReference.get() != null) callbackskWeakReference.get().onResponse(response.body(), index);
             }
 
             @Override

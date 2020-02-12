@@ -65,7 +65,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
 //                viewHolder.hours.setTextColor(Color.parseColor("#ff0000"));
 //            }
-            viewHolder.hours.setText(mRestaurantsList.get(i).getPeriods().get(0).getClose().getTime());
+            viewHolder.hours.setText("closed");
         }
         viewHolder.distance.setText("160");
         viewHolder.workmatesCount.setText("(2)");

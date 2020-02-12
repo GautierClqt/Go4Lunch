@@ -137,30 +137,28 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
         for(int i=0; i <= nearbySearchPojo.getNearbySearchResults().size()-1; i++) {
             mCurrentRequest = i;
-            PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId());
-            fillingRestaurantsList(mNearbySearchPojo, mDetailsPojo);
+            PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId(), i);
         }
     }
 
-    private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo) {
+    private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
         mRestaurantList.add(new Restaurant(
-            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getName(),
-            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLat(),
-            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getGeometry().getLocation().getLng(),
-            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getVicinity(),
+            nearbySearchPojo.getNearbySearchResults().get(index).getName(),
+            nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
+            nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng(),
+            nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
             false,
             false,
-            //detailsPojo.getResults().getPhoneNumber(),
-            "06.00.00.00.00",
-            //detailsPojo.getResults().getWebsite(),
-            "www.website.com",
-            nearbySearchPojo.getNearbySearchResults().get(mCurrentRequest).getPhotos().get(0).getPhotoReference(),
-            //detailsPojo.getResults().getOpeningHours().getPeriods()));
-            null));
+            detailsPojo.getResults().getPhoneNumber(),
+            detailsPojo.getResults().getWebsite(),
+            nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference(),
+            detailsPojo.getResults().getOpeningHours().getPeriods()));
+        if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
+            configureBundle(mRestaurantList);
+        }
     }
 
     private void configureBundle(List<Restaurant> restaurantList) {
-        restaurantList = mRestaurantList;
         Gson gson = new Gson();
         String gsonRestaurantList;
 
@@ -197,13 +195,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
             detailsRequest(mNearbySearchPojo);
         }
-        configureBundle(mRestaurantList);
     }
 
     @Override
-    public void onResponse(DetailsPojo detailsPojo) {
-        mDetailsPojo = detailsPojo;
-        //fillingRestaurantsList(mNearbySearchPojo, mDetailsPojo);
+    public void onResponse(DetailsPojo detailsPojo, int index) {
+        fillingRestaurantsList(mNearbySearchPojo, detailsPojo, index);
     }
 
     @Override
