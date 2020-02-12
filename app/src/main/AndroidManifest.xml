@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Controllers.Activities.WebsiteActivity"></activity>
         <activity android:name=".Controllers.Activities.RestaurantDetails" />
         <activity android:name=".Controllers.Activities.MainActivity">
             <intent-filter>
