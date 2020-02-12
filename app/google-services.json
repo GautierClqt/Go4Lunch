@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "384840800145",
+    "firebase_url": "https://animated-canyon-260813.firebaseio.com",
+    "project_id": "animated-canyon-260813",
+    "storage_bucket": "animated-canyon-260813.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384840800145:android:3b48476177f9d3bbb2ec30",
+        "android_client_info": {
+          "package_name": "com.cliquet.gautier.go4lunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384840800145-okrt6iifh03t3l6cqs0uh6kkncet437v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhljAGqShSKRzls5UB-iL_nQfnazTO1cM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384840800145-okrt6iifh03t3l6cqs0uh6kkncet437v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
