@@ -1,9 +1,19 @@
 package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,13 +47,41 @@ public class RestaurantDetails extends AppCompatActivity {
 
         initViews();
 
-        Restaurant restaurant = getIntent().getParcelableExtra("restaurant");
+        restaurant = getIntent().getParcelableExtra("restaurant");
 
         name.setText(restaurant.getName());
         address.setText(restaurant.getAddress());
 
         String apiKey = getString(R.string.google_maps_key);
         Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + restaurant.getPhotoReference() + "&maxwidth=600").into(picture);
+
+
+        if(restaurant.getPhone() == null || restaurant.getPhone() == "") {
+            call.setEnabled(false);
+        }
+        else {
+            call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ContextCompat.checkSelfPermission(RestaurantDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(RestaurantDetails.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                    }
+                    else {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +restaurant.getPhone()));
+                        startActivity(intent);
+                    }
+                    return;
+                }
+            });
+
+        }
+
+        website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
     }
 
     private void initViews() {
