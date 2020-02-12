@@ -56,32 +56,42 @@ public class RestaurantDetails extends AppCompatActivity {
         Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + restaurant.getPhotoReference() + "&maxwidth=600").into(picture);
 
 
-        if(restaurant.getPhone() == null || restaurant.getPhone() == "") {
+        if(restaurant.getPhone() == null || restaurant.getPhone().equals("")) {
             call.setEnabled(false);
         }
         else {
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (ContextCompat.checkSelfPermission(RestaurantDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(RestaurantDetails.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                    }
-                    else {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +restaurant.getPhone()));
-                        startActivity(intent);
-                    }
-                    return;
+                    startCallActivity();
                 }
             });
-
         }
+
 
         website.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                startWebsiteActivity();
             }
         });
+    }
+
+    private void startCallActivity() {
+        if (ContextCompat.checkSelfPermission(RestaurantDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(RestaurantDetails.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+        }
+        else {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +restaurant.getPhone()));
+            startActivity(intent);
+        }
+        return;
+    }
+
+    private void startWebsiteActivity() {
+        Intent intent = new Intent(this, WebsiteActivity.class);
+        intent.putExtra("url", restaurant.getUrl());
+        startActivity(intent);
     }
 
     private void initViews() {

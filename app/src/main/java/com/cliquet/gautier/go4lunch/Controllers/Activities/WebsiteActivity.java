@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.cliquet.gautier.go4lunch.R;
+
 public class WebsiteActivity extends AppCompatActivity {
 
     @Override
