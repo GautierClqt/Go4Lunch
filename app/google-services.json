@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "384840800145-3necfm2pmqh43vsgqhqs7t0oched834m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cliquet.gautier.go4lunch",
+            "certificate_hash": "eaa7493498aa88dbd868f376a20a480eede4a302"
+          }
+        },
+        {
           "client_id": "384840800145-okrt6iifh03t3l6cqs0uh6kkncet437v.apps.googleusercontent.com",
           "client_type": 3
         }
