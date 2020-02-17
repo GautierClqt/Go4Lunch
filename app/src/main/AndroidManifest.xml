@@ -17,7 +17,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".Controllers.Activities.WebsiteActivity"></activity>
+        <activity android:name=".Controllers.Activities.LoginActivity"></activity>
+        <activity android:name=".Controllers.Activities.WebsiteActivity" />
         <activity android:name=".Controllers.Activities.RestaurantDetails" />
         <activity android:name=".Controllers.Activities.MainActivity">
             <intent-filter>

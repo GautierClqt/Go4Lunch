@@ -28,7 +28,6 @@ import com.google.gson.reflect.TypeToken;
 public class RestaurantDetails extends AppCompatActivity {
 
     Restaurant restaurant;
-    Gson gson = new Gson();
 
     TextView name;
     TextView address;
@@ -88,7 +87,6 @@ public class RestaurantDetails extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +restaurant.getPhone()));
             startActivity(intent);
         }
-        return;
     }
 
     private void startWebsiteActivity() {
