@@ -1,13 +1,16 @@
 package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.cliquet.gautier.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,8 +38,24 @@ public class LoginActivity extends AppCompatActivity {
                                 .setLogo(R.drawable.ic_logo_go4lunch)
                                 .build(),
                         RC_SIGN_IN);
-
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            this.handleResponseAfterSignIn(requestCode, resultCode, data);
+    }
+
+    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
+        IdpResponse response = IdpResponse.fromResultIntent(data);
+
+        if(requestCode == RC_SIGN_IN) {
+            if(resultCode == RESULT_OK) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 }
