@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.cliquet.gautier.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.common.SignInButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
 
-    Button logInGoogleButton;
+    SignInButton logInGoogleButton;
     Button logInFacebookButton;
 
     @Override
