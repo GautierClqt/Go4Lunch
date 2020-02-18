@@ -80,13 +80,8 @@ public class RestaurantDetails extends AppCompatActivity {
     }
 
     private void startCallActivity() {
-        if (ContextCompat.checkSelfPermission(RestaurantDetails.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(RestaurantDetails.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-        }
-        else {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +restaurant.getPhone()));
-            startActivity(intent);
-        }
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" +restaurant.getPhone()));
+        startActivity(intent);
     }
 
     private void startWebsiteActivity() {
