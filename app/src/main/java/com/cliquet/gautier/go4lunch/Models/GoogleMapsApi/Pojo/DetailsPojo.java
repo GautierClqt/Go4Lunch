@@ -20,7 +20,7 @@ public class DetailsPojo {
         @Expose
         private OpeningHours openingHours = null;
 
-        @SerializedName("formatted_phone_number")
+        @SerializedName("international_phone_number")
         @Expose
         private String phoneNumber;
 
