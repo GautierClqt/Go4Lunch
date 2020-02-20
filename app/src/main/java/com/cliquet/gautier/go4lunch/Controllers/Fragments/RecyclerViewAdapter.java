@@ -54,6 +54,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+        viewHolder.firstStar.setVisibility(View.INVISIBLE);
+        viewHolder.secondStar.setVisibility(View.INVISIBLE);
+        viewHolder.thirdStar.setVisibility(View.INVISIBLE);
+
         viewHolder.name.setText(mRestaurantsList.get(i).getName());
         viewHolder.adress.setText(mRestaurantsList.get(i).getAddress());
         if(mRestaurantsList.get(i).getPeriods() != null) {
