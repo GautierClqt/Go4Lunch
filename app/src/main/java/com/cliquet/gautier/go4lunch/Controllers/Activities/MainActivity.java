@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback {
 
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng(),
             nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
             false,
+                new Random().nextInt(4),
             false,
             detailsPojo.getResults().getPhoneNumber(),
             detailsPojo.getResults().getWebsite(),

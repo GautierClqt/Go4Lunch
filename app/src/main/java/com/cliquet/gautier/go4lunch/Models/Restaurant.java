@@ -14,7 +14,7 @@ public class Restaurant implements Parcelable {
     private double mLongitude;
     private String mAddress;
     private boolean mLikedByUser;
-    //private int allLikes;
+    private int mAllLikes;
     private boolean mSelectedByUser;
     private String mPhone;
     private String mWebsiteUrl;
@@ -25,12 +25,13 @@ public class Restaurant implements Parcelable {
 
     }
 
-    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, boolean selectedByUser, String phone, String websiteUrl, String photoReference, List<DetailsPojo.Periods> periods) {
+    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, String photoReference, List<DetailsPojo.Periods> periods) {
         this.mName = name;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
         this.mAddress = address;
         this.mLikedByUser = likedByUser;
+        this.mAllLikes = allLikes;
         this.mSelectedByUser = selectedByUser;
         this.mPhone = phone;
         this.mWebsiteUrl = websiteUrl;
@@ -64,8 +65,9 @@ public class Restaurant implements Parcelable {
     public double getLatitude() { return mLatitude; }
     public double getLongitude() { return mLongitude; }
     public String getAddress() { return mAddress; }
-    public boolean getLiked() { return mLikedByUser; }
-    public boolean getSelected() { return mSelectedByUser; }
+    public boolean getLikedByUser() { return mLikedByUser; }
+    public int getAllLikes() { return mAllLikes; }
+    public boolean getSelectedByUser() { return mSelectedByUser; }
     public String getPhone() { return mPhone; }
     public String getUrl() { return mWebsiteUrl; }
     public String getPhotoReference() { return mPhotoReference; }
