@@ -39,11 +39,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
 
-    private Restaurant mRestaurant;
     private NearbySearchPojo mNearbySearchPojo;
-    private DetailsPojo mDetailsPojo;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
-    private int mCurrentRequest;
 
     final Fragment mapFragment = new MapFragment();
     final Fragment listFragment = new ListFragment();
@@ -137,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
         for(int i=0; i <= nearbySearchPojo.getNearbySearchResults().size()-1; i++) {
-            mCurrentRequest = i;
             PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId(), i);
         }
     }

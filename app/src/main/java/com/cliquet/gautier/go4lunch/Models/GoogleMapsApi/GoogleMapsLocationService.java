@@ -24,7 +24,7 @@ import retrofit2.http.QueryMap;
 
 public interface GoogleMapsLocationService {
 
-    String apiKey = "AIzaSyBl_sOpe2eyikI3_nFIc6sAUGW6J4e7ttk";
+    String apiKey = BuildConfig.GOOGLE_MAPS_API_KEY;
 
     OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .addInterceptor(new Interceptor() {
