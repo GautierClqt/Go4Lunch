@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         setContentView(R.layout.activity_main);
 
         permissionsChecking();
-
         bindViews();
     }
 
