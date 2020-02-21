@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bindViews();
         permissionsChecking();
-        getUserLocation();
+
+        bindViews();
     }
 
     private void configureBottomView() {
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
+        getUserLocation();
     }
 
     private void configureFragmentsDefaultDisplay() {
