@@ -1,20 +1,12 @@
 package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,8 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class RestaurantDetails extends AppCompatActivity {
 
@@ -31,10 +21,12 @@ public class RestaurantDetails extends AppCompatActivity {
 
     TextView name;
     TextView address;
-    ImageView starLiked;
+    ImageView firstStar;
+    ImageView secondStar;
+    ImageView thirdStar;
     ImageView selected;
     Button call;
-    Button like;
+    Button likeByUser;
     Button website;
     ImageView picture;
     RecyclerView recyclerView;
@@ -50,6 +42,21 @@ public class RestaurantDetails extends AppCompatActivity {
 
         name.setText(restaurant.getName());
         address.setText(restaurant.getAddress());
+
+        firstStar.setVisibility(View.INVISIBLE);
+        secondStar.setVisibility(View.INVISIBLE);
+        thirdStar.setVisibility(View.INVISIBLE);
+
+        //display stars according to the number of likes
+        if(restaurant.getAllLikes() > 0) {
+            firstStar.setVisibility(View.VISIBLE);
+        }
+        if(restaurant.getAllLikes() > 1) {
+            secondStar.setVisibility(View.VISIBLE);
+        }
+        if(restaurant.getAllLikes() > 2) {
+            thirdStar.setVisibility(View.VISIBLE);
+        }
 
         String apiKey = getString(R.string.google_maps_key);
         Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + restaurant.getPhotoReference() + "&maxwidth=600").into(picture);
@@ -93,11 +100,13 @@ public class RestaurantDetails extends AppCompatActivity {
     private void initViews() {
         name = findViewById(R.id.activity_restaurant_details_name_textview);
         address = findViewById(R.id.activity_restaurant_details_address_textview);
-        starLiked = findViewById(R.id.activity_restaurant_details_firststar_imageview);
-        selected = findViewById(R.id.activity_restaurant_selectrestaurant_button);
-        call = findViewById(R.id.activity_restaurant_call_button);
-        like = findViewById(R.id.activity_restaurant_like_button);
-        website = findViewById(R.id.activity_restaurant_website_button);
+        firstStar = findViewById(R.id.activity_restaurant_details_firststar_imageview);
+        secondStar = findViewById(R.id.activity_restaurant_details_secondstar_imageview);
+        thirdStar = findViewById(R.id.activity_restaurant_details_thirdstar_imageview);
+        selected = findViewById(R.id.activity_restaurant_details_selectrestaurant_button);
+        call = findViewById(R.id.activity_restaurant_details_call_button);
+        likeByUser = findViewById(R.id.activity_restaurant_details_likebyuser_button);
+        website = findViewById(R.id.activity_restaurant_details_website_button);
         picture = findViewById(R.id.activity_restaurant_details_picture_imageview);
         recyclerView = findViewById(R.id.activity_restaurant_details_workmates_recyclerview);
     }

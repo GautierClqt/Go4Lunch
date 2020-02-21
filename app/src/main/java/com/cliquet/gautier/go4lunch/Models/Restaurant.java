@@ -39,10 +39,14 @@ public class Restaurant implements Parcelable {
         this.mPeriods = periods;
     }
 
+
     protected Restaurant(Parcel in) {
         mName = in.readString();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
         mAddress = in.readString();
         mLikedByUser = in.readByte() != 0;
+        mAllLikes = in.readInt();
         mSelectedByUser = in.readByte() != 0;
         mPhone = in.readString();
         mWebsiteUrl = in.readString();
@@ -81,8 +85,11 @@ public class Restaurant implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
+        dest.writeDouble(mLatitude);
+        dest.writeDouble(mLongitude);
         dest.writeString(mAddress);
         dest.writeByte((byte) (mLikedByUser ? 1 : 0));
+        dest.writeInt(mAllLikes);
         dest.writeByte((byte) (mSelectedByUser ? 1 : 0));
         dest.writeString(mPhone);
         dest.writeString(mWebsiteUrl);

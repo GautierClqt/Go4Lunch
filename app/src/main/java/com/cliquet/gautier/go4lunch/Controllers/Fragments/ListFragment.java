@@ -62,11 +62,6 @@ public class ListFragment extends Fragment implements Callback {
         if (getArguments() != null) {
             String gsonRestaurantList = getArguments().getString("restaurant_list");
             mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
-
-            //A EFFACER!!!
-//            if(mRestaurantList != null){
-//                mNearbySearchResults = mRestaurantList.getNearbySearchResults();
-//            }
         }
 
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
@@ -98,8 +93,6 @@ public class ListFragment extends Fragment implements Callback {
 
     @Override
     public void onItemClicked(int position, Restaurant restaurant) {
-        Gson gson = new Gson();
-
         Intent restaurantDetailsActivityIntent = new Intent(getContext(), RestaurantDetails.class);
         restaurantDetailsActivityIntent.putExtra("restaurant", restaurant);
 
