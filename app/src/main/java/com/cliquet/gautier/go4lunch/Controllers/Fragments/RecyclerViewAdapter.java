@@ -82,7 +82,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //            }
             viewHolder.hours.setText("closed");
         }
-        viewHolder.distance.setText("160");
+        viewHolder.distance.setText(String.format("%.0fm", mRestaurantsList.get(i).getDistance()));
+        //vdiewHoler.distance.setText(Float.toString(mRestaurantsList.get(i).getDistance()));
         viewHolder.workmatesCount.setText("(2)");
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
 
