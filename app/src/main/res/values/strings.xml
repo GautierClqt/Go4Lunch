@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Go4Lunch</string>
-    <string name="app_tagline">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="app_name" translatable="false">Go4Lunch</string>
 
     <!-- this will appear if the location permission is not activated -->
     <string name="permissions_required">This app required the Location permission in order to work. Please check the app\'s or device\'s settings to grant the permission.</string>
@@ -15,14 +14,13 @@
     <string name="sign_in_facebook">Sign in with Facebook</string>
 
     <!-- item_recycler_restaurant.xml placeholders strings -->
-    <string name="restaurant_name_placeholder"><font fgcolor='#FF0000'>name</font></string>
-    <string name="restaurant_hours_placeholder"><font fgcolor='#FF0000'>hours</font></string>
-    <string name="restaurant_address_placeholder"><font fgcolor='#FF0000'>address</font></string>
-    <string name="restaurant_distance_placeholder"><font fgcolor='#FF0000'>distance</font></string>
-    <string name="restaurant_workmates_placeholder"><font fgcolor='#FF0000'>(?)</font></string>
+    <string name="restaurant_name_placeholder"><font fgcolor="#FF0000">name unknown</font></string>
+    <string name="restaurant_hours_placeholder"><font fgcolor="#FF0000">unknown hours</font></string>
+    <string name="restaurant_address_placeholder"><font fgcolor="#FF0000">unknown address</font></string>
+    <string name="restaurant_distance_placeholder" translatable="false"><font fgcolor='#FF0000'>distance</font></string>
+    <string name="restaurant_workmates_placeholder" translatable="false"><font fgcolor='#FF0000'>(?)</font></string>
     <string name="restaurant_workmates_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>workmates\' icon</font></string>
     <string name="restaurant_firststar_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>first star rating</font></string>
-    <string name="restaurant_secondstar_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>second star rating</font></string>
     <string name="restaurant_thirdstar_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>third star rating</font></string>
     <string name="restaurant_restaurantpictures_imageview_contentdescription_placeholder"><font fgcolor='#FF0000'>restaurant picture</font></string>
 
@@ -32,11 +30,13 @@
     <string name="restaurant_WEBSITE_button">WEBSITE</string>
 
     <!-- restaurants open/close strings -->
-    <string name="restaurant_hours_isopen"><font fgcolor='#00FF00'>open</font></string>
-    <string name="restaurant_hours_notopen"><font fgcolor='#FF0000'>close</font></string>
+    <string name="restaurant_hours_isopen"><font fgcolor="#00FF00">opening soon</font></string>
+    <string name="restaurant_hours_notopen"><font fgcolor="#FF0000">closing soon</font></string>
 
     <!-- item_recycler_restaurant.xml strings -->
-    <string name="workmate_isconnected">Workmate is connected</string>
-    <string name="workmate_joining">Workmate is joining!</string>
-    <string name="workmate_picture_imageview_contentdescription">workmate\'s picture</string>
+    <string name="workmate_isconnected" translatable="false">Workmate is connected</string>
+    <string name="workmate_joining" translatable="false">Workmate is joining!</string>
+    <string name="workmate_picture_imageview_contentdescription" translatable="false">workmate\'s picture</string>
+    <string name="restaurant_secondstar_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">second star rating</font></string>
+    <string name="app_tagline">Find a nice restaurant and invite your co-workers for lunch!</string>
 </resources>

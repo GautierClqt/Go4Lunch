@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permissions_required">Cette application requiert la permission de localiser cet appareil pour fonctionner. Veuillez vérifier les paramétres de l\'appareil ou de l\'application pour donner la permission.</string>
+    <string name="restaurant_WEBSITE_button">SITE WEB</string>
+    <string name="restaurant_call_button">APPEL</string>
+    <string name="restaurant_like_button">LIKE</string>
+    <string name="bottom_navigation_view_workmates">Collègues</string>
+    <string name="bottom_navigation_view_map">Carte</string>
+    <string name="bottom_navigation_view_list">Liste</string>
+    <string name="restaurant_address_placeholder"><font fgcolor="#FF0000">adresse inconnue</font></string>
+    <string name="restaurant_firststar_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">une étoile</font></string>
+    <string name="restaurant_hours_isopen"><font fgcolor="#00FF00">ouvre bientôt</font></string>
+    <string name="restaurant_hours_notopen"><font fgcolor="#FF0000">ferme bientôt</font></string>
+    <string name="restaurant_hours_placeholder"><font fgcolor="#FF0000">horaire inconnu</font></string>
+    <string name="restaurant_name_placeholder"><font fgcolor="#FF0000">nom inconnu</font></string>
+    <string name="restaurant_restaurantpictures_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">photo du restaurant</font></string>
+    <string name="restaurant_secondstar_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">deux étoiles</font></string>
+    <string name="restaurant_thirdstar_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">trois étoiles</font></string>
+    <string name="restaurant_workmates_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">icones des collègues</font></string>
+    <string name="sign_in_facebook">Se connecter avec Facebook</string>
+    <string name="sign_in_google">Se connecter avec Google</string>
+    <string name="app_tagline">Invitez vos collège à déjeuner dans un restaurant sympa!</string>
+</resources>
