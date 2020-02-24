@@ -20,13 +20,14 @@ public class Restaurant implements Parcelable {
     private String mWebsiteUrl;
     private float mDistance;
     private String mPhotoReference;
+    private boolean mOpenNow;
     private List<DetailsPojo.Periods> mPeriods;
 
     public Restaurant() {
 
     }
 
-    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, List<DetailsPojo.Periods> periods) {
+    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, boolean openNow, List<DetailsPojo.Periods> periods) {
         this.mName = name;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
@@ -38,6 +39,7 @@ public class Restaurant implements Parcelable {
         this.mWebsiteUrl = websiteUrl;
         this.mDistance = distance;
         this.mPhotoReference = photoReference;
+        this.mOpenNow = openNow;
         this.mPeriods = periods;
     }
 
@@ -51,6 +53,7 @@ public class Restaurant implements Parcelable {
         mSelectedByUser = in.readByte() != 0;
         mPhone = in.readString();
         mWebsiteUrl = in.readString();
+        mOpenNow = in.readByte() != 0;
         mPhotoReference = in.readString();
     }
 
@@ -77,6 +80,7 @@ public class Restaurant implements Parcelable {
     public String getWebsiteUrl() { return mWebsiteUrl; }
     public float getDistance() { return mDistance; }
     public String getPhotoReference() { return mPhotoReference; }
+    public boolean getOpenNow() { return mOpenNow; }
     public List<DetailsPojo.Periods> getPeriods() { return mPeriods; }
 
     @Override
@@ -96,6 +100,7 @@ public class Restaurant implements Parcelable {
         dest.writeString(mPhone);
         dest.writeString(mWebsiteUrl);
         dest.writeFloat(mDistance);
+        dest.writeByte((byte) (mOpenNow ? 1 : 0));
         dest.writeString(mPhotoReference);
     }
 }

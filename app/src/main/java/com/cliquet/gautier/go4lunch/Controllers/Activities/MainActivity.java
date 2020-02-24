@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             detailsPojo.getResults().getWebsite(),
             distance,
             nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference(),
+            detailsPojo.getResults().getOpeningHours().getOpenNow(),
             detailsPojo.getResults().getOpeningHours().getPeriods()));
         if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
             configureBundle(mRestaurantList);
