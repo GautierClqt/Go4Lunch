@@ -12,5 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
-/gradle.properties
+gradle.properties
 values/google_maps_api.xml
+gradle.properties
+google_maps_api.xml
