@@ -18,6 +18,7 @@ public class Restaurant implements Parcelable {
     private boolean mSelectedByUser;
     private String mPhone;
     private String mWebsiteUrl;
+    private float mDistance;
     private String mPhotoReference;
     private List<DetailsPojo.Periods> mPeriods;
 
@@ -25,7 +26,7 @@ public class Restaurant implements Parcelable {
 
     }
 
-    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, String photoReference, List<DetailsPojo.Periods> periods) {
+    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, List<DetailsPojo.Periods> periods) {
         this.mName = name;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
@@ -35,10 +36,10 @@ public class Restaurant implements Parcelable {
         this.mSelectedByUser = selectedByUser;
         this.mPhone = phone;
         this.mWebsiteUrl = websiteUrl;
+        this.mDistance = distance;
         this.mPhotoReference = photoReference;
         this.mPeriods = periods;
     }
-
 
     protected Restaurant(Parcel in) {
         mName = in.readString();
@@ -73,7 +74,8 @@ public class Restaurant implements Parcelable {
     public int getAllLikes() { return mAllLikes; }
     public boolean getSelectedByUser() { return mSelectedByUser; }
     public String getPhone() { return mPhone; }
-    public String getUrl() { return mWebsiteUrl; }
+    public String getWebsiteUrl() { return mWebsiteUrl; }
+    public float getDistance() { return mDistance; }
     public String getPhotoReference() { return mPhotoReference; }
     public List<DetailsPojo.Periods> getPeriods() { return mPeriods; }
 
@@ -93,6 +95,7 @@ public class Restaurant implements Parcelable {
         dest.writeByte((byte) (mSelectedByUser ? 1 : 0));
         dest.writeString(mPhone);
         dest.writeString(mWebsiteUrl);
+        dest.writeFloat(mDistance);
         dest.writeString(mPhotoReference);
     }
 }

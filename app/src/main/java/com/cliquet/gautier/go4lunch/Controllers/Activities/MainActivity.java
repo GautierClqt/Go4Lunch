@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
+        float distance = calculateDistance(index);
         mRestaurantList.add(new Restaurant(
             nearbySearchPojo.getNearbySearchResults().get(index).getName(),
             nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
@@ -149,11 +150,26 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             false,
             detailsPojo.getResults().getPhoneNumber(),
             detailsPojo.getResults().getWebsite(),
+            distance,
             nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference(),
             detailsPojo.getResults().getOpeningHours().getPeriods()));
         if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
             configureBundle(mRestaurantList);
         }
+    }
+
+    private float calculateDistance(int index) {
+        Location userLocation = new Location("user location");
+        userLocation.setLatitude(mUserLat);
+        userLocation.setLongitude(mUserLng);
+
+        Location restaurantLocation = new Location("restaurant location");
+        restaurantLocation.setLatitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat());
+        restaurantLocation.setLongitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng());
+
+        float distance = userLocation.distanceTo(restaurantLocation);
+
+        return distance;
     }
 
     private void configureBundle(List<Restaurant> restaurantList) {

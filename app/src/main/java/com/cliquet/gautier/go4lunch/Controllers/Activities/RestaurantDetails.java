@@ -73,7 +73,7 @@ public class RestaurantDetails extends AppCompatActivity {
             });
         }
 
-        if(restaurant.getUrl() == null || restaurant.getPhone().equals("")) {
+        if(restaurant.getWebsiteUrl() == null || restaurant.getPhone().equals("")) {
             website.setEnabled(false);
         }
         else {
@@ -93,7 +93,7 @@ public class RestaurantDetails extends AppCompatActivity {
 
     private void startWebsiteActivity() {
         Intent intent = new Intent(this, WebsiteActivity.class);
-        intent.putExtra("url", restaurant.getUrl());
+        intent.putExtra("url", restaurant.getWebsiteUrl());
         startActivity(intent);
     }
 
