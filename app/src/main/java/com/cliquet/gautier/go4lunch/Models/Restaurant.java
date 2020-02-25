@@ -53,8 +53,9 @@ public class Restaurant implements Parcelable {
         mSelectedByUser = in.readByte() != 0;
         mPhone = in.readString();
         mWebsiteUrl = in.readString();
-        mOpenNow = in.readByte() != 0;
+        mDistance = in.readFloat();
         mPhotoReference = in.readString();
+        mOpenNow = in.readByte() != 0;
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -100,7 +101,7 @@ public class Restaurant implements Parcelable {
         dest.writeString(mPhone);
         dest.writeString(mWebsiteUrl);
         dest.writeFloat(mDistance);
-        dest.writeByte((byte) (mOpenNow ? 1 : 0));
         dest.writeString(mPhotoReference);
+        dest.writeByte((byte) (mOpenNow ? 1 : 0));
     }
 }
