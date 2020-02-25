@@ -6,17 +6,28 @@
     android:layout_height="match_parent"
     tools:context="com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails">
 
+    <ImageView
+        android:id="@+id/activity_restaurant_details_picture_imageview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:2"
+        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_backround_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <View
         android:id="@+id/activity_restaurant_details_backround_view"
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:background="#FE5722"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_buttons_horizontalguideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_details_picture_imageview"
+        app:layout_constraintBottom_toTopOf="@id/activity_restaurant_details_backround_view2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/activity_restaurant_details_name_textview"
@@ -27,20 +38,20 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_address_textview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
-        app:layout_constraintVertical_bias="0.418" />
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_backround_view" />
+
 
     <TextView
         android:id="@+id/activity_restaurant_details_address_textview"
-        android:layout_width="327dp"
+        android:layout_width="318dp"
         android:layout_height="39dp"
         android:layout_marginStart="16dp"
         android:text="@string/restaurant_address_placeholder"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_buttons_horizontalguideline"
         app:layout_constraintEnd_toStartOf="@+id/activity_restaurant_details_selectrestaurant_button"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/activity_restaurant_details_backround_view"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="312dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/activity_restaurant_details_selectrestaurant_button"
@@ -51,57 +62,39 @@
         android:focusable="true"
         android:src="@drawable/restaurant_select"
         android:tint="#555555"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_buttons_horizontalguideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_backround_view"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_restaurant_details_backround_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
-        app:layout_constraintVertical_bias="0.448" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.966" />
 
     <ImageView
         android:id="@+id/activity_restaurant_details_firststar_imageview"
         android:layout_width="19dp"
         android:layout_height="18dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
         android:contentDescription="@string/restaurant_firststar_imageview_contentdescription_placeholder"
         app:layout_constraintStart_toEndOf="@+id/activity_restaurant_details_name_textview"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_name_textview"
         app:srcCompat="@drawable/star_outline_filled" />
-
 
     <ImageView
         android:id="@+id/activity_restaurant_details_secondstar_imageview"
         android:layout_width="19dp"
         android:layout_height="18dp"
-        android:layout_marginTop="12dp"
         android:contentDescription="@string/restaurant_secondstar_imageview_contentdescription_placeholder"
         app:layout_constraintStart_toEndOf="@+id/activity_restaurant_details_firststar_imageview"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_firststar_imageview"
         app:srcCompat="@drawable/star_outline_filled" />
 
     <ImageView
         android:id="@+id/activity_restaurant_details_thirdstar_imageview"
         android:layout_width="19dp"
         android:layout_height="18dp"
-        android:layout_marginTop="12dp"
         android:contentDescription="@string/restaurant_thirdstar_imageview_contentdescription_placeholder"
         app:layout_constraintStart_toEndOf="@+id/activity_restaurant_details_secondstar_imageview"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_secondstar_imageview"
         app:srcCompat="@drawable/star_outline_filled" />
-
-    <ImageView
-        android:id="@+id/activity_restaurant_details_picture_imageview"
-        android:layout_width="472dp"
-        android:layout_height="324dp"
-        android:background="#FFFFFF"
-        android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_picture_horizontalguideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/activity_restaurant_details_call_button"
@@ -112,12 +105,10 @@
         android:drawableTint="#FE5722"
         android:text="@string/restaurant_call_button"
         android:textColor="#FE5722"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_recyclerview_horizontalguideline"
-        app:layout_constraintEnd_toStartOf="@+id/activity_restaurant_details_likebyuser_button"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="@id/activity_restaurant_details_backround_view2"
+        app:layout_constraintBottom_toBottomOf="@id/activity_restaurant_details_backround_view2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_buttons_horizontalguideline" />
-
+        app:layout_constraintEnd_toStartOf="@id/activity_restaurant_details_likebyuser_button"/>
 
     <Button
         android:id="@+id/activity_restaurant_details_likebyuser_button"
@@ -128,12 +119,10 @@
         android:drawableTint="#FE5722"
         android:text="@string/restaurant_like_button"
         android:textColor="#FE5722"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_recyclerview_horizontalguideline"
-        app:layout_constraintEnd_toStartOf="@+id/activity_restaurant_details_website_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/activity_restaurant_details_call_button"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_buttons_horizontalguideline"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintTop_toTopOf="@id/activity_restaurant_details_backround_view2"
+        app:layout_constraintBottom_toBottomOf="@id/activity_restaurant_details_backround_view2"
+        app:layout_constraintStart_toEndOf="@id/activity_restaurant_details_call_button"
+        app:layout_constraintEnd_toStartOf="@id/activity_restaurant_details_website_button"/>
 
     <Button
         android:id="@+id/activity_restaurant_details_website_button"
@@ -144,43 +133,29 @@
         android:drawableTint="#FE5722"
         android:text="@string/restaurant_WEBSITE_button"
         android:textColor="#FE5722"
-        app:layout_constraintBottom_toTopOf="@+id/activity_restaurant_details_recyclerview_horizontalguideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_backround_view2"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_restaurant_details_backround_view2"
         app:layout_constraintStart_toEndOf="@+id/activity_restaurant_details_likebyuser_button"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_buttons_horizontalguideline" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/activity_restaurant_details_backround_view2"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/activity_restaurant_details_workmates_recyclerview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_restaurant_details_backround_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_restaurant_details_workmates_recyclerview"
         android:layout_width="0dp"
-        android:layout_height="299dp"
+        android:layout_height="0dp"
         android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_details_backround_view2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_recyclerview_horizontalguideline" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/activity_restaurant_details_picture_horizontalguideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="280dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/activity_restaurant_details_buttons_horizontalguideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="365dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/activity_restaurant_details_recyclerview_horizontalguideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="431dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
