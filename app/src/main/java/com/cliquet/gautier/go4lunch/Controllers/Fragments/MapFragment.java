@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
@@ -42,6 +43,7 @@ import java.util.Objects;
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private GoogleMap mGoogleMaps;
+    private ProgressBar progressBar;
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     //private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
     private List<NearbySearchPojo.NearbySearchResults> mResults = new ArrayList<>();

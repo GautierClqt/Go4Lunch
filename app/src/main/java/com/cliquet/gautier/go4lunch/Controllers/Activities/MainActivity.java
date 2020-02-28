@@ -12,6 +12,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     BottomNavigationView bottomNavigationView;
     TextView textViewPermissions;
+    private ProgressBar progressBar;
 
     private NearbySearchPojo mNearbySearchPojo;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     final Fragment workmatesFragment = new WorkmatesFragment();
     final FragmentManager fragmentMangager = getSupportFragmentManager();
     Fragment activeFragment = mapFragment;
+
+
 
     private HashMap<String, String> mRequestParametersHM = new HashMap<>();
     private double mUserLat;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureBottomView() {
+        //progressBar.setVisibility(View.GONE);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         getUserLocation();
     }
 
@@ -109,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void bindViews() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
         textViewPermissions = findViewById(R.id.activity_main_textview_permissions);
+        progressBar = findViewById(R.id.activity_main_progressbar);
     }
 
     private void getUserLocation() {
