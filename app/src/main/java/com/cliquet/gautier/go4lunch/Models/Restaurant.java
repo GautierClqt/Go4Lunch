@@ -20,6 +20,7 @@ public class Restaurant implements Parcelable {
     private String mWebsiteUrl;
     private float mDistance;
     private String mPhotoReference;
+    private String mOpeningHoursString;
     private boolean mOpenNow;
     private List<DetailsPojo.Periods> mPeriods;
 
@@ -27,7 +28,7 @@ public class Restaurant implements Parcelable {
 
     }
 
-    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, boolean openNow, List<DetailsPojo.Periods> periods) {
+    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, String openingHoursString) {
         this.mName = name;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
@@ -39,8 +40,7 @@ public class Restaurant implements Parcelable {
         this.mWebsiteUrl = websiteUrl;
         this.mDistance = distance;
         this.mPhotoReference = photoReference;
-        this.mOpenNow = openNow;
-        this.mPeriods = periods;
+        this.mOpeningHoursString = openingHoursString;
     }
 
     protected Restaurant(Parcel in) {
@@ -56,6 +56,7 @@ public class Restaurant implements Parcelable {
         mDistance = in.readFloat();
         mPhotoReference = in.readString();
         mOpenNow = in.readByte() != 0;
+        mOpeningHoursString = in.readString();
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -81,6 +82,7 @@ public class Restaurant implements Parcelable {
     public String getWebsiteUrl() { return mWebsiteUrl; }
     public float getDistance() { return mDistance; }
     public String getPhotoReference() { return mPhotoReference; }
+    public String getOpeningHoursString() { return mOpeningHoursString; }
     public boolean getOpenNow() { return mOpenNow; }
     public List<DetailsPojo.Periods> getPeriods() { return mPeriods; }
 
@@ -103,5 +105,6 @@ public class Restaurant implements Parcelable {
         dest.writeFloat(mDistance);
         dest.writeString(mPhotoReference);
         dest.writeByte((byte) (mOpenNow ? 1 : 0));
+        dest.writeString(mOpeningHoursString);
     }
 }

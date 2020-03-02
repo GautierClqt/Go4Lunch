@@ -31,12 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Callback listener;
 
     private Context mContext;
-    //private List<NearbySearchPojo.NearbySearchResults> mNearbySearch;
-    private Restaurant mRestaurant;
-    private List<Restaurant> mRestaurantsList = new ArrayList<>();
-    private int mPosition;
-
-
+    private List<Restaurant> mRestaurantsList;
 
     public RecyclerViewAdapter(Context context, List<Restaurant> restaurantList, Callback listener) {
         this.mContext = context;
@@ -71,19 +66,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         viewHolder.name.setText(mRestaurantsList.get(i).getName());
         viewHolder.adress.setText(mRestaurantsList.get(i).getAddress());
-        if(mRestaurantsList.get(i).getPeriods() != null) {
-//            if(!mNearbySearch.get(i).getOpeningHours().getOpenNow()) {
-//                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_isopen));
-//                viewHolder.hours.setTextColor(Color.parseColor("#00cc00"));
-//            }
-//            else {
-//                viewHolder.hours.setText(mContext.getString(R.string.restaurant_hours_notopen));
-//                viewHolder.hours.setTextColor(Color.parseColor("#ff0000"));
-//            }
-            viewHolder.hours.setText("closed");
-        }
+        viewHolder.hours.setText(mRestaurantsList.get(i).getOpeningHoursString());
         viewHolder.distance.setText(String.format("%.0fm", mRestaurantsList.get(i).getDistance()));
-        //vdiewHoler.distance.setText(Float.toString(mRestaurantsList.get(i).getDistance()));
         viewHolder.workmatesCount.setText("(2)");
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
 

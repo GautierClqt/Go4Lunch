@@ -21,6 +21,7 @@ import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
+import com.cliquet.gautier.go4lunch.Models.Hours;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -147,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
         float distance = calculateDistance(index);
+        Hours hours = new Hours();
+        String openingHoursString = hours.getOpeningHours(detailsPojo.getResults().getOpeningHours().getOpenNow(), detailsPojo.getResults().getOpeningHours().getPeriods());
+
         mRestaurantList.add(new Restaurant(
             nearbySearchPojo.getNearbySearchResults().get(index).getName(),
             nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
@@ -159,8 +163,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             detailsPojo.getResults().getWebsite(),
             distance,
             nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference(),
-            detailsPojo.getResults().getOpeningHours().getOpenNow(),
-            detailsPojo.getResults().getOpeningHours().getPeriods()));
+            openingHoursString));
         if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
             configureBundle(mRestaurantList);
         }
