@@ -63,7 +63,7 @@ public class DetailsPojo {
         }
     }
 
-    public class Periods {
+    public static class Periods {
         @SerializedName("open")
         @Expose
         private Open open;
@@ -89,7 +89,7 @@ public class DetailsPojo {
         }
     }
 
-    public class Open {
+    public static class Open {
         @SerializedName("day")
         @Expose
         private int day;
@@ -113,7 +113,7 @@ public class DetailsPojo {
         }
     }
 
-    public class Close {
+    public static class Close {
         @SerializedName("day")
         @Expose
         private int day;
