@@ -26,10 +26,9 @@ import static org.junit.Assert.*;
  */
 
 public class HoursUnitTest {
-    @Test
-    public void testCorrectHoursAreDisplayedInListFragment() {
 
-        Hours hours = new Hours();
+    private List<DetailsPojo.Periods> setTestPeriodsList (String openTime, String closeTime) {
+
         List<DetailsPojo.Periods> periodsList = new ArrayList<>();
 
         for(int i = 0; i <= 6; i++) {
@@ -39,16 +38,36 @@ public class HoursUnitTest {
 
             open.setDay(i+1);
             close.setDay(i+1);
-            //open.setTime(String.valueOf(900+i*100));
-            open.setTime("1800");
-            //close.setTime(String.valueOf(1200+i*100));
-            close.setTime("1900");
+            open.setTime(openTime);
+            close.setTime(closeTime);
             periods.setOpen(open);
             periods.setClose(close);
             periodsList.add(periods);
         }
 
+        return periodsList;
+    }
+
+    @Test
+    public void testCorrectHoursAreDisplayedInListFragment() {
+
+        Hours hours = new Hours();
+        List<DetailsPojo.Periods> periodsList;
+
+        periodsList = setTestPeriodsList("0500", "1800");
+
         String openHoursTest = hours.getOpeningHours(false, periodsList);
         assertEquals("01:00 - 24:00", openHoursTest);
+    }
+
+    @Test
+    public void testOpeningHoursReturnCloseWhenOpenNowIsFalse() {
+        Hours hours = new Hours();
+        List<DetailsPojo.Periods> periodsList;
+
+        periodsList = setTestPeriodsList("0000", "0000");
+
+        String openHoursTest = hours.getOpeningHours(false, periodsList);
+        assertEquals("closed", openHoursTest);
     }
 }
