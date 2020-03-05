@@ -4,6 +4,11 @@
     <!-- this will appear if the location permission is not activated -->
     <string name="permissions_required">This app required the Location permission in order to work. Please check the app\'s or device\'s settings to grant the permission.</string>
 
+    <!-- Facebook string implementation -->
+    <string name="facebook_app_id" translatable="false">238738423831258</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb238738423831258</string>
+
+
     <!-- Bottom Navigation View titles -->
     <string name="bottom_navigation_view_map">Map View</string>
     <string name="bottom_navigation_view_list">List View</string>
