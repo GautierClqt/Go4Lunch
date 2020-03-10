@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void bindViews() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
-        textViewPermissions = findViewById(R.id.activity_main_textview_permissions);
+        textViewPermissions = findViewById(R.id.activity_main_warning_textview);
         progressBar = findViewById(R.id.activity_main_progressbar);
     }
 
@@ -219,6 +219,10 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
             detailsRequest(mNearbySearchPojo);
+        }
+        else{
+            textViewPermissions.setText(R.string.no_restaurant_found);
+            textViewPermissions.setVisibility(View.VISIBLE);
         }
     }
 

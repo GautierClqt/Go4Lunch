@@ -20,4 +20,5 @@
     <string name="sign_in_facebook">Se connecter avec Facebook</string>
     <string name="sign_in_google">Se connecter avec Google</string>
     <string name="app_tagline">Invitez vos collège à déjeuner dans un restaurant sympa!</string>
+    <string name="no_restaurant_found">Aucun restaurant n\'a a été trouvé à proximité.</string>
 </resources>

@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">Go4Lunch</string>
 
-    <!-- this will appear if the location permission is not activated -->
+    <!-- warning texts in main activity -->
     <string name="permissions_required">This app required the Location permission in order to work. Please check the app\'s or device\'s settings to grant the permission.</string>
+    <string name="no_restaurant_found">No restaurant found close to your location.</string>
 
     <!-- Facebook string implementation -->
     <string name="facebook_app_id" translatable="false">238738423831258</string>
