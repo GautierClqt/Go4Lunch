@@ -149,7 +149,34 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
         float distance = calculateDistance(index);
         Hours hours = new Hours();
-        String openingHoursString = hours.getOpeningHours(detailsPojo.getResults().getOpeningHours().getOpenNow(), detailsPojo.getResults().getOpeningHours().getPeriods());
+        String openingHoursString;
+        String phoneNumber;
+        String website;
+        String photoReference;
+
+        if(detailsPojo.getResults().getPhoneNumber() != null){
+            phoneNumber = detailsPojo.getResults().getPhoneNumber();
+        } else {
+            phoneNumber = null;
+        }
+
+        if(detailsPojo.getResults().getWebsite() != null) {
+            website = detailsPojo.getResults().getWebsite();
+        } else {
+            website = null;
+        }
+
+        if(nearbySearchPojo.getNearbySearchResults().get(index).getPhotos() != null) {
+            photoReference = nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference();
+        } else {
+            photoReference = null;
+        }
+
+        if(detailsPojo.getResults().getOpeningHours() != null) {
+            openingHoursString = hours.getOpeningHours(detailsPojo.getResults().getOpeningHours().getOpenNow(), detailsPojo.getResults().getOpeningHours().getPeriods());
+        } else {
+            openingHoursString = null;
+        }
 
         mRestaurantList.add(new Restaurant(
             nearbySearchPojo.getNearbySearchResults().get(index).getName(),
@@ -159,10 +186,10 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             false,
                 new Random().nextInt(4),
             false,
-            detailsPojo.getResults().getPhoneNumber(),
-            detailsPojo.getResults().getWebsite(),
+            phoneNumber,
+            website,
             distance,
-            nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference(),
+            photoReference,
             openingHoursString));
         if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
             configureBundle(mRestaurantList);
