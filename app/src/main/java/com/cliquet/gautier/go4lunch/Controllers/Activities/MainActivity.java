@@ -28,7 +28,6 @@ import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private NearbySearchPojo mNearbySearchPojo;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
-    private ArrayList<Workmates> mWormatesList = new ArrayList<>();
+    private ArrayList<Workmates> mWorkmatesList = new ArrayList<>();
 
     final Fragment mapFragment = new MapFragment();
     final Fragment listFragment = new ListFragment();
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     User user = documentSnapshot.toObject(User.class);
 
-                    mWormatesList.add(new Workmates(
+                    mWorkmatesList.add(new Workmates(
                             user.getUserId(),
                             user.getUserFirstName(),
                             user.getUserLastName(),
@@ -167,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                             user.getUserUrlPicture()
                     ));
                 }
-                int test = 0;
             }
         });
     }
@@ -224,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             photoReference,
             openingHoursString));
         if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
-            configureBundle(mRestaurantList);
+            configureBundle();
         }
     }
 
@@ -236,20 +234,21 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         Location restaurantLocation = new Location("restaurant location");
         restaurantLocation.setLatitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat());
         restaurantLocation.setLongitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng());
-
-        float distance = userLocation.distanceTo(restaurantLocation);
-
-        return distance;
+        
+        return userLocation.distanceTo(restaurantLocation);
     }
 
-    private void configureBundle(List<Restaurant> restaurantList) {
+    private void configureBundle() {
         Gson gson = new Gson();
-        String gsonRestaurantList;
+        String gsonRestaurantsList;
+        String gsonWorkmatesList;
 
-        gsonRestaurantList = gson.toJson(restaurantList);
+        gsonRestaurantsList = gson.toJson(mRestaurantList);
+        gsonWorkmatesList = gson.toJson(mWorkmatesList);
 
         Bundle bundle = new Bundle();
-        bundle.putString("restaurant_list", gsonRestaurantList);
+        bundle.putString("restaurant_list", gsonRestaurantsList);
+        bundle.putString("wrokmates_lsit", gsonWorkmatesList);
 
         mapFragment.setArguments(bundle);
         listFragment.setArguments(bundle);
