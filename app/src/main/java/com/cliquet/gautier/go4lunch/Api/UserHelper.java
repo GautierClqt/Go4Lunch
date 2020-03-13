@@ -20,7 +20,6 @@ public class UserHelper {
         return UserHelper.getUsersCollection().document(userId).set(userToCreate);
     }
 
-    //GET
     public static Task<DocumentSnapshot> getUser(String userId) {
         return UserHelper.getUsersCollection().document(userId).get();
     }

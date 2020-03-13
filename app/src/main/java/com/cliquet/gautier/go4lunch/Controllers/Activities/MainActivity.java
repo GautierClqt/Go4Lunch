@@ -23,11 +23,18 @@ import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Hours;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
+import com.cliquet.gautier.go4lunch.Models.User;
+import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private NearbySearchPojo mNearbySearchPojo;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
+    private ArrayList<Workmates> mWormatesList = new ArrayList<>();
 
     final Fragment mapFragment = new MapFragment();
     final Fragment listFragment = new ListFragment();
@@ -104,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+        firestoreGetUsersIdRequest();
         getUserLocation();
     }
 
@@ -138,6 +147,29 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
 
         PlacesApiCalls.fetchNearbySearch(this, mRequestParametersHM);
+    }
+
+    private void firestoreGetUsersIdRequest() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("users");
+
+        usersRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    User user = documentSnapshot.toObject(User.class);
+
+                    mWormatesList.add(new Workmates(
+                            user.getUserId(),
+                            user.getUserFirstName(),
+                            user.getUserLastName(),
+                            user.getUserEmail(),
+                            user.getUserUrlPicture()
+                    ));
+                }
+                int test = 0;
+            }
+        });
     }
 
     private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
