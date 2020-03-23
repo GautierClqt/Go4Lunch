@@ -29,8 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        logInGoogleButton = findViewById(R.id.activity_login_google_button);
-        loginFacebookButton = findViewById(R.id.activity_login_facebook_button);
+        startSignInActivity();
 
         CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -70,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setLogo(R.drawable.ic_logo_go4lunch)
+                        .setLogo(R.drawable.ic_fulllogo_go4lunch)
                         .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
                                 Arrays.asList(
