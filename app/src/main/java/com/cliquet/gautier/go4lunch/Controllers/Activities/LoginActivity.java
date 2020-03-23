@@ -21,48 +21,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int GOOGLE_SIGN_IN = 123;
 
-    SignInButton logInGoogleButton;
-    LoginButton loginFacebookButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         startSignInActivity();
-
-        CallbackManager callbackManager = CallbackManager.Factory.create();
-
-        logInGoogleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSignInActivity();
-            }
-        });
-
-        loginFacebookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSignInActivity();
-            }
-        });
-
-        loginFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
     }
 
     private void startSignInActivity(){
