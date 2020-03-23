@@ -21,4 +21,6 @@
     <string name="sign_in_google">Se connecter avec Google</string>
     <string name="app_tagline">Invitez vos collège à déjeuner dans un restaurant sympa!</string>
     <string name="no_restaurant_found">Aucun restaurant n\'a a été trouvé à proximité.</string>
+    <string name="authentication_required">Veuillez-vous authentifier pour utiliser l\'application</string>
+    <string name="connexion_required">Cette application requiert une connexion internet</string>
 </resources>

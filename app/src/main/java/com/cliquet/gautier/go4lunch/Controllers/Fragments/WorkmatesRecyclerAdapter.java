@@ -38,7 +38,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.text.setText(mWorkmatesList.get(i).getFirstName() + " is connected");
-        Glide.with(viewHolder.picture).load(R.drawable.restaurant_phone).into(viewHolder.picture);
+        Glide.with(viewHolder.picture).load("https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10221458475189928&height=50&width=50&ext=1587565214&hash=AeRxZ9LVUc9CxHw4").into(viewHolder.picture);
 
     }
 

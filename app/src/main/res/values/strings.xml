@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name" translatable="false">Go4Lunch</string>
 
+    <!-- warning texts in login activity -->
+    <string name="authentication_required">Please authenticate in order to use this app</string>
+    <string name="connexion_required">This app requires an internet connexion</string>
+
     <!-- warning texts in main activity -->
     <string name="permissions_required">This app required the Location permission in order to work. Please check the app\'s or device\'s settings to grant the permission.</string>
     <string name="no_restaurant_found">No restaurant found close to your location.</string>
@@ -8,7 +12,6 @@
     <!-- Facebook string implementation -->
     <string name="facebook_app_id" translatable="false">238738423831258</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb238738423831258</string>
-
 
     <!-- Bottom Navigation View titles -->
     <string name="bottom_navigation_view_map">Map View</string>

@@ -160,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     User user = documentSnapshot.toObject(User.class);
 
-                    String test = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String test2 = user.getUserId();
-
-
                     if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
                         mWorkmatesList.add(new Workmates(
                                 user.getUserId(),
