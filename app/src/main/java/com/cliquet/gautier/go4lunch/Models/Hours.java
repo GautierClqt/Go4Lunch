@@ -20,9 +20,9 @@ public class Hours {
         if(openNow) {
             for (int i = 0; i <= periods.size()-1; i++) {
                 if (periods.get(i).getOpen().getDay() == calendarDay) {
-                    openTime = periods.get(calendarDay - 1).getOpen().getTime();
+                    openTime = periods.get(i).getOpen().getTime();
                     openTime = "" + openTime.charAt(0) + openTime.charAt(1);
-                    closeTime = periods.get(calendarDay - 1).getClose().getTime();
+                    closeTime = periods.get(i).getClose().getTime();
                     closeTime = "" + closeTime.charAt(0) + closeTime.charAt(1);
 
                     openHours = "" + openTime + ":00 - " + closeTime + ":00";
@@ -32,7 +32,7 @@ public class Hours {
         }
         else {
             for(int i = 0; i <= periods.size()-1; i++) {
-                openTime = periods.get(calendarDay - 1).getOpen().getTime();
+                openTime = periods.get(i).getOpen().getTime();
                 openTime = "" + openTime.charAt(0) + openTime.charAt(1);
             }
             openHours = checkForOpeningSoon();

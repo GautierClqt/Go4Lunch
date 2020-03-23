@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
@@ -27,23 +26,10 @@ import java.util.List;
 public class ListFragment extends Fragment implements Callback {
 
     private RecyclerView recyclerView;
-
     private List<Restaurant> mRestaurantList = new ArrayList<>();
-    //private List<NearbySearchPojo.NearbySearchResults> mNearbySearchResults = new ArrayList<>();
-
     private OnFragmentInteractionListener mListener;
 
     public ListFragment() {
-    }
-
-
-    // TODO: Rename and change types and number of parameters
-    public static ListFragment newInstance(String param1, String param2) {
-        ListFragment fragment = new ListFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -66,7 +52,7 @@ public class ListFragment extends Fragment implements Callback {
 
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(),  mRestaurantList, this);
+        RestaurantsRecyclerAdapter adapter = new RestaurantsRecyclerAdapter(this.getContext(),  mRestaurantList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 

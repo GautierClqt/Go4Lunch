@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cliquet.gautier.go4lunch.Api.UserHelper;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
@@ -29,7 +30,9 @@ import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,7 +41,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        firestoreGetUsersIdRequest();
+        firestoreGetUsersRequest();
         getUserLocation();
     }
 
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         PlacesApiCalls.fetchNearbySearch(this, mRequestParametersHM);
     }
 
-    private void firestoreGetUsersIdRequest() {
+    private void firestoreGetUsersRequest() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("users");
 
@@ -158,13 +160,19 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     User user = documentSnapshot.toObject(User.class);
 
-                    mWorkmatesList.add(new Workmates(
-                            user.getUserId(),
-                            user.getUserFirstName(),
-                            user.getUserLastName(),
-                            user.getUserEmail(),
-                            user.getUserUrlPicture()
-                    ));
+                    String test = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String test2 = user.getUserId();
+
+
+                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
+                        mWorkmatesList.add(new Workmates(
+                                user.getUserId(),
+                                user.getUserFirstName(),
+                                user.getUserLastName(),
+                                user.getUserEmail(),
+                                user.getUserUrlPicture()
+                        ));
+                    }
                 }
             }
         });
@@ -234,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         Location restaurantLocation = new Location("restaurant location");
         restaurantLocation.setLatitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat());
         restaurantLocation.setLongitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng());
-        
+
         return userLocation.distanceTo(restaurantLocation);
     }
 
@@ -248,10 +256,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
         Bundle bundle = new Bundle();
         bundle.putString("restaurant_list", gsonRestaurantsList);
-        bundle.putString("wrokmates_lsit", gsonWorkmatesList);
+        bundle.putString("workmates_list", gsonWorkmatesList);
 
         mapFragment.setArguments(bundle);
         listFragment.setArguments(bundle);
+        workmatesFragment.setArguments(bundle);
 
         configureFragmentsDefaultDisplay();
         configureBottomView();

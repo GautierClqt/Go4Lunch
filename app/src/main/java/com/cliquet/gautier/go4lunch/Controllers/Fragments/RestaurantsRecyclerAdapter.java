@@ -1,8 +1,6 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,26 +12,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
-import com.google.android.libraries.places.api.model.DayOfWeek;
-import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
-    Callback listener;
+public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<RestaurantsRecyclerAdapter.ViewHolder> {
 
     private Context mContext;
+    private Callback listener;
     private List<Restaurant> mRestaurantsList;
 
-    public RecyclerViewAdapter(Context context, List<Restaurant> restaurantList, Callback listener) {
+    public RestaurantsRecyclerAdapter(Context context, List<Restaurant> restaurantList, Callback listener) {
         this.mContext = context;
         this.mRestaurantsList = restaurantList;
         this.listener = listener;
