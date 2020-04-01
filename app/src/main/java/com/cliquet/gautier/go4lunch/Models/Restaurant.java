@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Restaurant implements Parcelable {
 
+    private String mId;
     private String mName;
     private double mLatitude;
     private double mLongitude;
@@ -25,10 +26,14 @@ public class Restaurant implements Parcelable {
     private List<DetailsPojo.Periods> mPeriods;
 
     public Restaurant() {
-
     }
 
-    public Restaurant(String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, String openingHoursString) {
+    public Restaurant(String id) {
+        this.mId = id;
+    }
+
+    public Restaurant(String id, String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, String openingHoursString) {
+        this.mId = id;
         this.mName = name;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
@@ -44,6 +49,7 @@ public class Restaurant implements Parcelable {
     }
 
     protected Restaurant(Parcel in) {
+        mId = in.readString();
         mName = in.readString();
         mLatitude = in.readDouble();
         mLongitude = in.readDouble();
@@ -71,6 +77,7 @@ public class Restaurant implements Parcelable {
         }
     };
 
+    public String getId() { return mId; }
     public String getName() { return mName; }
     public double getLatitude() { return mLatitude; }
     public double getLongitude() { return mLongitude; }
@@ -93,6 +100,7 @@ public class Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
         dest.writeString(mName);
         dest.writeDouble(mLatitude);
         dest.writeDouble(mLongitude);

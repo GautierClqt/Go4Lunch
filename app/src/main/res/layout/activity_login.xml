@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Controllers.Activities.LoginActivity">
 
-
-
     <TextView
         android:id="@+id/login_activity_authentication_textview"
         android:layout_width="wrap_content"

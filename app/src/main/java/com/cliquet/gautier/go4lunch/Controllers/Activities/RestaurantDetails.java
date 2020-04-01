@@ -1,19 +1,33 @@
 package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
+import com.cliquet.gautier.go4lunch.Api.UserHelper;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
+import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class RestaurantDetails extends AppCompatActivity {
 
@@ -85,6 +99,56 @@ public class RestaurantDetails extends AppCompatActivity {
                 }
             });
         }
+
+        selected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                final String newRestaurant = restaurant.getId();
+                FirebaseFirestore database = FirebaseFirestore.getInstance();
+
+                RestaurantHelper.createRestaurant(restaurant.getId());
+
+                //1. récupérer l'id de l'ancien restaurant sélectionné par user
+                UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            String oldRestaurantId = document.getString("userSelected");
+
+                            //2. supprimer le document user de l'ancien restaurant
+                            RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
+                        }
+                    }
+                });
+
+
+                //3. ajouter un document user dans la collection users du nouveau restaurant
+                DocumentReference docRef = database.collection("restaurant").document(newRestaurant).collection("user").document(currentUserId);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()) {
+                                Log.d("exit", "Document exists!");
+                            }
+                            else {
+                                Log.d("not exist", "Document does not exists");
+                                RestaurantHelper.addUserCollection(restaurant.getId(), currentUserId);
+                            }
+                        }
+                        else {
+                            Log.d("failed", "Failed with: ", task.getException());
+                        }
+                    }
+                });
+
+                //4. mettre à jour le nouveau restaurant dans le document user de la collection users
+                UserHelper.updateSelectedRestaurant(currentUserId, restaurant.getId());
+            }
+        });
     }
 
     private void startCallActivity() {

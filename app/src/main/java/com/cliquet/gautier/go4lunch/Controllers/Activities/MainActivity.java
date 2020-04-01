@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         }
 
         mRestaurantList.add(new Restaurant(
+            nearbySearchPojo.getNearbySearchResults().get(index).getId(),
             nearbySearchPojo.getNearbySearchResults().get(index).getName(),
             nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
             nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng(),

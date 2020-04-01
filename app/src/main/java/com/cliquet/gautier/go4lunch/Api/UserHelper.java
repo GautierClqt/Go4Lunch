@@ -20,8 +20,14 @@ public class UserHelper {
         return UserHelper.getUsersCollection().document(userId).set(userToCreate);
     }
 
+    //GET
     public static Task<DocumentSnapshot> getUser(String userId) {
         return UserHelper.getUsersCollection().document(userId).get();
+    }
+
+    //UPDATE
+    public static Task<Void> updateSelectedRestaurant(String userId, String restaurantId) {
+        return UserHelper.getUsersCollection().document(userId).update("userSelected", restaurantId);
     }
 
     //DELETE
