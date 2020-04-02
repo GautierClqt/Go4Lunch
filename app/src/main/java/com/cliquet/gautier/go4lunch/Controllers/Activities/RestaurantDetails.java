@@ -104,7 +104,7 @@ public class RestaurantDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                final String newRestaurant = restaurant.getId();
+                final String newRestaurantId = restaurant.getId();
                 FirebaseFirestore database = FirebaseFirestore.getInstance();
 
                 RestaurantHelper.createRestaurant(restaurant.getId());
@@ -115,38 +115,64 @@ public class RestaurantDetails extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
-                            String oldRestaurantId = document.getString("userSelected");
-
-                            //2. supprimer le document user de l'ancien restaurant
-                            RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
-                        }
-                    }
-                });
-
-
-                //3. ajouter un document user dans la collection users du nouveau restaurant
-                DocumentReference docRef = database.collection("restaurant").document(newRestaurant).collection("user").document(currentUserId);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if(document.exists()) {
-                                Log.d("exit", "Document exists!");
+                            final String oldRestaurantId = document.getString("userSelected");
+                            //si le champ est null alors user n'avait pas encore sélectionné de restaurant
+                            if(oldRestaurantId == null){
+                                UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
+                                RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                            }
+                            //si les deux id correspondent, alors le l'utilisateur à déselectionné le restaurant qu'il avait sélectionné
+                            else if(newRestaurantId.equals(oldRestaurantId)) {
+                                UserHelper.updateSelectedRestaurant(currentUserId, null);
+                                //2. supprimer le document user de l'ancien restaurant
+                                RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
                             }
                             else {
-                                Log.d("not exist", "Document does not exists");
-                                RestaurantHelper.addUserCollection(restaurant.getId(), currentUserId);
+                                UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
+                                RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
+                                RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
                             }
-                        }
-                        else {
-                            Log.d("failed", "Failed with: ", task.getException());
+
+                            //si la collection "user" du restaurant est vide alors la supprimer.
+                            CollectionReference restaurantRef = RestaurantHelper.getUserCollection(oldRestaurantId);
+                            restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                   if(task.isSuccessful()) {
+                                        if(task.getResult().isEmpty()) {
+                                            RestaurantHelper.deleteRestaurant(oldRestaurantId);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 });
 
+
+//                //3. ajouter un document user dans la collection users du nouveau restaurant
+//                DocumentReference docRef = database.collection("restaurant").document(newRestaurantId).collection("user").document(currentUserId);
+//                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if(task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if(document.exists()) {
+//                                Log.d("exit", "Document exists!");
+//                            }
+//                            else {
+//                                Log.d("not exist", "Document does not exists");
+//                                RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+//                            }
+//                        }
+//                        else {
+//                            Log.d("failed", "Failed with: ", task.getException());
+//                        }
+//                    }
+//                });
+
                 //4. mettre à jour le nouveau restaurant dans le document user de la collection users
-                UserHelper.updateSelectedRestaurant(currentUserId, restaurant.getId());
+                //UserHelper.updateSelectedRestaurant(currentUserId, restaurant.getId());
             }
         });
     }

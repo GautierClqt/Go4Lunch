@@ -16,7 +16,7 @@ public class RestaurantHelper {
     }
 
     public static CollectionReference getUserCollection(String restaurantId) {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME).document(restaurantId).collection("user1");
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME).document(restaurantId).collection("user");
     }
 
     //CREATE
@@ -32,5 +32,9 @@ public class RestaurantHelper {
 
     public static Task<Void> deleteUser(String restaurantId, String userId) {
         return RestaurantHelper.getRestaurantsCollection().document(restaurantId).collection("user").document(userId).delete();
+    }
+
+    public static Task<Void> deleteRestaurant(String restaurantId) {
+        return RestaurantHelper.getRestaurantsCollection().document(restaurantId).delete();
     }
 }
