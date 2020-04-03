@@ -126,53 +126,32 @@ public class RestaurantDetails extends AppCompatActivity {
                                 UserHelper.updateSelectedRestaurant(currentUserId, null);
                                 //2. supprimer le document user de l'ancien restaurant
                                 RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
+                                checkAndDeleteEmptyRestaurant(oldRestaurantId);
                             }
                             else {
                                 UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
                                 RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
                                 RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                                checkAndDeleteEmptyRestaurant(oldRestaurantId);
                             }
-
-                            //si la collection "user" du restaurant est vide alors la supprimer.
-                            CollectionReference restaurantRef = RestaurantHelper.getUserCollection(oldRestaurantId);
-                            restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                   if(task.isSuccessful()) {
-                                        if(task.getResult().isEmpty()) {
-                                            RestaurantHelper.deleteRestaurant(oldRestaurantId);
-                                        }
-                                    }
-                                }
-                            });
                         }
                     }
                 });
+            }
+        });
+    }
 
-
-//                //3. ajouter un document user dans la collection users du nouveau restaurant
-//                DocumentReference docRef = database.collection("restaurant").document(newRestaurantId).collection("user").document(currentUserId);
-//                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if(task.isSuccessful()) {
-//                            DocumentSnapshot document = task.getResult();
-//                            if(document.exists()) {
-//                                Log.d("exit", "Document exists!");
-//                            }
-//                            else {
-//                                Log.d("not exist", "Document does not exists");
-//                                RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
-//                            }
-//                        }
-//                        else {
-//                            Log.d("failed", "Failed with: ", task.getException());
-//                        }
-//                    }
-//                });
-
-                //4. mettre à jour le nouveau restaurant dans le document user de la collection users
-                //UserHelper.updateSelectedRestaurant(currentUserId, restaurant.getId());
+    private void checkAndDeleteEmptyRestaurant(final String oldRestaurantId) {
+        //si la collection "user" du restaurant est vide alors la supprimer.
+        CollectionReference restaurantRef = RestaurantHelper.getUserCollection(oldRestaurantId);
+        restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    if(task.getResult().isEmpty()) {
+                        RestaurantHelper.deleteRestaurant(oldRestaurantId);
+                    }
+                }
             }
         });
     }
