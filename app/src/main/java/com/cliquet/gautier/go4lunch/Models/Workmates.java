@@ -10,15 +10,17 @@ public class Workmates implements Parcelable {
     private String mLastName;
     private String mEmail;
     private String mUrlPicture;
+    private String mSelectedRestaurant;
 
     public Workmates() {}
 
-    public Workmates(String id, String firstName, String lastName, String email, String urlPicture) {
+    public Workmates(String id, String firstName, String lastName, String email, String urlPicture, String selectedRestaurant) {
         this.mId = id;
         this.mFirstName = firstName;
         this.mLastName = lastName;
         this.mEmail = email;
         this.mUrlPicture = urlPicture;
+        this.mSelectedRestaurant = selectedRestaurant;
     }
 
     public String getId() {
@@ -36,6 +38,7 @@ public class Workmates implements Parcelable {
     public String getUrlPicture() {
         return mUrlPicture;
     }
+    public String getSelectedRestaurant() { return mSelectedRestaurant; }
 
     protected Workmates(Parcel in) {
         mId = in.readString();
@@ -43,6 +46,7 @@ public class Workmates implements Parcelable {
         mLastName = in.readString();
         mEmail = in.readString();
         mUrlPicture = in.readString();
+        mSelectedRestaurant = in.readString();
     }
 
     public static final Creator<Workmates> CREATOR = new Creator<Workmates>() {
@@ -69,5 +73,6 @@ public class Workmates implements Parcelable {
         dest.writeString(mLastName);
         dest.writeString(mEmail);
         dest.writeString(mUrlPicture);
+        dest.writeString(mSelectedRestaurant);
     }
 }

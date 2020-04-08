@@ -30,6 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,12 +147,23 @@ public class RestaurantDetails extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     User user = task.getResult().toObject(User.class);
 
+                    DocumentSnapshot doc = task.getResult();
+                    String selectedRestaurant;
+                    if(doc.get("userSelected") == null) {
+                        selectedRestaurant = null;
+                    }
+                    else {
+                        selectedRestaurant = doc.get("userSelected").toString();
+                    }
+
+
                     mJoiningWorkmatesList.add(new Workmates(
                             user.getUserId(),
                             user.getUserFirstName(),
                             user.getUserLastName(),
                             user.getUserEmail(),
-                            user.getUserUrlPicture()
+                            user.getUserUrlPicture(),
+                            selectedRestaurant
                     ));
                     setAdapterTest();
                 }

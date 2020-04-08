@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -70,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
 
         permissionsChecking();
         bindViews();
@@ -166,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                                 user.getUserFirstName(),
                                 user.getUserLastName(),
                                 user.getUserEmail(),
-                                user.getUserUrlPicture()
+                                user.getUserUrlPicture(),
+                                documentSnapshot.get("userSelected").toString()
                         ));
                     }
                 }

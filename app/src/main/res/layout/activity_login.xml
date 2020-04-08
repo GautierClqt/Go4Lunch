@@ -5,24 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Controllers.Activities.LoginActivity">
-
-    <TextView
-        android:id="@+id/login_activity_authentication_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/authentication_required"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/activity_login_authentication_button"/>
-
-    <Button
-        android:id="@+id/activity_login_authentication_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="S'AUTHENTIFIER"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
