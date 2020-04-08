@@ -2,12 +2,12 @@ package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,22 +16,27 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Api.UserHelper;
+import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesRecyclerAdapter;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.Models.User;
+import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantDetails extends AppCompatActivity {
 
     Restaurant restaurant;
+    WorkmatesRecyclerAdapter adapter;
 
     TextView name;
     TextView address;
@@ -44,6 +49,8 @@ public class RestaurantDetails extends AppCompatActivity {
     Button website;
     ImageView picture;
     RecyclerView recyclerView;
+
+    ArrayList<Workmates> mJoiningWorkmatesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,40 +110,91 @@ public class RestaurantDetails extends AppCompatActivity {
         selected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                final String newRestaurantId = restaurant.getId();
-                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                handlingFirestoreRequestsAndUi();
+            }
+        });
 
-                RestaurantHelper.createRestaurant(restaurant.getId());
+        getJoiningWorkmatesInFirestore();
 
-                //1. récupérer l'id de l'ancien restaurant sélectionné par user
-                UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            final String oldRestaurantId = document.getString("userSelected");
-                            //si le champ est null alors user n'avait pas encore sélectionné de restaurant
-                            if(oldRestaurantId == null){
-                                UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
-                                RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
-                            }
-                            //si les deux id correspondent, alors le l'utilisateur à déselectionné le restaurant qu'il avait sélectionné
-                            else if(newRestaurantId.equals(oldRestaurantId)) {
-                                UserHelper.updateSelectedRestaurant(currentUserId, null);
-                                //2. supprimer le document user de l'ancien restaurant
-                                RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
-                                checkAndDeleteEmptyRestaurant(oldRestaurantId);
-                            }
-                            else {
-                                UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
-                                RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
-                                RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
-                                checkAndDeleteEmptyRestaurant(oldRestaurantId);
-                            }
-                        }
+        adapter = new WorkmatesRecyclerAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void getJoiningWorkmatesInFirestore() {
+        final List<String> workmatesIdList = new ArrayList<>();
+
+        RestaurantHelper.getUserCollection(restaurant.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                for(QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
+                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(documentSnapshots.getId())) {
+                        workmatesIdList.add(documentSnapshots.getId());
                     }
-                });
+                }
+                getWorkmatesDatasInFirestore(workmatesIdList);
+            }
+        });
+    }
+
+    private void getWorkmatesDatasInFirestore(List<String> workmatesIdList) {
+        for(int i = 0; i<workmatesIdList.size(); i++) {
+            UserHelper.getUser(workmatesIdList.get(i)).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    User user = task.getResult().toObject(User.class);
+
+                    mJoiningWorkmatesList.add(new Workmates(
+                            user.getUserId(),
+                            user.getUserFirstName(),
+                            user.getUserLastName(),
+                            user.getUserEmail(),
+                            user.getUserUrlPicture()
+                    ));
+                    setAdapterTest();
+                }
+            });
+        }
+
+    }
+
+    private void setAdapterTest() {
+        adapter.setWorkmatesList(mJoiningWorkmatesList);
+    }
+
+    private void handlingFirestoreRequestsAndUi() {
+        final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String newRestaurantId = restaurant.getId();
+
+        RestaurantHelper.createRestaurant(restaurant.getId());
+
+        //1. récupérer l'id de l'ancien restaurant sélectionné par user
+        UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    final String oldRestaurantId = document.getString("userSelected");
+                    //si le champ est null alors user n'avait pas encore sélectionné de restaurant
+                    if(oldRestaurantId == null){
+                        UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
+                        RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                    }
+                    //si les deux id correspondent, alors le l'utilisateur à déselectionné le restaurant qu'il avait sélectionné
+                    else if(newRestaurantId.equals(oldRestaurantId)) {
+                        UserHelper.updateSelectedRestaurant(currentUserId, null);
+                        //2. supprimer le document user de l'ancien restaurant
+                        RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
+                        checkAndDeleteEmptyRestaurant(oldRestaurantId);
+                    }
+                    else {
+                        UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
+                        RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
+                        RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                        checkAndDeleteEmptyRestaurant(oldRestaurantId);
+                    }
+                }
             }
         });
     }

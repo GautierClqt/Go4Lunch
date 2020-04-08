@@ -48,7 +48,8 @@ public class WorkmatesFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.activity_workmates_list_recycler);
 
-        WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this.getContext(), mWorkmatesList);
+        WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this.getContext());
+        adapter.setWorkmatesList(mWorkmatesList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 

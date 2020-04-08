@@ -11,6 +11,8 @@ public class Workmates implements Parcelable {
     private String mEmail;
     private String mUrlPicture;
 
+    public Workmates() {}
+
     public Workmates(String id, String firstName, String lastName, String email, String urlPicture) {
         this.mId = id;
         this.mFirstName = firstName;

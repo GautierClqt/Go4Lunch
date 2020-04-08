@@ -15,6 +15,7 @@ import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecyclerAdapter.ViewHolder> {
@@ -22,9 +23,9 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     private Context mContext;
     private List<Workmates> mWorkmatesList;
 
-    public WorkmatesRecyclerAdapter(Context context, List<Workmates> workmatesList) {
+    public WorkmatesRecyclerAdapter(Context context) {
         this.mContext = context;
-        this.mWorkmatesList = workmatesList;
+        this.mWorkmatesList = new ArrayList<>();
     }
 
     @NonNull
@@ -38,8 +39,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.text.setText(mWorkmatesList.get(i).getFirstName() + " is connected");
-        Glide.with(viewHolder.picture).load("https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10221458475189928&height=50&width=50&ext=1587565214&hash=AeRxZ9LVUc9CxHw4").into(viewHolder.picture);
-
+        Glide.with(viewHolder.picture).load(mWorkmatesList.get(i).getUrlPicture()).into(viewHolder.picture);
     }
 
 
@@ -59,5 +59,10 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
             picture = itemView.findViewById(R.id.item_recycler_workmates_picture_imageview);
             text = itemView.findViewById(R.id.item_recycler_workmates_textview_textview);
         }
+    }
+
+    public void setWorkmatesList(List<Workmates> workmates) {
+        this.mWorkmatesList = workmates;
+        notifyDataSetChanged();
     }
 }

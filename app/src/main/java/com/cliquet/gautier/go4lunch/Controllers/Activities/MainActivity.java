@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void firestoreGetUsersRequest() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = db.collection("users");
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = database.collection("users");
 
         usersRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
