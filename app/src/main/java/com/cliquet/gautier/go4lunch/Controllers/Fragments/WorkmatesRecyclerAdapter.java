@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +43,23 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.text.setText(mWorkmatesList.get(i).getFirstName() + " is connected");
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+        final int index = i;
+
+        if(mWorkmatesList.get(i).getSelectedRestaurant() == null) {
+            viewHolder.text.setText("Workmates hasn't decided yet.");
+        }
+        else {
+            RestaurantHelper.getRestaurant(mWorkmatesList.get(i).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    final String restaurantName = task.getResult().get("name").toString();
+
+                    setViewholderText(viewHolder, restaurantName, index);
+                }
+            });
+
+        }
         Glide.with(viewHolder.picture).load(mWorkmatesList.get(i).getUrlPicture()).into(viewHolder.picture);
     }
 
@@ -65,4 +86,10 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         this.mWorkmatesList = workmates;
         notifyDataSetChanged();
     }
+
+    public void setViewholderText(ViewHolder viewHolder, String restaurantName, int i) {
+        String text = mContext.getResources().getString(R.string.workmates_is_eating, mWorkmatesList.get(i).getFirstName(), restaurantName);
+        viewHolder.text.setText(text);
+    }
+
 }

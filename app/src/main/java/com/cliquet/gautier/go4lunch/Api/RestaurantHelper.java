@@ -5,7 +5,13 @@ import com.cliquet.gautier.go4lunch.Models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Document;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestaurantHelper {
 
@@ -15,19 +21,24 @@ public class RestaurantHelper {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
-    public static CollectionReference getUserCollection(String restaurantId) {
+    public static CollectionReference getUserSubcollection(String restaurantId) {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME).document(restaurantId).collection("user");
     }
 
     //CREATE
-    public static Task<Void> createRestaurant(String restaurantId) {
-        Restaurant restautantToCreate = new Restaurant(restaurantId);
-        return RestaurantHelper.getRestaurantsCollection().document(restaurantId).set(restautantToCreate);
+    public static Task<Void> createRestaurant(String restaurantId, String restaurantName) {
+        Map<String, Object> restaurantToCreate = new HashMap<>();
+        restaurantToCreate.put("name", restaurantName);
+        return RestaurantHelper.getRestaurantsCollection().document(restaurantId).set(restaurantToCreate);
     }
 
     public static Task<Void> addUserCollection(String restaurantId, String userId) {
         User userToAdd = new User(userId);
         return RestaurantHelper.getRestaurantsCollection().document(restaurantId).collection("user").document(userId).set(userToAdd);
+    }
+
+    public static Task<DocumentSnapshot> getRestaurant(String restaurantId) {
+        return RestaurantHelper.getRestaurantsCollection().document(restaurantId).get();
     }
 
     public static Task<Void> deleteUser(String restaurantId, String userId) {

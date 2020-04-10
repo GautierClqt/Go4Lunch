@@ -30,8 +30,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +124,7 @@ public class RestaurantDetails extends AppCompatActivity {
     private void getJoiningWorkmatesInFirestore() {
         final List<String> workmatesIdList = new ArrayList<>();
 
-        RestaurantHelper.getUserCollection(restaurant.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        RestaurantHelper.getUserSubcollection(restaurant.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
@@ -156,7 +154,6 @@ public class RestaurantDetails extends AppCompatActivity {
                         selectedRestaurant = doc.get("userSelected").toString();
                     }
 
-
                     mJoiningWorkmatesList.add(new Workmates(
                             user.getUserId(),
                             user.getUserFirstName(),
@@ -180,7 +177,7 @@ public class RestaurantDetails extends AppCompatActivity {
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String newRestaurantId = restaurant.getId();
 
-        RestaurantHelper.createRestaurant(restaurant.getId());
+        RestaurantHelper.createRestaurant(restaurant.getId(), restaurant.getName());
 
         //1. récupérer l'id de l'ancien restaurant sélectionné par user
         UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -214,7 +211,7 @@ public class RestaurantDetails extends AppCompatActivity {
 
     private void checkAndDeleteEmptyRestaurant(final String oldRestaurantId) {
         //si la collection "user" du restaurant est vide alors la supprimer.
-        CollectionReference restaurantRef = RestaurantHelper.getUserCollection(oldRestaurantId);
+        CollectionReference restaurantRef = RestaurantHelper.getUserSubcollection(oldRestaurantId);
         restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

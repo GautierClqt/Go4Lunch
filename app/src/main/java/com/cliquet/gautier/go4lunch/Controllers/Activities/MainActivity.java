@@ -166,6 +166,14 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     User user = documentSnapshot.toObject(User.class);
 
+                    String selectedRestaurant;
+                    if(documentSnapshot.get("userSelected") == null) {
+                        selectedRestaurant = null;
+                    }
+                    else{
+                        selectedRestaurant = documentSnapshot.get("userSelected").toString();
+                    }
+
                     if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
                         mWorkmatesList.add(new Workmates(
                                 user.getUserId(),
@@ -173,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                                 user.getUserLastName(),
                                 user.getUserEmail(),
                                 user.getUserUrlPicture(),
-                                documentSnapshot.get("userSelected").toString()
+                                selectedRestaurant
                         ));
                     }
                 }

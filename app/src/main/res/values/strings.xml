@@ -22,6 +22,10 @@
     <string name="sign_in_google">Sign in with Google</string>
     <string name="sign_in_facebook">Sign in with Facebook</string>
 
+    <!-- item_recycler_workmates.xml strings -->
+    <string name="workmates_is_eating">%1$s is eating at %2$s</string>
+    <string name="workmates_hasnt_chose">%s hasn\'t decided yet</string>
+
     <!-- item_recycler_restaurant.xml placeholders strings -->
     <string name="restaurant_name_placeholder"><font fgcolor="#FF0000">name unknown</font></string>
     <string name="restaurant_hours_placeholder"><font fgcolor="#FF0000">unknown hours</font></string>

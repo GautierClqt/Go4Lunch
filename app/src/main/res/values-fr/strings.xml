@@ -23,4 +23,6 @@
     <string name="no_restaurant_found">Aucun restaurant n\'a a été trouvé à proximité.</string>
     <string name="authentication_required">Veuillez-vous authentifier pour utiliser l\'application</string>
     <string name="connexion_required">Cette application requiert une connexion internet</string>
+    <string name="workmates_hasnt_chose">% n\'a pas encore choisi</string>
+    <string name="workmates_is_eating">%1$s mange au %2$s</string>
 </resources>
