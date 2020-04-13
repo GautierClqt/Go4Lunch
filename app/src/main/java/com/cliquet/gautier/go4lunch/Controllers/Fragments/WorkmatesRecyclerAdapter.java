@@ -1,7 +1,6 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
-import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +43,12 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final int index = i;
 
+        sortWorkmatesList();
+
         if(mWorkmatesList.get(i).getSelectedRestaurant() == null) {
-            viewHolder.text.setText("Workmates hasn't decided yet.");
+            mWorkmatesList.get(i).getFirstName();
+            String text = mContext.getResources().getString(R.string.workmates_hasnt_chose, mWorkmatesList.get(i).getFirstName());
+            viewHolder.text.setText(text);
         }
         else {
             RestaurantHelper.getRestaurant(mWorkmatesList.get(i).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -87,8 +88,23 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         notifyDataSetChanged();
     }
 
+    private void sortWorkmatesList() {
+        int listSize = mWorkmatesList.size();
+        for(int i = 0; i < listSize; i++) {
+            if(mWorkmatesList.get(i).getSelectedRestaurant() == null) {
+                for(int j = i; j < listSize; j++) {
+                    if(mWorkmatesList.get(j).getSelectedRestaurant() != null) {
+                        Workmates tempsWorkmates = mWorkmatesList.get(i);
+                        mWorkmatesList.set(i, mWorkmatesList.get(j));
+                        mWorkmatesList.set(j, tempsWorkmates);
+                    }
+                }
+            }
+        }
+    }
+
     public void setViewholderText(ViewHolder viewHolder, String restaurantName, int i) {
-        String text = mContext.getResources().getString(R.string.workmates_is_eating, mWorkmatesList.get(i).getFirstName(), restaurantName);
+        String text = mContext.getResources().getString(R.string.workmates_has_chosen, mWorkmatesList.get(i).getFirstName(), restaurantName);
         viewHolder.text.setText(text);
     }
 

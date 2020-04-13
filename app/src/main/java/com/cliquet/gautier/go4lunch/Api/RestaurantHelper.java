@@ -33,7 +33,8 @@ public class RestaurantHelper {
     }
 
     public static Task<Void> addUserCollection(String restaurantId, String userId) {
-        User userToAdd = new User(userId);
+        Map<String, Object> userToAdd = new HashMap<>();
+        userToAdd.put("id", userId);
         return RestaurantHelper.getRestaurantsCollection().document(restaurantId).collection("user").document(userId).set(userToAdd);
     }
 
