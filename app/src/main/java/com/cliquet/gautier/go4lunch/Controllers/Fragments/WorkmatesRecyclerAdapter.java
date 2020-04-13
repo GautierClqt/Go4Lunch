@@ -1,6 +1,9 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +52,8 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
             mWorkmatesList.get(i).getFirstName();
             String text = mContext.getResources().getString(R.string.workmates_hasnt_chose, mWorkmatesList.get(i).getFirstName());
             viewHolder.text.setText(text);
+            viewHolder.text.setTextColor(Color.parseColor("#999999"));
+            viewHolder.text.setTypeface(viewHolder.text.getTypeface(), Typeface.ITALIC);
         }
         else {
             RestaurantHelper.getRestaurant(mWorkmatesList.get(i).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

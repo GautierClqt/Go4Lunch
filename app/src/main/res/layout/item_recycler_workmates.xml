@@ -26,7 +26,7 @@
         android:layout_marginEnd="8dp"
         android:text="@string/workmate_isconnected"
         android:textSize="18sp"
-        android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
