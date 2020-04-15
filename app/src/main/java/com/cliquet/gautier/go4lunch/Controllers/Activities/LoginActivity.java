@@ -9,6 +9,7 @@ import com.cliquet.gautier.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 
@@ -21,7 +22,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        startSignInActivity();
+        checkForExistingAuthentication();
+
+    }
+
+    private void checkForExistingAuthentication() {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            launchMainActivity();
+        }
+        else{
+            startSignInActivity();
+        }
     }
 
     private void startSignInActivity(){
@@ -68,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();f
     }
 
 

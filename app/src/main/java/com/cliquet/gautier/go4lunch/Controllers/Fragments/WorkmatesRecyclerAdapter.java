@@ -60,7 +60,6 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     final String restaurantName = task.getResult().get("name").toString();
-
                     setViewholderText(viewHolder, restaurantName, index);
                 }
             });
@@ -94,18 +93,22 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     }
 
     private void sortWorkmatesList() {
-        int listSize = mWorkmatesList.size();
-        for(int i = 0; i < listSize; i++) {
-            if(mWorkmatesList.get(i).getSelectedRestaurant() == null) {
-                for(int j = i; j < listSize; j++) {
-                    if(mWorkmatesList.get(j).getSelectedRestaurant() != null) {
-                        Workmates tempsWorkmates = mWorkmatesList.get(i);
-                        mWorkmatesList.set(i, mWorkmatesList.get(j));
-                        mWorkmatesList.set(j, tempsWorkmates);
-                    }
-                }
+
+        ArrayList<Workmates> choseList = new ArrayList<>();
+        ArrayList<Workmates> notChoseList = new ArrayList<>();
+
+        for(int i = 0; i < mWorkmatesList.size(); i++) {
+            if(mWorkmatesList.get(i).getSelectedRestaurant() != null) {
+                choseList.add(mWorkmatesList.get(i));
+            }
+            else {
+                notChoseList.add(mWorkmatesList.get(i));
             }
         }
+
+        mWorkmatesList.clear();
+        mWorkmatesList.addAll(choseList);
+        mWorkmatesList.addAll(notChoseList);
     }
 
     public void setViewholderText(ViewHolder viewHolder, String restaurantName, int i) {

@@ -1,8 +1,11 @@
 package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -48,6 +51,9 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback {
 
     BottomNavigationView bottomNavigationView;
+    Toolbar toolbar;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle drawerToggle;
     TextView textViewPermissions;
     private ProgressBar progressBar;
 
@@ -62,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     Fragment activeFragment = mapFragment;
 
 
-
     private HashMap<String, String> mRequestParametersHM = new HashMap<>();
     private double mUserLat;
     private double mUserLng;
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }
@@ -86,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()) {
+                switch (menuItem.getItemId()) {
                     case R.id.bottom_navigation_menu_map:
                         fragmentMangager.beginTransaction().hide(activeFragment).show(mapFragment).commit();
                         activeFragment = mapFragment;
@@ -131,6 +136,12 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void bindViews() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        drawer = findViewById(R.id.drawer);
+        drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.setDrawerListener(drawerToggle);
         textViewPermissions = findViewById(R.id.activity_main_warning_textview);
         progressBar = findViewById(R.id.activity_main_progressbar);
     }
@@ -148,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void googleMapApiRequest() {
-        mRequestParametersHM.put("location", mUserLat+","+mUserLng);
+        mRequestParametersHM.put("location", mUserLat + "," + mUserLng);
         mRequestParametersHM.put("radius", Integer.toString(500));
         mRequestParametersHM.put("type", "restaurant");
         mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
@@ -163,18 +174,17 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         usersRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     User user = documentSnapshot.toObject(User.class);
 
                     String selectedRestaurant;
-                    if(documentSnapshot.get("userSelected") == null) {
+                    if (documentSnapshot.get("userSelected") == null) {
                         selectedRestaurant = null;
-                    }
-                    else{
+                    } else {
                         selectedRestaurant = documentSnapshot.get("userSelected").toString();
                     }
 
-                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
+                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
                         mWorkmatesList.add(new Workmates(
                                 user.getUserId(),
                                 user.getUserFirstName(),
@@ -190,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
-        for(int i=0; i <= nearbySearchPojo.getNearbySearchResults().size()-1; i++) {
+        for (int i = 0; i <= nearbySearchPojo.getNearbySearchResults().size() - 1; i++) {
             PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId(), i);
         }
     }
@@ -203,45 +213,45 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         String website;
         String photoReference;
 
-        if(detailsPojo.getResults().getPhoneNumber() != null){
+        if (detailsPojo.getResults().getPhoneNumber() != null) {
             phoneNumber = detailsPojo.getResults().getPhoneNumber();
         } else {
             phoneNumber = null;
         }
 
-        if(detailsPojo.getResults().getWebsite() != null) {
+        if (detailsPojo.getResults().getWebsite() != null) {
             website = detailsPojo.getResults().getWebsite();
         } else {
             website = null;
         }
 
-        if(nearbySearchPojo.getNearbySearchResults().get(index).getPhotos() != null) {
+        if (nearbySearchPojo.getNearbySearchResults().get(index).getPhotos() != null) {
             photoReference = nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference();
         } else {
             photoReference = null;
         }
 
-        if(detailsPojo.getResults().getOpeningHours() != null) {
+        if (detailsPojo.getResults().getOpeningHours() != null) {
             openingHoursString = hours.getOpeningHours(detailsPojo.getResults().getOpeningHours().getOpenNow(), detailsPojo.getResults().getOpeningHours().getPeriods());
         } else {
             openingHoursString = null;
         }
 
         mRestaurantList.add(new Restaurant(
-            nearbySearchPojo.getNearbySearchResults().get(index).getId(),
-            nearbySearchPojo.getNearbySearchResults().get(index).getName(),
-            nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
-            nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng(),
-            nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
-            false,
+                nearbySearchPojo.getNearbySearchResults().get(index).getId(),
+                nearbySearchPojo.getNearbySearchResults().get(index).getName(),
+                nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
+                nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng(),
+                nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
+                false,
                 new Random().nextInt(4),
-            false,
-            phoneNumber,
-            website,
-            distance,
-            photoReference,
-            openingHoursString));
-        if(mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
+                false,
+                phoneNumber,
+                website,
+                distance,
+                photoReference,
+                openingHoursString));
+        if (mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
             configureBundle();
         }
     }
@@ -282,10 +292,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             permissionsGranted();
-        }
-        else {
+        } else {
             permissionsNotGranted();
         }
     }
@@ -295,11 +304,10 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
         mNearbySearchPojo = nearbySearchPojo;
 
-        if(mNearbySearchPojo.getNearbySearchResults().size() != 0) {
+        if (mNearbySearchPojo.getNearbySearchResults().size() != 0) {
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
             detailsRequest(mNearbySearchPojo);
-        }
-        else{
+        } else {
             textViewPermissions.setText(R.string.no_restaurant_found);
             textViewPermissions.setVisibility(View.VISIBLE);
         }

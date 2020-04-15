@@ -52,4 +52,12 @@
     <string name="workmate_picture_imageview_contentdescription" translatable="false">workmate\'s picture</string>
     <string name="restaurant_secondstar_imageview_contentdescription_placeholder"><font fgcolor="#FF0000">second star rating</font></string>
     <string name="app_tagline">Find a nice restaurant and invite your co-workers for lunch!</string>
+
+    <!-- Drawer menu strings -->
+    <string name="your_lunch" translatable="true">YOUR LUNCH</string>
+    <string name="settings" translatable="true">SETTINGS</string>
+    <string name="logout" translatable="true">LOGOUT</string>
+
+    <string name="open" translatable="false">open</string>
+    <string name="close" translatable="false">close</string>
 </resources>

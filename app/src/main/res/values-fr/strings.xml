@@ -25,4 +25,7 @@
     <string name="connexion_required">Cette application requiert une connexion internet</string>
     <string name="workmates_hasnt_chose">%1$s n\'a pas encore choisi</string>
     <string name="workmates_has_chosen">%1$s mange au %2$s</string>
+    <string name="logout">DECONNEXION</string>
+    <string name="settings">PARAMÈTRES</string>
+    <string name="your_lunch">VOTRE CHOIX</string>
 </resources>
