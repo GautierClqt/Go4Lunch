@@ -13,7 +13,6 @@
         <item android:title="@string/logout"
             android:id="@+id/drawer_menu_logout_item"
             android:icon="@drawable/ic_logout" />
-
     </group>
 
 </menu>

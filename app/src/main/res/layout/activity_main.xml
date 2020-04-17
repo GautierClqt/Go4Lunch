@@ -18,6 +18,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -31,7 +33,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/activity_main_bottom_navigation_view"
-                android:layout_gravity="top" />
+                android:layout_gravity="top" >
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/activity_main_bottom_navigation_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="67dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:background="#FFFFFF"
+                    app:itemIconTint="@drawable/bottom_navigation_colors"
+                    app:itemTextColor="@drawable/bottom_navigation_colors"
+                    app:menu="@menu/bottom_navigation_menu" />
+            </FrameLayout>
+
 
         </LinearLayout>
 
@@ -42,13 +57,13 @@
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_header"
             app:menu="@menu/drawer_menu" />
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
     <TextView
         android:id="@+id/activity_main_warning_textview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/activity_main_bottom_navigation_view"
         android:background="#AAAAAA"
         android:gravity="center"
         android:padding="20dp"
@@ -60,16 +75,4 @@
         android:id="@+id/activity_main_progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/activity_main_bottom_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="#FFFFFF"
-        app:itemIconTint="@drawable/bottom_navigation_colors"
-        app:itemTextColor="@drawable/bottom_navigation_colors"
-        app:menu="@menu/bottom_navigation_menu" />
-
 </RelativeLayout>

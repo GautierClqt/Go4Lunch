@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish();f
+        finish();
     }
 
 

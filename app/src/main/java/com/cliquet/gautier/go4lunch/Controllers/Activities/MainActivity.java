@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     final FragmentManager fragmentMangager = getSupportFragmentManager();
     Fragment activeFragment = mapFragment;
 
-
     private HashMap<String, String> mRequestParametersHM = new HashMap<>();
     private double mUserLat;
     private double mUserLng;
@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        configureDrawerLayout();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
@@ -136,12 +138,12 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void bindViews() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        drawer = findViewById(R.id.drawer);
-        drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        drawer.setDrawerListener(drawerToggle);
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        drawer = findViewById(R.id.drawer);
+//        drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+//        drawer.setDrawerListener(drawerToggle);
         textViewPermissions = findViewById(R.id.activity_main_warning_textview);
         progressBar = findViewById(R.id.activity_main_progressbar);
     }
@@ -287,6 +289,17 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         configureFragmentsDefaultDisplay();
         configureBottomView();
     }
+
+    private void configureDrawerLayout() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
