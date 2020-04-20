@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,9 +18,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cliquet.gautier.go4lunch.Api.UserHelper;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
@@ -37,6 +41,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,8 +59,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar;
     DrawerLayout drawer;
-    ActionBarDrawerToggle drawerToggle;
+    NavigationView navigationView;
     TextView textViewPermissions;
+    TextView userNameTextview;
+    TextView userEmailTextview;
+    ImageView userPictureImageview;
     private ProgressBar progressBar;
 
     private NearbySearchPojo mNearbySearchPojo;
@@ -86,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
         permissionsChecking();
         bindViews();
+        setNavigationDrawerViews();
     }
 
     private void configureBottomView() {
@@ -138,14 +147,20 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void bindViews() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        drawer = findViewById(R.id.drawer);
-//        drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-//        drawer.setDrawerListener(drawerToggle);
+        navigationView = findViewById(R.id.avitivity_main_navigation_view);
+        View headerView = navigationView.getHeaderView(0);
+        userNameTextview = headerView.findViewById(R.id.nav_header_username_textview);
+        userEmailTextview = headerView.findViewById(R.id.nav_header_useremail_textview);
+        userPictureImageview = headerView.findViewById(R.id.nav_header_userpicture_imageview);
         textViewPermissions = findViewById(R.id.activity_main_warning_textview);
         progressBar = findViewById(R.id.activity_main_progressbar);
+    }
+
+    private void setNavigationDrawerViews() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        userNameTextview.setText(auth.getCurrentUser().getDisplayName());
+        userEmailTextview.setText(auth.getCurrentUser().getEmail());
+        Glide.with(userPictureImageview).load(auth.getCurrentUser().getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(userPictureImageview);
     }
 
     private void getUserLocation() {
