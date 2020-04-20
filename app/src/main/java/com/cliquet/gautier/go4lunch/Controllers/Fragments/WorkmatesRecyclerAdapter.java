@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
@@ -65,7 +66,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
             });
 
         }
-        Glide.with(viewHolder.picture).load(mWorkmatesList.get(i).getUrlPicture()).into(viewHolder.picture);
+        Glide.with(viewHolder.picture).load(mWorkmatesList.get(i).getUrlPicture()).apply(RequestOptions.circleCropTransform()).into(viewHolder.picture);
     }
 
 
