@@ -81,7 +81,6 @@ public class ListFragment extends Fragment implements Callback {
     public void onItemClicked(int position, Restaurant restaurant) {
         Intent restaurantDetailsActivityIntent = new Intent(getContext(), RestaurantDetails.class);
         restaurantDetailsActivityIntent.putExtra("restaurant", restaurant);
-
         startActivity(restaurantDetailsActivityIntent);
     }
 

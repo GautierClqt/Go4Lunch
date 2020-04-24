@@ -3,7 +3,6 @@ package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +105,6 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
                 notChoseList.add(mWorkmatesList.get(i));
             }
         }
-
         mWorkmatesList.clear();
         mWorkmatesList.addAll(choseList);
         mWorkmatesList.addAll(notChoseList);

@@ -10,20 +10,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Api.UserHelper;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
@@ -38,12 +38,14 @@ import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.libraries.places.api.model.Place;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -54,7 +56,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback {
+public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback, NavigationView.OnNavigationItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar;
@@ -85,14 +87,13 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        configureDrawerLayout();
-
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }
 
         permissionsChecking();
+        configureDrawerLayout();
         bindViews();
         setNavigationDrawerViews();
     }
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void bindViews() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation_view);
         navigationView = findViewById(R.id.avitivity_main_navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
         userNameTextview = headerView.findViewById(R.id.nav_header_username_textview);
         userEmailTextview = headerView.findViewById(R.id.nav_header_useremail_textview);
@@ -161,6 +163,16 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         userNameTextview.setText(auth.getCurrentUser().getDisplayName());
         userEmailTextview.setText(auth.getCurrentUser().getEmail());
         Glide.with(userPictureImageview).load(auth.getCurrentUser().getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(userPictureImageview);
+    }
+
+    private void configureDrawerLayout() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     private void getUserLocation() {
@@ -268,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 distance,
                 photoReference,
                 openingHoursString));
+
         if (mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
             configureBundle();
         }
@@ -305,17 +318,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         configureBottomView();
     }
 
-    private void configureDrawerLayout() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-    }
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -349,5 +351,52 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     @Override
     public void onFailure() {
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch(itemId) {
+            case R.id.drawer_menu_your_lunch_item:
+                UserHelper.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.getResult().get("userSelected")!= null) {
+                            String restaurantId = task.getResult().get("userSelected").toString();
+                            for(int i = 0; i < mRestaurantList.size(); i++) {
+                                if(mRestaurantList.get(i).getId().equals(restaurantId)) {
+                                    startActivityRestaurantDetails(mRestaurantList.get(i));
+                                }
+                            }
+                        }
+                        else {
+                            toastNoRestaurantSelected();
+                        }
+                    }
+                });
+                break;
+
+            case R.id.drawer_menu_logout_item:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+        return true;
+    }
+
+    private void startActivityRestaurantDetails(Restaurant restaurant) {
+        if(restaurant != null) {
+            Intent restaurantDetailsActivityIntent = new Intent(this, RestaurantDetails.class);
+            restaurantDetailsActivityIntent.putExtra("restaurant", restaurant);
+            startActivity(restaurantDetailsActivityIntent);
+        }
+
+    }
+
+    private void toastNoRestaurantSelected() {
+        Toast.makeText(this, "No restaurant selected",Toast.LENGTH_LONG).show();
     }
 }
