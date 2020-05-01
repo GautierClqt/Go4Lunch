@@ -58,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-
         if(requestCode == RC_SIGN_IN) {
             if(resultCode == RESULT_OK) {
                 checkForExistingUser(FirebaseAuth.getInstance().getCurrentUser().getUid());

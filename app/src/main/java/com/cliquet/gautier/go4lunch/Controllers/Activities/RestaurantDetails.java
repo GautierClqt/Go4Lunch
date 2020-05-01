@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,16 +29,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
+
 public class RestaurantDetails extends AppCompatActivity {
 
     Restaurant restaurant;
-    WorkmatesRecyclerAdapter adapter;
+    WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this);
 
     TextView name;
     TextView address;
@@ -114,9 +121,55 @@ public class RestaurantDetails extends AppCompatActivity {
             }
         });
 
-        getJoiningWorkmatesInFirestore();
+//        getJoiningWorkmatesInFirestore();
+//
+//        setWorkmatesAdapter();
+    }
 
-        adapter = new WorkmatesRecyclerAdapter(this);
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //CollectionReference usersRef = db.collection("restaurants");
+
+        CollectionReference usersRef = RestaurantHelper.getUserSubcollection(restaurant.getId());
+
+        usersRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                Log.d(TAG, "User change");
+
+                getJoiningWorkmatesInFirestore();
+
+//                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+//                    User user = documentSnapshot.toObject(User.class);
+//
+//                    String selectedRestaurant;
+//                    if (documentSnapshot.get("userSelected") == null) {
+//                        selectedRestaurant = null;
+//                    } else {
+//                        selectedRestaurant = documentSnapshot.get("userSelected").toString();
+//                    }
+//
+//                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
+//                        mJoiningWorkmatesList.add(new Workmates(
+//                                user.getUserId(),
+//                                user.getUserFirstName(),
+//                                user.getUserLastName(),
+//                                user.getUserEmail(),
+//                                user.getUserUrlPicture(),
+//                                selectedRestaurant
+//                        ));
+//                    }
+//                }
+//                setWorkmatesAdapter();
+            }
+        });
+    }
+
+    private void setWorkmatesAdapter() {
+        adapter.setWorkmatesList(mJoiningWorkmatesList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -139,6 +192,7 @@ public class RestaurantDetails extends AppCompatActivity {
     }
 
     private void getWorkmatesDatasInFirestore(List<String> workmatesIdList) {
+        mJoiningWorkmatesList.clear();
         for(int i = 0; i<workmatesIdList.size(); i++) {
             UserHelper.getUser(workmatesIdList.get(i)).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -162,16 +216,13 @@ public class RestaurantDetails extends AppCompatActivity {
                             user.getUserUrlPicture(),
                             selectedRestaurant
                     ));
-                    setAdapterTest();
+                    setWorkmatesAdapter();
                 }
             });
         }
 
     }
 
-    private void setAdapterTest() {
-        adapter.setWorkmatesList(mJoiningWorkmatesList);
-    }
 
     private void handlingFirestoreRequestsAndUi() {
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
