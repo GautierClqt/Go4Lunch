@@ -120,56 +120,25 @@ public class RestaurantDetails extends AppCompatActivity {
                 handlingFirestoreRequestsAndUi();
             }
         });
-
-//        getJoiningWorkmatesInFirestore();
-//
-//        setWorkmatesAdapter();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        //FirebaseFirestore db = FirebaseFirestore.getInstance();
-        //CollectionReference usersRef = db.collection("restaurants");
-
         CollectionReference usersRef = RestaurantHelper.getUserSubcollection(restaurant.getId());
 
         usersRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                Log.d(TAG, "User change");
-
                 getJoiningWorkmatesInFirestore();
-
-//                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-//                    User user = documentSnapshot.toObject(User.class);
-//
-//                    String selectedRestaurant;
-//                    if (documentSnapshot.get("userSelected") == null) {
-//                        selectedRestaurant = null;
-//                    } else {
-//                        selectedRestaurant = documentSnapshot.get("userSelected").toString();
-//                    }
-//
-//                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
-//                        mJoiningWorkmatesList.add(new Workmates(
-//                                user.getUserId(),
-//                                user.getUserFirstName(),
-//                                user.getUserLastName(),
-//                                user.getUserEmail(),
-//                                user.getUserUrlPicture(),
-//                                selectedRestaurant
-//                        ));
-//                    }
-//                }
-//                setWorkmatesAdapter();
             }
         });
     }
 
     private void setWorkmatesAdapter() {
         adapter.setWorkmatesList(mJoiningWorkmatesList);
+        adapter.setActiveActivity(2);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -220,9 +189,7 @@ public class RestaurantDetails extends AppCompatActivity {
                 }
             });
         }
-
     }
-
 
     private void handlingFirestoreRequestsAndUi() {
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

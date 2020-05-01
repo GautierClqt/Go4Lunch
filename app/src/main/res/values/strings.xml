@@ -25,6 +25,7 @@
     <!-- item_recycler_workmates.xml strings -->
     <string name="workmates_has_chosen">%1$s is eating at %2$s</string>
     <string name="workmates_hasnt_chose">%1$s hasn\'t decided yet</string>
+    <string name="workmate_is_joining">%1$s is joining</string>
 
     <!-- item_recycler_restaurant.xml placeholders strings -->
     <string name="restaurant_name_placeholder"><font fgcolor="#FF0000">name unknown</font></string>

@@ -85,7 +85,6 @@ public class WorkmatesFragment extends Fragment {
         usersRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                Log.d(TAG, "User change");
                 mWorkmatesList.clear();
 
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
@@ -118,6 +117,7 @@ public class WorkmatesFragment extends Fragment {
         WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this.getContext());
         adapter.setWorkmatesList(mWorkmatesList);
         adapter.setRestaurantsList(mRestaurantsList);
+        adapter.setActiveActivity(1);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }

@@ -28,4 +28,5 @@
     <string name="logout">DECONNEXION</string>
     <string name="settings">PARAMÈTRES</string>
     <string name="your_lunch">VOTRE CHOIX</string>
+    <string name="workmate_is_joining">%1$s y sera</string>
 </resources>

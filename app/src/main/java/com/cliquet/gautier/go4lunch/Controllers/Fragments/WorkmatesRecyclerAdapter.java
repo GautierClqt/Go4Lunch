@@ -40,6 +40,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     private Context mContext;
     private List<Workmates> mWorkmatesList;
     private List<Restaurant> mRestaurantsList;
+    private int mActiveActivity;
 
     public WorkmatesRecyclerAdapter(Context context) {
         this.mContext = context;
@@ -128,8 +129,11 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         this.mRestaurantsList = restaurants;
     }
 
-    private void sortWorkmatesList() {
+    public void setActiveActivity(int activeActivity) {
+        this.mActiveActivity = activeActivity;
+    }
 
+    private void sortWorkmatesList() {
         ArrayList<Workmates> choseList = new ArrayList<>();
         ArrayList<Workmates> notChoseList = new ArrayList<>();
 
@@ -155,7 +159,13 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     }
 
     public void setViewholderText(ViewHolder viewHolder, String restaurantName, int i) {
-        String text = mContext.getResources().getString(R.string.workmates_has_chosen, mWorkmatesList.get(i).getFirstName(), restaurantName);
+        String text = "";
+        if(mActiveActivity == 1) {
+            text = mContext.getResources().getString(R.string.workmates_has_chosen, mWorkmatesList.get(i).getFirstName(), restaurantName);
+        }
+        else if(mActiveActivity == 2) {
+            text = mContext.getResources().getString(R.string.workmate_is_joining, mWorkmatesList.get(i).getFirstName());
+        }
         viewHolder.text.setText(text);
     }
 
