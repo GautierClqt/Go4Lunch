@@ -5,14 +5,20 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +62,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
+import static com.cliquet.gautier.go4lunch.Go4LunchNotificationChannel.CHANNEL_TIME_TO_EAT;
+
 public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback, NavigationView.OnNavigationItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
@@ -82,10 +90,14 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private double mUserLat;
     private double mUserLng;
 
+    NotificationManagerCompat notificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setNotificationBuilder();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
@@ -96,6 +108,20 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         configureDrawerLayout();
         bindViews();
         setNavigationDrawerViews();
+    }
+
+    private void setNotificationBuilder() {
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_TIME_TO_EAT)
+                .setSmallIcon(R.drawable.ic_logo_go4lunch)
+                .setContentTitle("Go4Lunch")
+                .setContentText("It's time to east!")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("You picked: RESTAURANT_NAME\nAddress: 456 avenue Général\nYou will be join by: Workmate1, Wormate2, Workmate3"))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build();
+
+        notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(0, notification);
     }
 
     private void configureBottomView() {
