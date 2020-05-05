@@ -3,6 +3,7 @@ package com.cliquet.gautier.go4lunch.Controllers.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Switch;
 
@@ -26,9 +27,56 @@ public class SettingsActivity extends AppCompatActivity {
 
         bindView();
         checkSwitchPosition();
+
+        enablingSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkSwitchPosition();
+            }
+        });
     }
 
     private void checkSwitchPosition() {
+        if(enablingSwitch.isChecked()) {
+            enablingCheckboxes();
+        }
+        else {
+            disablingCheckboxes();
+        }
+    }
+
+    private void enablingCheckboxes() {
+        mondayCheckbox.setClickable(true);
+        mondayCheckbox.setEnabled(true);
+        tuesdayCheckBox.setClickable(true);
+        tuesdayCheckBox.setEnabled(true);
+        wednesdayCheckBox.setClickable(true);
+        wednesdayCheckBox.setEnabled(true);
+        thursdayCheckBox.setClickable(true);
+        thursdayCheckBox.setEnabled(true);
+        fridayCheckBox.setClickable(true);
+        fridayCheckBox.setEnabled(true);
+        saturdayCheckBox.setClickable(true);
+        saturdayCheckBox.setEnabled(true);
+        sundayCheckBox.setClickable(true);
+        sundayCheckBox.setEnabled(true);
+    }
+
+    private void disablingCheckboxes() {
+        mondayCheckbox.setClickable(false);
+        mondayCheckbox.setEnabled(false);
+        tuesdayCheckBox.setClickable(false);
+        tuesdayCheckBox.setEnabled(false);
+        wednesdayCheckBox.setClickable(false);
+        wednesdayCheckBox.setEnabled(false);
+        thursdayCheckBox.setClickable(false);
+        thursdayCheckBox.setEnabled(false);
+        fridayCheckBox.setClickable(false);
+        fridayCheckBox.setEnabled(false);
+        saturdayCheckBox.setClickable(false);
+        saturdayCheckBox.setEnabled(false);
+        sundayCheckBox.setClickable(false);
+        sundayCheckBox.setEnabled(false);
     }
 
     private void bindView() {
