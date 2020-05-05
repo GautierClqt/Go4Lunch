@@ -2,6 +2,7 @@ package com.cliquet.gautier.go4lunch.Controllers.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,6 +11,8 @@ import android.widget.Switch;
 import com.cliquet.gautier.go4lunch.R;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    SharedPreferences preferences;
 
     Switch enablingSwitch;
     CheckBox mondayCheckbox;
@@ -25,8 +28,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        preferences = getSharedPreferences("Go4Lunch_Settings", MODE_PRIVATE);
+        boolean switchPosition = preferences.getBoolean("switch_position", false);
+
         bindView();
-        checkSwitchPosition();
+        setSwitchPosition(switchPosition);
 
         enablingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +42,11 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void setSwitchPosition(boolean switchPosition) {
+        enablingSwitch.setChecked(switchPosition);
+        checkSwitchPosition();
+    }
+
     private void checkSwitchPosition() {
         if(enablingSwitch.isChecked()) {
             enablingCheckboxes();
@@ -43,6 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
         else {
             disablingCheckboxes();
         }
+        preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
     }
 
     private void enablingCheckboxes() {
