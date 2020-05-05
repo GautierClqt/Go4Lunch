@@ -61,4 +61,15 @@
 
     <string name="open" translatable="false">open</string>
     <string name="close" translatable="false">close</string>
+
+    <!-- Settings strings -->
+    <string name="notifications" translatable="true">Notifications</string>
+    <string name="enabling_notifications" translatable="true">Enabling?</string>
+    <string name="monday" translatable="true">Monday</string>
+    <string name="thursday" translatable="true">Thursday</string>
+    <string name="wednesday" translatable="true">Wednesday</string>
+    <string name="tuesday" translatable="true">Tuesday</string>
+    <string name="friday" translatable="true">friday</string>
+    <string name="saturday" translatable="true">Saturday</string>
+    <string name="Sunday" translatable="true">Sunday</string>
 </resources>

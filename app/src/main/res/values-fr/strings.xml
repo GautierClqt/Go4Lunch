@@ -29,4 +29,13 @@
     <string name="settings">PARAMÈTRES</string>
     <string name="your_lunch">VOTRE CHOIX</string>
     <string name="workmate_is_joining">%1$s y sera</string>
+    <string name="Sunday">Dimanche</string>
+    <string name="friday">Vendredi</string>
+    <string name="monday">Lundi</string>
+    <string name="notifications">Notifications</string>
+    <string name="enabling_notifications">Activer?</string>
+    <string name="saturday">Samedi</string>
+    <string name="thursday">Jeudi</string>
+    <string name="tuesday">Mardi</string>
+    <string name="wednesday">Mercredi</string>
 </resources>
