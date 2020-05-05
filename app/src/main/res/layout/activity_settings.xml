@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_settings_title_textview" />
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/activity_settings_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -41,7 +41,7 @@
         android:layout_marginStart="216dp"
         android:text="@string/monday"
         app:layout_constraintStart_toStartOf="@+id/activity_settings_title_textview"
-        app:layout_constraintTop_toTopOf="@+id/switch1" />
+        app:layout_constraintTop_toTopOf="@+id/activity_settings_switch" />
 
     <CheckBox
         android:id="@+id/activity_settings_wednesday_checkbox"
