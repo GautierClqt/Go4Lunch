@@ -69,7 +69,7 @@
     <string name="thursday" translatable="true">Thursday</string>
     <string name="wednesday" translatable="true">Wednesday</string>
     <string name="tuesday" translatable="true">Tuesday</string>
-    <string name="friday" translatable="true">friday</string>
+    <string name="friday" translatable="true">Friday</string>
     <string name="saturday" translatable="true">Saturday</string>
     <string name="Sunday" translatable="true">Sunday</string>
 </resources>

@@ -403,6 +403,11 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                 });
                 break;
 
+            case R.id.drawer_menu_settings_item:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
+
             case R.id.drawer_menu_logout_item:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, LoginActivity.class);
