@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Switch;
 
@@ -17,6 +18,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     SharedPreferences preferences;
 
     ArrayList<Integer> mCheckboxIdList = new ArrayList<>();
+    ArrayList<Integer> mCheckBoxPositionList = new ArrayList<>();
 
     Switch enablingSwitch;
     CheckBox mondayCheckbox;
@@ -37,6 +39,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         bindView();
         setClickOnViewListener();
+        initCheckboxesLists();
         setSwitchPosition(switchPosition);
 
         enablingSwitch.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +48,22 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 checkSwitchPosition();
             }
         });
+    }
+
+    private void initCheckboxesLists() {
+        //init mCheckBoxPositionList
+        mCheckBoxPositionList.add(mondayCheckbox.getId());
+        mCheckBoxPositionList.add(tuesdayCheckBox.getId());
+        mCheckBoxPositionList.add(fridayCheckBox.getId());
+        mCheckBoxPositionList.add(thursdayCheckBox.getId());
+        mCheckBoxPositionList.add(fridayCheckBox.getId());
+        mCheckBoxPositionList.add(saturdayCheckBox.getId());
+        mCheckBoxPositionList.add(sundayCheckBox.getId());
+
+        //init mCheckBoxIdList
+        for(int i = 0; i < mCheckBoxPositionList.size(); i++) {
+                mCheckboxIdList.add(null);
+        }
     }
 
     private void setSwitchPosition(boolean switchPosition) {
@@ -62,23 +81,42 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
     }
 
+    private void putCheckboxesAtRightPosition(int idView, Boolean check) {
+        for(int i = 0; i < mCheckBoxPositionList.size(); i++) {
+            for(int j = 0; j < mCheckBoxPositionList.size(); j++) {
+                if(mCheckBoxPositionList.get(i) == idView) {
+                    if(check) {
+                        mCheckboxIdList.set(i, idView);
+                    }
+                    else{
+                        mCheckboxIdList.set(i, null);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void onClick(View view) {
         int idView = view.getId();
 
         if(view instanceof CheckBox) {
             CheckBox checkbox = findViewById(idView);
-            if(checkbox.isChecked()) {
-                mCheckboxIdList.add(idView);
-            }
-            else {
-                for(int i = 0; i <= mCheckboxIdList.size(); i++) {
-                    if(mCheckboxIdList.get(i) == idView) {
-                        mCheckboxIdList.remove(i);
-                        break;
-                    }
-                }
-            }
+            Boolean check = checkbox.isChecked();
+
+            putCheckboxesAtRightPosition(idView, check);
+//            if(checkbox.isChecked()) {
+//                mCheckboxIdList.add(idView);
+//            }
+//            else {
+//                for(int i = 0; i <= mCheckboxIdList.size(); i++) {
+//                    if(mCheckboxIdList.get(i) == idView) {
+//                        mCheckboxIdList.remove(i);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         }
     }
 
