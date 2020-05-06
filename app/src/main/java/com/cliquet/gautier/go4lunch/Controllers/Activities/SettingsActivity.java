@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Switch;
 
 import com.cliquet.gautier.go4lunch.R;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -50,6 +50,21 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
+    private void setSwitchPosition(boolean switchPosition) {
+        enablingSwitch.setChecked(switchPosition);
+        checkSwitchPosition();
+    }
+
+    private void checkSwitchPosition() {
+        if(enablingSwitch.isChecked()) {
+            enablingCheckboxes();
+        }
+        else {
+            disablingCheckboxes();
+        }
+        preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
+    }
+
     private void initCheckboxesLists() {
         //init mCheckBoxPositionList
         mCheckBoxPositionList.add(mondayCheckbox.getId());
@@ -66,21 +81,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void setSwitchPosition(boolean switchPosition) {
-        enablingSwitch.setChecked(switchPosition);
-        checkSwitchPosition();
-    }
-
-    private void checkSwitchPosition() {
-        if(enablingSwitch.isChecked()) {
-            enablingCheckboxes();
-        }
-        else {
-            disablingCheckboxes();
-        }
-        preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
-    }
-
     private void putCheckboxesAtRightPosition(int idView, Boolean check) {
         for(int i = 0; i < mCheckBoxPositionList.size(); i++) {
             for(int j = 0; j < mCheckBoxPositionList.size(); j++) {
@@ -94,6 +94,16 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         }
+        saveCheckboxesIdList();
+    }
+
+    private void saveCheckboxesIdList() {
+        String jsonCheckBoxId;
+
+        Gson gson = new Gson();
+        jsonCheckBoxId = gson.toJson(mCheckboxIdList);
+
+        preferences.edit().putString("checkboxes_id_list", jsonCheckBoxId).apply();
     }
 
     @Override
@@ -105,18 +115,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             Boolean check = checkbox.isChecked();
 
             putCheckboxesAtRightPosition(idView, check);
-//            if(checkbox.isChecked()) {
-//                mCheckboxIdList.add(idView);
-//            }
-//            else {
-//                for(int i = 0; i <= mCheckboxIdList.size(); i++) {
-//                    if(mCheckboxIdList.get(i) == idView) {
-//                        mCheckboxIdList.remove(i);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
         }
     }
 

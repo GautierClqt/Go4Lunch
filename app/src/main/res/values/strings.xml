@@ -64,7 +64,7 @@
 
     <!-- Settings strings -->
     <string name="notifications" translatable="true">Notifications</string>
-    <string name="enabling_notifications" translatable="true">Enabling?</string>
+    <string name="enabling_notifications" translatable="true">Enabling ?</string>
     <string name="monday" translatable="true">Monday</string>
     <string name="thursday" translatable="true">Thursday</string>
     <string name="wednesday" translatable="true">Wednesday</string>
