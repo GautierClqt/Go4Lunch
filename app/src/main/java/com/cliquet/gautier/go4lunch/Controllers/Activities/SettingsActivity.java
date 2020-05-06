@@ -10,9 +10,13 @@ import android.widget.Switch;
 
 import com.cliquet.gautier.go4lunch.R;
 
-public class SettingsActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
     SharedPreferences preferences;
+
+    ArrayList<Integer> mCheckboxIdList = new ArrayList<>();
 
     Switch enablingSwitch;
     CheckBox mondayCheckbox;
@@ -32,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
         boolean switchPosition = preferences.getBoolean("switch_position", false);
 
         bindView();
+        setClickOnViewListener();
         setSwitchPosition(switchPosition);
 
         enablingSwitch.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +60,26 @@ public class SettingsActivity extends AppCompatActivity {
             disablingCheckboxes();
         }
         preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int idView = view.getId();
+
+        if(view instanceof CheckBox) {
+            CheckBox checkbox = findViewById(idView);
+            if(checkbox.isChecked()) {
+                mCheckboxIdList.add(idView);
+            }
+            else {
+                for(int i = 0; i <= mCheckboxIdList.size(); i++) {
+                    if(mCheckboxIdList.get(i) == idView) {
+                        mCheckboxIdList.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private void enablingCheckboxes() {
@@ -100,5 +125,15 @@ public class SettingsActivity extends AppCompatActivity {
         fridayCheckBox = findViewById(R.id.activity_settings_friday_checkbox);
         saturdayCheckBox = findViewById(R.id.activity_settings_saturday_checkbox);
         sundayCheckBox = findViewById(R.id.activity_settings_sunday_checkbox);
+    }
+
+    private void setClickOnViewListener() {
+        mondayCheckbox.setOnClickListener(this);
+        tuesdayCheckBox.setOnClickListener(this);
+        wednesdayCheckBox.setOnClickListener(this);
+        thursdayCheckBox.setOnClickListener(this);
+        fridayCheckBox.setOnClickListener(this);
+        saturdayCheckBox.setOnClickListener(this);
+        sundayCheckBox.setOnClickListener(this);
     }
 }
