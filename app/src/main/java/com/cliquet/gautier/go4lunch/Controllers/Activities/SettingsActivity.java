@@ -45,7 +45,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setClickOnViewListener();
         initCheckboxesLists();
         setSwitchPosition(switchPosition);
-        setCheckboxesStates();
 
         enablingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,8 +59,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         checkSwitchPosition();
     }
 
-    private void setCheckboxesStates() {
-        if(mCheckboxIdList == null) {
+    private void firstInitCheckboxIdList() {
+        if(mCheckboxIdList.isEmpty()) {
             for (int i = 0; i < mCheckBoxPositionList.size(); i++) {
                 mCheckboxIdList.add(null);
             }
@@ -90,7 +89,17 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         //init mCheckBoxIdList
         String jsonCheckBoxId = preferences.getString("checkboxes_id_list", null);
-        mCheckboxIdList = gson.fromJson(jsonCheckBoxId, new TypeToken<ArrayList<Integer>>(){}.getType());
+        if(jsonCheckBoxId != null ){
+            mCheckboxIdList = gson.fromJson(jsonCheckBoxId, new TypeToken<ArrayList<Integer>>(){}.getType());
+            for(int i = 0; i < mCheckboxIdList.size(); i++) {
+                if(mCheckboxIdList.get(i) != null) {
+                    CheckBox checkbox = findViewById(mCheckboxIdList.get(i));
+                    checkbox.setChecked(true);
+                }
+            }
+        } else {
+            firstInitCheckboxIdList();
+        }
     }
 
     private void putCheckboxesAtRightPosition(int idView, Boolean check) {
