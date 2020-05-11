@@ -195,7 +195,7 @@ public class RestaurantDetails extends AppCompatActivity {
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String newRestaurantId = restaurant.getId();
 
-        RestaurantHelper.createRestaurant(restaurant.getId(), restaurant.getName());
+        RestaurantHelper.createRestaurant(restaurant.getId(), restaurant.getName(), restaurant.getAddress());
 
         //1. récupérer l'id de l'ancien restaurant sélectionné par user
         UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

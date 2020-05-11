@@ -26,9 +26,10 @@ public class RestaurantHelper {
     }
 
     //CREATE
-    public static Task<Void> createRestaurant(String restaurantId, String restaurantName) {
+    public static Task<Void> createRestaurant(String restaurantId, String restaurantName, String restaurantAddress) {
         Map<String, Object> restaurantToCreate = new HashMap<>();
         restaurantToCreate.put("name", restaurantName);
+        restaurantToCreate.put("address", restaurantAddress);
         return RestaurantHelper.getRestaurantsCollection().document(restaurantId).set(restaurantToCreate);
     }
 
