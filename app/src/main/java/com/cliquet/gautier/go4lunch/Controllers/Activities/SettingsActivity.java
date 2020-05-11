@@ -79,13 +79,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private void initCheckboxesLists() {
         //init mCheckBoxPositionList
+        mCheckBoxPositionList.add(sundayCheckBox.getId());
         mCheckBoxPositionList.add(mondayCheckbox.getId());
         mCheckBoxPositionList.add(tuesdayCheckBox.getId());
         mCheckBoxPositionList.add(wednesdayCheckBox.getId());
         mCheckBoxPositionList.add(thursdayCheckBox.getId());
         mCheckBoxPositionList.add(fridayCheckBox.getId());
         mCheckBoxPositionList.add(saturdayCheckBox.getId());
-        mCheckBoxPositionList.add(sundayCheckBox.getId());
 
         //init mCheckBoxIdList
         String jsonCheckBoxId = preferences.getString("checkboxes_id_list", null);
