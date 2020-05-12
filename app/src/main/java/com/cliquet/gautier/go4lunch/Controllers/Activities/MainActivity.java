@@ -16,6 +16,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -42,6 +43,7 @@ import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
+import com.cliquet.gautier.go4lunch.Utils.AlarmStartStop;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        notificationSwitchPosition();
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
@@ -106,6 +110,20 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         configureDrawerLayout();
         bindViews();
         setNavigationDrawerViews();
+    }
+
+    private void notificationSwitchPosition() {
+        SharedPreferences preferences;
+        preferences = getSharedPreferences("Go4Lunch_Settings", MODE_PRIVATE);
+        boolean switchPosition = preferences.getBoolean("switch_position", false);
+
+        AlarmStartStop alarm = new AlarmStartStop();
+        if(switchPosition) {
+            alarm.startAlarm(this);
+        }
+        else {
+            alarm.stopAlarm(this);
+        }
     }
 
     private void configureBottomView() {
