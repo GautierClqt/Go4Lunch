@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private void notificationSwitchPosition() {
         SharedPreferences preferences;
         preferences = getSharedPreferences("Go4Lunch_Settings", MODE_PRIVATE);
-        boolean switchPosition = preferences.getBoolean("switch_position", false);
+        boolean switchPosition = preferences.getBoolean("switch_position", true);
 
         AlarmStartStop alarm = new AlarmStartStop();
         if(switchPosition) {

@@ -40,12 +40,22 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_settings);
 
         preferences = getSharedPreferences("Go4Lunch_Settings", MODE_PRIVATE);
-        boolean switchPosition = preferences.getBoolean("switch_position", false);
+        boolean switchPosition = preferences.getBoolean("switch_position", true);
+        String jsonCheckBoxId = preferences.getString("checkboxes_id_list", null);
 
         bindView();
         setClickOnViewListener();
-        initCheckboxesLists();
-        setSwitchPosition(switchPosition);
+        initCheckboxesIdsOrderList();
+
+        if(jsonCheckBoxId == null){
+            defaultViewsPosition();
+            defaultCheckboxIdlist();
+        } else {
+            preferencesSwitchPosition(switchPosition);
+            preferencesCheckboxesPosition(jsonCheckBoxId);
+        }
+
+        checkSwitchPosition();
 
         enablingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,15 +65,39 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private void setSwitchPosition(boolean switchPosition) {
-        enablingSwitch.setChecked(switchPosition);
-        checkSwitchPosition();
+    private void defaultViewsPosition() {
+        enablingSwitch.setChecked(true);
+        mondayCheckbox.setChecked(true);
+        tuesdayCheckBox.setChecked(true);
+        wednesdayCheckBox.setChecked(true);
+        thursdayCheckBox.setChecked(true);
+        fridayCheckBox.setChecked(true);
+        saturdayCheckBox.setChecked(false);
+        sundayCheckBox.setChecked(false);
     }
 
-    private void firstInitCheckboxIdList() {
-        if(mCheckboxIdList.isEmpty()) {
-            for (int i = 0; i < mCheckBoxPositionList.size(); i++) {
-                mCheckboxIdList.add(null);
+    private void defaultCheckboxIdlist() {
+        CheckBox checkbox;
+        for(int i = 0; i < mCheckBoxPositionList.size(); i++) {
+            checkbox = findViewById(mCheckBoxPositionList.get(i));
+            mCheckboxIdList.add(null);
+            if(checkbox.isChecked()) {
+                mCheckboxIdList.set(i, mCheckBoxPositionList.get(i));
+            }
+        }
+        saveCheckboxesIdList();
+    }
+
+    private void preferencesSwitchPosition(boolean switchPosition) {
+        enablingSwitch.setChecked(switchPosition);
+    }
+
+    private void preferencesCheckboxesPosition(String jsonCheckBoxId) {
+        mCheckboxIdList = gson.fromJson(jsonCheckBoxId, new TypeToken<ArrayList<Integer>>(){}.getType());
+        for(int i = 0; i < mCheckboxIdList.size(); i++) {
+            if(mCheckboxIdList.get(i) != null) {
+                CheckBox checkbox = findViewById(mCheckboxIdList.get(i));
+                checkbox.setChecked(true);
             }
         }
     }
@@ -81,8 +115,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
     }
 
-    private void initCheckboxesLists() {
-        //init mCheckBoxPositionList
+    private void initCheckboxesIdsOrderList() {
         mCheckBoxPositionList.add(sundayCheckBox.getId());
         mCheckBoxPositionList.add(mondayCheckbox.getId());
         mCheckBoxPositionList.add(tuesdayCheckBox.getId());
@@ -90,28 +123,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mCheckBoxPositionList.add(thursdayCheckBox.getId());
         mCheckBoxPositionList.add(fridayCheckBox.getId());
         mCheckBoxPositionList.add(saturdayCheckBox.getId());
-
-        //init mCheckBoxIdList
-        String jsonCheckBoxId = preferences.getString("checkboxes_id_list", null);
-        if(jsonCheckBoxId != null ){
-            mCheckboxIdList = gson.fromJson(jsonCheckBoxId, new TypeToken<ArrayList<Integer>>(){}.getType());
-            for(int i = 0; i < mCheckboxIdList.size(); i++) {
-                if(mCheckboxIdList.get(i) != null) {
-                    CheckBox checkbox = findViewById(mCheckboxIdList.get(i));
-                    checkbox.setChecked(true);
-                }
-            }
-        } else {
-            firstInitCheckboxIdList();
-        }
     }
 
-    private void putCheckboxesAtRightPosition(int idView, Boolean check) {
+    private void putCheckboxesAtRightPosition(int viewId, Boolean check) {
         for(int i = 0; i < mCheckBoxPositionList.size(); i++) {
             for(int j = 0; j < mCheckBoxPositionList.size(); j++) {
-                if(mCheckBoxPositionList.get(i) == idView) {
+                if(mCheckBoxPositionList.get(i) == viewId) {
                     if(check) {
-                        mCheckboxIdList.set(i, idView);
+                        mCheckboxIdList.set(i, viewId);
                     }
                     else{
                         mCheckboxIdList.set(i, null);
@@ -129,13 +148,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        int idView = view.getId();
+        int viewId = view.getId();
 
         if(view instanceof CheckBox) {
-            CheckBox checkbox = findViewById(idView);
-            Boolean check = checkbox.isChecked();
-
-            putCheckboxesAtRightPosition(idView, check);
+            CheckBox checkbox = findViewById(viewId);
+            putCheckboxesAtRightPosition(viewId, checkbox.isChecked());
         }
     }
 
