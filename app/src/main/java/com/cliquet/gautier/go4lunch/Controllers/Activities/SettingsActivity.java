@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.Switch;
 
 import com.cliquet.gautier.go4lunch.R;
+import com.cliquet.gautier.go4lunch.Utils.AlarmStartStop;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -68,11 +69,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void checkSwitchPosition() {
+        AlarmStartStop alarm = new AlarmStartStop();
         if(enablingSwitch.isChecked()) {
             enablingCheckboxes();
+            alarm.startAlarm(this);
         }
         else {
             disablingCheckboxes();
+            alarm.stopAlarm(this);
         }
         preferences.edit().putBoolean("switch_position", enablingSwitch.isChecked()).apply();
     }

@@ -72,4 +72,12 @@
     <string name="friday" translatable="true">Friday</string>
     <string name="saturday" translatable="true">Saturday</string>
     <string name="Sunday" translatable="true">Sunday</string>
+
+    <!-- notification string -->
+    <string name="notif_content_text" translatable="true">It\'s lunch time!</string>
+    <string name="notif_have_a_good_lunch" translatable="true">Have a good lunch!</string>
+    <string name="notif_join_by" translatable="true">You will be join by: </string>
+    <string name="notif_no_restaurant_pick" translatable="true">You didn\'t pick a restaurant.</string>
+    <string name="notif_no_address" translatable="true">Address unknown</string>
+    <string name="notif_and" translatable="true"> and </string>
 </resources>

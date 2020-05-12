@@ -38,4 +38,10 @@
     <string name="thursday">Jeudi</string>
     <string name="tuesday">Mardi</string>
     <string name="wednesday">Mercredi</string>
+    <string name="notif_join_by">Vous mangerez avec:</string>
+    <string name="notif_no_address">Adresse inconnue</string>
+    <string name="notif_no_restaurant_pick">Vous n\'avez pas choisi de restaurant.</string>
+    <string name="notif_and">" et "</string>
+    <string name="notif_content_text">C\'est l\'heure du déjeuner!</string>
+    <string name="notif_have_a_good_lunch">Bon appétit!</string>
 </resources>

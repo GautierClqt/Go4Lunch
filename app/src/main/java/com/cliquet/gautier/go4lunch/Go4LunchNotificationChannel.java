@@ -19,7 +19,7 @@ public class Go4LunchNotificationChannel extends Application {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_TIME_TO_EAT,
-                    "tome to eat channel",
+                    "time to eat channel",
                     NotificationManager.IMPORTANCE_DEFAULT
             );
             channel.setDescription("Remind user the restaurant he wants to eat to and which workmates will join him");

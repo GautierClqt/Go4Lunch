@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setNotificationBuilder();
-
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
@@ -108,20 +106,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         configureDrawerLayout();
         bindViews();
         setNavigationDrawerViews();
-    }
-
-    private void setNotificationBuilder() {
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_TIME_TO_EAT)
-                .setSmallIcon(R.drawable.ic_logo_go4lunch)
-                .setContentTitle("Go4Lunch")
-                .setContentText("It's time to east!")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("You picked: RESTAURANT_NAME\nAddress: 456 avenue Général\nYou will be join by: Workmate1, Wormate2, Workmate3"))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .build();
-
-        notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(0, notification);
     }
 
     private void configureBottomView() {
