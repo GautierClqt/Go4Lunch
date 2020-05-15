@@ -157,7 +157,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     if (i < listSize - 2) {
                         notificationString = notificationString + ", ";
                     } else if (i == listSize - 2) {
-                        notificationString = notificationString + context.getString(R.string.notif_and);
+                        notificationString = notificationString + " " + context.getString(R.string.notif_and) + " ";
                     }
                 }
             }

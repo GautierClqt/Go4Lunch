@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;

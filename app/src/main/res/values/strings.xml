@@ -80,4 +80,7 @@
     <string name="notif_no_restaurant_pick" translatable="true">You didn\'t pick a restaurant.</string>
     <string name="notif_no_address" translatable="true">Address unknown</string>
     <string name="notif_and" translatable="true"> and </string>
+
+    <!-- toolbar menu item -->
+    <string name="search_item" translatable="false">menu</string>
 </resources>
