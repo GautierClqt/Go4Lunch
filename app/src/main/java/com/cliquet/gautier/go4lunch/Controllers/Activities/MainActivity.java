@@ -173,9 +173,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureFragmentsDefaultDisplay() {
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, workmatesFragment, "3").hide(workmatesFragment).commit();
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, listFragment, "2").hide(listFragment).commit();
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, mapFragment, "1").commit();
+        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout2, workmatesFragment, "3").hide(workmatesFragment).commit();
+        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout2, listFragment, "2").hide(listFragment).commit();
+        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout2, mapFragment, "1").commit();
     }
 
     private void bindViews() {

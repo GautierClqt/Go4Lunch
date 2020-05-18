@@ -5,6 +5,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
@@ -21,10 +24,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -83,6 +96,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 .findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
 
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference restaurantRef = db.collection("restaurant");
+
+        restaurantRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                List<DocumentSnapshot> selectedRestaurantlist = queryDocumentSnapshots.getDocuments();
+
+            }
+        });
+
         return view;
     }
 
@@ -97,7 +122,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 setCameraOnUser(mGoogleMaps, latlng);
 
                 if(mRestaurantList.size() != 0) {
-                    putPinsOnPlaces(mRestaurantList);
+                    getSelectedRestaurantFromFirebase();
                 }
             }
         });
@@ -108,15 +133,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
 
+    private void getSelectedRestaurantFromFirebase() {
+        RestaurantHelper.getRestaurantsCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<DocumentSnapshot> selectedRestaurantlist = task.getResult().getDocuments();
+                putPinsOnPlaces(mRestaurantList, selectedRestaurantlist);
+            }
+        });
+    }
 
-    private void putPinsOnPlaces(List<Restaurant> mRestaurantList) {
 
+    private void putPinsOnPlaces(List<Restaurant> mRestaurantList, List<DocumentSnapshot> selectedRestaurantList) {
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_18dp);
         for(int i = 0; i < mRestaurantList.size(); i++) {
+            for(int j = 0; j < selectedRestaurantList.size(); j++){
+                if(selectedRestaurantList.get(j).getId().equals(mRestaurantList.get(i).getId())) {
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_green_18dp);
+                    break;
+                }
+                else {
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_18dp);
+                }
+            }
+
             double placeLat = mRestaurantList.get(i).getLatitude();
             double placeLong = mRestaurantList.get(i).getLongitude();
             String placeName = mRestaurantList.get(i).getName();
             LatLng marker = new LatLng(placeLat, placeLong);
-            mGoogleMaps.addMarker(new MarkerOptions().position(marker).title(placeName));
+            mGoogleMaps.addMarker(new MarkerOptions()
+                    .position(marker)
+                    .title(placeName).icon(icon));
         }
     }
 
@@ -151,19 +198,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mGoogleMaps.setOnPoiClickListener(this);
 
         getUserLocation();
-
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

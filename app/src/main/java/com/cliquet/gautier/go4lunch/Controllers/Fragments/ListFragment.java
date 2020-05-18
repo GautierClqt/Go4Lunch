@@ -1,5 +1,6 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,13 +10,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import com.cliquet.gautier.go4lunch.Controllers.Activities.MainActivity;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
@@ -31,6 +35,9 @@ public class ListFragment extends Fragment implements Callback {
     private RecyclerView recyclerView;
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
+
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
 
     public ListFragment() {
     }
@@ -53,13 +60,53 @@ public class ListFragment extends Fragment implements Callback {
             mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
         }
 
+//        recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
+//
+//        RestaurantsRecyclerAdapter adapter = new RestaurantsRecyclerAdapter(this.getContext(),  mRestaurantList, this);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
+        setRecyclerView();
 
+        return view;
+    }
+
+    private void setRecyclerView() {
         RestaurantsRecyclerAdapter adapter = new RestaurantsRecyclerAdapter(this.getContext(),  mRestaurantList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+    }
 
-        return view;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        MenuItem item = menu.findItem(R.id.toolbar_menu_search_item);
+        SearchManager searchManger = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        if(item != null) {
+            searchView = (SearchView) item.getActionView();
+        }
+        if(searchView != null) {
+            searchView.setSearchableInfo(searchManger.getSearchableInfo(getActivity().getComponentName()));
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Log.i("onQueryTextSubmit", query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.i("onQueryTextChange", newText);
+                    mRestaurantList.clear();
+                    setRecyclerView();
+                    return true;
+                }
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
