@@ -63,6 +63,8 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements PlacesApiCalls.GoogleMapsCallback, NavigationView.OnNavigationItemSelectedListener {
 
+    private boolean search = false;
+
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     final Fragment mapFragment = new MapFragment();
     final Fragment listFragment = new ListFragment();
     final Fragment workmatesFragment = new WorkmatesFragment();
-    final FragmentManager fragmentMangager = getSupportFragmentManager();
+    final FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment activeFragment = mapFragment;
 
     private HashMap<String, String> mRequestParametersHM = new HashMap<>();
@@ -122,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
             @Override
             public boolean onQueryTextChange(String searchText) {
+                search = true;
+                mRestaurantList.clear();
                 googleMpaApiSearchRequest(searchText);
 
                 Log.d("tag", "onQueryTextChange: "+searchText);
@@ -152,17 +156,20 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.bottom_navigation_menu_map:
-                        fragmentMangager.beginTransaction().hide(activeFragment).show(mapFragment).commit();
+                        fragmentManager.beginTransaction().hide(activeFragment).show(mapFragment).commit();
                         activeFragment = mapFragment;
                         return true;
 
                     case R.id.bottom_navigation_menu_list:
-                        fragmentMangager.beginTransaction().hide(activeFragment).show(listFragment).commit();
+                        fragmentManager.beginTransaction().hide(activeFragment).show(listFragment).commit();
+                        if(activeFragment == listFragment) {
+                            fragmentManager.beginTransaction().hide(activeFragment).detach(listFragment).attach(listFragment).addToBackStack(null).commit();
+                        }
                         activeFragment = listFragment;
                         return true;
 
                     case R.id.bottom_navigation_menu_workmates:
-                        fragmentMangager.beginTransaction().hide(activeFragment).show(workmatesFragment).commit();
+                        fragmentManager.beginTransaction().hide(activeFragment).show(workmatesFragment).commit();
                         activeFragment = workmatesFragment;
                         return true;
                 }
@@ -188,9 +195,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureFragmentsDefaultDisplay() {
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, workmatesFragment, "3").hide(workmatesFragment).commit();
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, listFragment, "2").hide(listFragment).commit();
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, mapFragment, "1").commit();
+        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, workmatesFragment, "3").hide(workmatesFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, listFragment, "2").hide(listFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, mapFragment, "1").commit();
     }
 
     private void bindViews() {
@@ -380,7 +387,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         listFragment.setArguments(bundle);
         workmatesFragment.setArguments(bundle);
 
-        configureFragmentsDefaultDisplay();
+        if(!search) {
+            configureFragmentsDefaultDisplay();
+        }
         configureBottomView();
     }
 
