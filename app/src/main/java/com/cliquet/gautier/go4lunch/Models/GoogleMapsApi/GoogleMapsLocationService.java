@@ -51,7 +51,10 @@ public interface GoogleMapsLocationService {
             .build();
 
     @GET("maps/api/place/nearbysearch/json")
-    Call<NearbySearchPojo> getGoogleMapDatas(@QueryMap Map<String, String> map);
+    Call<NearbySearchPojo> getNearbySearch(@QueryMap Map<String, String> map);
+
+    @GET("maps/api/place/textsearch/json")
+    Call<NearbySearchPojo> getFromText(@QueryMap Map<String, String> map);
 
     @GET("maps/api/place/details/json")
     //Call<DetailsPojo> getDetails(@QueryMap Map<String, String> map);

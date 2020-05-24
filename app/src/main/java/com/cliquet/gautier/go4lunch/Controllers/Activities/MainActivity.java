@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -113,6 +114,20 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.toolbar_menu_search_item);
         SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String searchText) {
+                googleMpaApiSearchRequest(searchText);
+
+                Log.d("tag", "onQueryTextChange: "+searchText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -173,9 +188,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureFragmentsDefaultDisplay() {
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout2, workmatesFragment, "3").hide(workmatesFragment).commit();
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout2, listFragment, "2").hide(listFragment).commit();
-        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout2, mapFragment, "1").commit();
+        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, workmatesFragment, "3").hide(workmatesFragment).commit();
+        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, listFragment, "2").hide(listFragment).commit();
+        fragmentMangager.beginTransaction().add(R.id.activity_main_framelayout, mapFragment, "1").commit();
     }
 
     private void bindViews() {
@@ -220,12 +235,23 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void googleMapApiRequest() {
+        mRequestParametersHM.clear();
         mRequestParametersHM.put("location", mUserLat + "," + mUserLng);
         mRequestParametersHM.put("radius", Integer.toString(500));
         mRequestParametersHM.put("type", "restaurant");
         mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
 
         PlacesApiCalls.fetchNearbySearch(this, mRequestParametersHM);
+    }
+
+    private void googleMpaApiSearchRequest(String searchText) {
+        mRequestParametersHM.clear();
+        mRequestParametersHM.put("input", searchText);
+        mRequestParametersHM.put("inputtype", "textquery");
+        mRequestParametersHM.put("type", "restaurant");
+        mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
+
+        PlacesApiCalls.fetchFromText(this, mRequestParametersHM);
     }
 
     private void firestoreGetUsersRequest() {
@@ -267,7 +293,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
-        float distance = calculateDistance(index);
+        double restaurantLat = 0;
+        double restaurantLng = 0;
+        float distance = 0;
         Hours hours = new Hours();
         String openingHoursString;
         String phoneNumber;
@@ -298,11 +326,17 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             openingHoursString = null;
         }
 
+        if(nearbySearchPojo.getNearbySearchResults().get(index).getGeometry() != null) {
+            restaurantLat = nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat();
+            restaurantLng = nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng();
+            distance = calculateDistance(index);
+        }
+
         mRestaurantList.add(new Restaurant(
                 nearbySearchPojo.getNearbySearchResults().get(index).getId(),
                 nearbySearchPojo.getNearbySearchResults().get(index).getName(),
-                nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat(),
-                nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng(),
+                restaurantLat,
+                restaurantLng,
                 nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
                 false,
                 new Random().nextInt(4),
@@ -370,8 +404,8 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
             detailsRequest(mNearbySearchPojo);
         } else {
-            textViewPermissions.setText(R.string.no_restaurant_found);
-            textViewPermissions.setVisibility(View.VISIBLE);
+//            textViewPermissions.setText(R.string.no_restaurant_found);
+//            textViewPermissions.setVisibility(View.VISIBLE);
         }
     }
 
