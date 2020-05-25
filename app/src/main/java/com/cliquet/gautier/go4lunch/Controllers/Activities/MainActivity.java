@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     TextView userNameTextview;
     TextView userEmailTextview;
     ImageView userPictureImageview;
-    private ProgressBar progressBar;
 
     private NearbySearchPojo mNearbySearchPojo;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
@@ -189,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
         firestoreGetUsersRequest();
         getUserLocation();
     }
@@ -209,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         userEmailTextview = headerView.findViewById(R.id.nav_header_useremail_textview);
         userPictureImageview = headerView.findViewById(R.id.nav_header_userpicture_imageview);
         textViewPermissions = findViewById(R.id.activity_main_warning_textview);
-        progressBar = findViewById(R.id.activity_main_progressbar);
     }
 
     private void setNavigationDrawerViews() {

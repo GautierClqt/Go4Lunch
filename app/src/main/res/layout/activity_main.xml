@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         tools:openDrawer="start">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -24,33 +24,39 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+                app:layout_constraintTop_toTopOf="parent"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <FrameLayout
                 android:id="@+id/activity_main_framelayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/activity_main_bottom_navigation_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/activity_main_bottom_navigation_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="67dp"
-                    android:background="#FFFFFF"
-                    app:itemIconTint="@drawable/bottom_navigation_colors"
-                    app:itemTextColor="@drawable/bottom_navigation_colors"
-                    app:menu="@menu/bottom_navigation_menu" />
-            </FrameLayout>
-        </LinearLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/activity_main_bottom_navigation_view"
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:background="#FFFFFF"
+                app:itemIconTint="@drawable/bottom_navigation_colors"
+                app:itemTextColor="@drawable/bottom_navigation_colors"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:menu="@menu/bottom_navigation_menu" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/avitivity_main_navigation_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:itemIconTint="#FFFFFF"
-            app:itemTextColor="#FFFFFF"
             android:background="@color/colorAccent"
             app:headerLayout="@layout/nav_header"
+            app:itemIconTint="#FFFFFF"
+            app:itemTextColor="#FFFFFF"
             app:menu="@menu/drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
@@ -66,8 +72,4 @@
         android:textSize="25sp"
         android:visibility="gone" />
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/activity_main_progressbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </RelativeLayout>
