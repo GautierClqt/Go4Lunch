@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 //            fragmentManager.beginTransaction().detach(activeFragment).attach(activeFragment).addToBackStack(null).commit();
 //        }
         fragmentManager.beginTransaction().detach(LIST).attach(LIST).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().detach(MAP).attach(MAP).addToBackStack(null).commit();
         //progressBar.setVisibility(View.GONE);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

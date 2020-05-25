@@ -5,17 +5,13 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
-import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -27,11 +23,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -140,7 +135,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 mUserLat = location.getLatitude();
                 mUserLng = location.getLongitude();
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
-                setCameraOnUser(mGoogleMaps, latlng);
+                setCameraOnMap(mGoogleMaps, latlng);
 
                 if(mRestaurantList.size() != 0) {
                     addMarkersOnMap();
@@ -149,12 +144,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         });
     }
 
-    private void setCameraOnUser(GoogleMap googleMap, LatLng latLng) {
-        float zoomLevel = 15.5f;
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+    private void setCameraOnMap(GoogleMap googleMap, LatLng latLng) {
+        LatLngBounds.Builder bld = new LatLngBounds.Builder();
+
+        for(int i = 0; i < mRestaurantList.size(); i++) {
+            LatLng ll = new LatLng(mRestaurantList.get(i).getLatitude(), mRestaurantList.get(i).getLongitude());
+            bld.include(ll);
+        }
+        
+        bld.include(latLng);
+        LatLngBounds bound = bld.build();
+        mGoogleMaps.moveCamera(CameraUpdateFactory.newLatLngBounds(bound, 100));
     }
 
     private void addMarkersOnMap() {
+        mGoogleMaps.clear();
         for(int i = 0; i < mMarkersList.size(); i++) {
             mGoogleMaps.addMarker(mMarkersList.get(i));
         }
