@@ -56,13 +56,9 @@ import java.util.Objects;
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private GoogleMap mGoogleMaps;
-    private ProgressBar progressBar;
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<MarkerOptions> mMarkersList = new ArrayList<>();
-    //private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
-    private List<NearbySearchPojo.NearbySearchResults> mResults = new ArrayList<>();
-    private String nextPageToken;
-    private int i;
+
     private double mUserLat;
     private double mUserLng;
 
@@ -157,40 +153,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         float zoomLevel = 15.5f;
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
-
-//    private void getSelectedRestaurantFromFirebase() {
-//        RestaurantHelper.getRestaurantsCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                List<DocumentSnapshot> selectedRestaurantlist = task.getResult().getDocuments();
-//                putPinsOnPlaces(mRestaurantList, selectedRestaurantlist);
-//            }
-//        });
-//    }
-
-
-//    private void putPinsOnPlaces(List<Restaurant> mRestaurantList, List<DocumentSnapshot> selectedRestaurantList) {
-//        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_18dp);
-//        for(int i = 0; i < mRestaurantList.size(); i++) {
-//            for(int j = 0; j < selectedRestaurantList.size(); j++){
-//                if(selectedRestaurantList.get(j).getId().equals(mRestaurantList.get(i).getId())) {
-//                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_green_18dp);
-//                    break;
-//                }
-//                else {
-//                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_18dp);
-//                }
-//            }
-//
-//            double placeLat = mRestaurantList.get(i).getLatitude();
-//            double placeLong = mRestaurantList.get(i).getLongitude();
-//            String placeName = mRestaurantList.get(i).getName();
-//            LatLng marker = new LatLng(placeLat, placeLong);
-//            mGoogleMaps.addMarker(new MarkerOptions()
-//                    .position(marker)
-//                    .title(placeName).icon(icon));
-//        }
-//    }
 
     private void addMarkersOnMap() {
         for(int i = 0; i < mMarkersList.size(); i++) {

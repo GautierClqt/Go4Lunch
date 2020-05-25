@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,13 +75,14 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
     private NearbySearchPojo mNearbySearchPojo;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
+    private ArrayList<Restaurant> mRestaurantOriginalList = new ArrayList<>();
     private ArrayList<Workmates> mWorkmatesList = new ArrayList<>();
 
-    final Fragment mapFragment = new MapFragment();
-    final Fragment listFragment = new ListFragment();
-    final Fragment workmatesFragment = new WorkmatesFragment();
+    private static final Fragment MAP = new MapFragment();
+    private static final Fragment LIST = new ListFragment();
+    private static final Fragment WORKMATES = new WorkmatesFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    Fragment activeFragment = mapFragment;
+    Fragment activeFragment = MAP;
 
     private HashMap<String, String> mRequestParametersHM = new HashMap<>();
     private double mUserLat;
@@ -124,10 +124,25 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
             @Override
             public boolean onQueryTextChange(String searchText) {
                 search = true;
-                mRestaurantList.clear();
-                googleMpaApiSearchRequest(searchText);
+                if(mRestaurantOriginalList.isEmpty()) {
+                    mRestaurantOriginalList.addAll(mRestaurantList);
+                }
 
-                Log.d("tag", "onQueryTextChange: "+searchText);
+                if(!searchText.equals("")) {
+                    mRestaurantList.clear();
+                    googleMpaApiSearchRequest(searchText);
+                    Log.d("tag", "onQueryTextChange: "+searchText);
+                }
+                else {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mRestaurantList.clear();
+                    mRestaurantList.addAll(mRestaurantOriginalList);
+                    configureBundle();
+                }
                 return false;
             }
         });
@@ -149,27 +164,28 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureBottomView() {
-        if(activeFragment == listFragment) {
-            fragmentManager.beginTransaction().detach(activeFragment).attach(activeFragment).addToBackStack(null).commit();
-        }
+//        if(activeFragment == LIST) {
+//            fragmentManager.beginTransaction().detach(activeFragment).attach(activeFragment).addToBackStack(null).commit();
+//        }
+        fragmentManager.beginTransaction().detach(LIST).attach(LIST).addToBackStack(null).commit();
         //progressBar.setVisibility(View.GONE);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.bottom_navigation_menu_map:
-                        fragmentManager.beginTransaction().hide(activeFragment).show(mapFragment).commit();
-                        activeFragment = mapFragment;
+                        fragmentManager.beginTransaction().hide(activeFragment).show(MAP).commit();
+                        activeFragment = MAP;
                         return true;
 
                     case R.id.bottom_navigation_menu_list:
-                        fragmentManager.beginTransaction().hide(activeFragment).show(listFragment).commit();
-                        activeFragment = listFragment;
+                        fragmentManager.beginTransaction().hide(activeFragment).show(LIST).commit();
+                        activeFragment = LIST;
                         return true;
 
                     case R.id.bottom_navigation_menu_workmates:
-                        fragmentManager.beginTransaction().hide(activeFragment).show(workmatesFragment).commit();
-                        activeFragment = workmatesFragment;
+                        fragmentManager.beginTransaction().hide(activeFragment).show(WORKMATES).commit();
+                        activeFragment = WORKMATES;
                         return true;
                 }
                 return false;
@@ -193,9 +209,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureFragmentsDefaultDisplay() {
-        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, workmatesFragment, "3").hide(workmatesFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, listFragment, "2").hide(listFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, mapFragment, "1").commit();
+        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, WORKMATES, "3").hide(WORKMATES).commit();
+        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, LIST, "2").hide(LIST).commit();
+        fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, MAP, "1").commit();
     }
 
     private void bindViews() {
@@ -380,9 +396,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
         bundle.putString("restaurant_list", gsonRestaurantsList);
         bundle.putString("workmates_list", gsonWorkmatesList);
 
-        mapFragment.setArguments(bundle);
-        listFragment.setArguments(bundle);
-        workmatesFragment.setArguments(bundle);
+        MAP.setArguments(bundle);
+        LIST.setArguments(bundle);
+        WORKMATES.setArguments(bundle);
 
         if(!search) {
             configureFragmentsDefaultDisplay();

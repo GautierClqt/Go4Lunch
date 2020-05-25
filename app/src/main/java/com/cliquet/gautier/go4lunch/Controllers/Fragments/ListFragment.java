@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.cliquet.gautier.go4lunch.Controllers.Activities.MainActivity;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Callback;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
@@ -60,11 +59,6 @@ public class ListFragment extends Fragment implements Callback {
             mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
         }
 
-//        recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
-//
-//        RestaurantsRecyclerAdapter adapter = new RestaurantsRecyclerAdapter(this.getContext(),  mRestaurantList, this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
         setRecyclerView();
 
