@@ -150,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureBottomView() {
+        if(activeFragment == listFragment) {
+            fragmentManager.beginTransaction().detach(activeFragment).attach(activeFragment).addToBackStack(null).commit();
+        }
         //progressBar.setVisibility(View.GONE);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -162,9 +165,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
 
                     case R.id.bottom_navigation_menu_list:
                         fragmentManager.beginTransaction().hide(activeFragment).show(listFragment).commit();
-                        if(activeFragment == listFragment) {
-                            fragmentManager.beginTransaction().hide(activeFragment).detach(listFragment).attach(listFragment).addToBackStack(null).commit();
-                        }
                         activeFragment = listFragment;
                         return true;
 
