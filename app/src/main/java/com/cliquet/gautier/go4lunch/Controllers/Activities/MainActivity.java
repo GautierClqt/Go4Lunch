@@ -78,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     private ArrayList<Restaurant> mRestaurantOriginalList = new ArrayList<>();
     private ArrayList<Workmates> mWorkmatesList = new ArrayList<>();
 
-    private static final Fragment MAP = new MapFragment();
-    private static final Fragment LIST = new ListFragment();
-    private static final Fragment WORKMATES = new WorkmatesFragment();
+    private final Fragment MAP = new MapFragment();
+    private final Fragment LIST = new ListFragment();
+    private final Fragment WORKMATES = new WorkmatesFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment activeFragment = MAP;
 
@@ -134,11 +134,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
                     Log.d("tag", "onQueryTextChange: "+searchText);
                 }
                 else {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     mRestaurantList.clear();
                     mRestaurantList.addAll(mRestaurantOriginalList);
                     configureBundle();
@@ -164,9 +159,6 @@ public class MainActivity extends AppCompatActivity implements PlacesApiCalls.Go
     }
 
     private void configureBottomView() {
-//        if(activeFragment == LIST) {
-//            fragmentManager.beginTransaction().detach(activeFragment).attach(activeFragment).addToBackStack(null).commit();
-//        }
         fragmentManager.beginTransaction().detach(LIST).attach(LIST).addToBackStack(null).commit();
         fragmentManager.beginTransaction().detach(MAP).attach(MAP).addToBackStack(null).commit();
         //progressBar.setVisibility(View.GONE);

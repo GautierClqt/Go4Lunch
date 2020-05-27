@@ -107,14 +107,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private void getMarkersOnList(List<DocumentSnapshot> selectedRestaurantlist) {
         mMarkersList.clear();
 
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_18dp);
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_24dp);
         for(int i = 0; i < mRestaurantList.size(); i++) {
             for (int j = 0; j < selectedRestaurantlist.size(); j++) {
                 if (selectedRestaurantlist.get(j).getId().equals(mRestaurantList.get(i).getId())) {
-                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_green_18dp);
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_green_24dp);
                     break;
                 } else {
-                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_18dp);
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.baseline_place_red_24dp);
                 }
             }
 
@@ -151,7 +151,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             LatLng ll = new LatLng(mRestaurantList.get(i).getLatitude(), mRestaurantList.get(i).getLongitude());
             bld.include(ll);
         }
-        
+
         bld.include(latLng);
         LatLngBounds bound = bld.build();
         mGoogleMaps.moveCamera(CameraUpdateFactory.newLatLngBounds(bound, 100));
