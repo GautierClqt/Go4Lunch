@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.cliquet.gautier.go4lunch.Controllers.Callback;
+import com.cliquet.gautier.go4lunch.Controllers.RestaurantClickCallback;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 
@@ -21,10 +21,10 @@ import java.util.List;
 public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<RestaurantsRecyclerAdapter.ViewHolder> {
 
     private Context mContext;
-    private Callback listener;
+    private RestaurantClickCallback listener;
     private List<Restaurant> mRestaurantsList;
 
-    public RestaurantsRecyclerAdapter(Context context, List<Restaurant> restaurantList, Callback listener) {
+    public RestaurantsRecyclerAdapter(Context context, List<Restaurant> restaurantList, RestaurantClickCallback listener) {
         this.mContext = context;
         this.mRestaurantsList = restaurantList;
         this.listener = listener;

@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
-import com.cliquet.gautier.go4lunch.Controllers.Callback;
+import com.cliquet.gautier.go4lunch.Controllers.RestaurantClickCallback;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.gson.Gson;
@@ -29,7 +29,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFragment extends Fragment implements Callback {
+public class ListFragment extends Fragment implements RestaurantClickCallback {
 
     private RecyclerView recyclerView;
     private List<Restaurant> mRestaurantList = new ArrayList<>();
