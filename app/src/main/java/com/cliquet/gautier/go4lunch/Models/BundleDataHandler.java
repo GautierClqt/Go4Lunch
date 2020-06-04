@@ -10,6 +10,7 @@ import com.cliquet.gautier.go4lunch.Controllers.UserLocationCallback;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
+import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,16 +38,31 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
     private double mUserLat;
     private double mUserLng;
 
-    public Bundle collectingDatas(Context context) {
+    public void getFirestoreAndGoogleMapsApiDatas(Context context, BundleCallback bundleCallback) {
         this.mContext = context;
+        this.mBundleCallback = bundleCallback;
 
-        firestoreGetUsersRequest();
-        //locateUser();
-
-        return mBundle;
+        getWorkmatesDatas();
+        getRestaurantsDatas();
     }
 
-    public void firestoreGetUsersRequest() {
+    private void configureBundle() {
+        if(!mWorkmatesList.isEmpty() && !mRestaurantList.isEmpty()) {
+            Gson gson = new Gson();
+            String gsonRestaurantsList;
+            String gsonWorkmatesList;
+
+            gsonRestaurantsList = gson.toJson(mRestaurantList);
+            gsonWorkmatesList = gson.toJson(mWorkmatesList);
+
+            mBundle.putString("restaurant_list", gsonRestaurantsList);
+            mBundle.putString("workmates_list", gsonWorkmatesList);
+
+            mBundleCallback.onCallback(mBundle);
+        }
+    }
+
+    private void getWorkmatesDatas() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         CollectionReference usersRef = database.collection("users");
 
@@ -74,6 +90,16 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
                         ));
                     }
                 }
+                configureBundle();
+            }
+        });
+    }
+
+    private void getRestaurantsDatas() {
+        locateUser(mContext, new UserLocationCallback() {
+            @Override
+            public void onCallback(double[] userLocation) {
+                googleMapsNearbySearchRequest(mContext.getResources().getString(R.string.google_maps_key), userLocation[0], userLocation[1]);
             }
         });
     }
@@ -94,9 +120,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         });
     }
     
-    public void googleMapsNearbySearchRequest(String GOOGLE_API_KEY, double userLat, double userLng, BundleCallback callback) {
-        this.mBundleCallback = callback;
-
+    public void googleMapsNearbySearchRequest(String GOOGLE_API_KEY, double userLat, double userLng) {
         HashMap<String, String> requestParameters = new HashMap<>();
         requestParameters.clear();
         requestParameters.put("location", userLat + "," + userLng);
@@ -193,23 +217,9 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
         Location restaurantLocation = new Location("restaurant location");
         restaurantLocation.setLatitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat());
-        restaurantLocation.setLongitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat());
+        restaurantLocation.setLongitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng());
 
         return userLocation.distanceTo(restaurantLocation);
-    }
-
-    private void configureBundle() {
-        Gson gson = new Gson();
-        String gsonRestaurantsList;
-        String gsonWorkmatesList;
-
-        gsonRestaurantsList = gson.toJson(mRestaurantList);
-        gsonWorkmatesList = gson.toJson(mWorkmatesList);
-
-        mBundle.putString("restaurant_list", gsonRestaurantsList);
-        mBundle.putString("workmates_list", gsonWorkmatesList);
-
-        mBundleCallback.onCallback(mBundle);
     }
 
     @Override

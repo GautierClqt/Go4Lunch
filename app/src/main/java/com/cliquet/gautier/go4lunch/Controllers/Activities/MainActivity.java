@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment activeFragment = MAP;
 
     private HashMap<String, String> mRequestParametersHM = new HashMap<>();
-    //private double mUserLat;
-    //private double mUserLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,12 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final BundleDataHandler bundleDataHandler = new BundleDataHandler();
 
         //workmatesList
-        bundleDataHandler.firestoreGetUsersRequest();
-
-        bundleDataHandler.locateUser(this, new UserLocationCallback() {
-            @Override
-            public void onCallback(double[] userLocation) {
-                bundleDataHandler.googleMapsNearbySearchRequest(getResources().getString(R.string.google_maps_key), userLocation[0], userLocation[1], new BundleCallback() {
+        bundleDataHandler.getFirestoreAndGoogleMapsApiDatas(this, new BundleCallback() {
                     @Override
                     public void onCallback(Bundle bundle) {
                         MAP.setArguments(bundle);
@@ -204,42 +197,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         configureBottomView();
                     }
                 });
-            }
-        });
-
-        //variableListener.setUserLocation(userLocation);
-//        variableListener.setListener(new UserLocationCallback.ChangeListener() {
-//            @Override
-//            public void onCallback() {
-//                double[] userLocation = bundleDataHandler.getUserLocation();
-//                mRestaurantList = bundleDataHandler.googleMapsNearbySearchRequest(getResources().getString(R.string.google_maps_key), userLocation[0], userLocation[1]);
-//
-//                //restaurants request
-//
-//                Gson gson = new Gson();
-//                String gsonRestaurantsList;
-//                String gsonWorkmatesList;
-//
-//                gsonRestaurantsList = gson.toJson(mRestaurantList);
-//                gsonWorkmatesList = gson.toJson(mWorkmatesList);
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putString("restaurant_list", gsonRestaurantsList);
-//                bundle.putString("workmates_list", gsonWorkmatesList);
-//
-//                MAP.setArguments(bundle);
-//                LIST.setArguments(bundle);
-//                WORKMATES.setArguments(bundle);
-//
-//                if(!search) {
-//                    configureFragmentsDefaultDisplay();
-//                }
-//                configureBottomView();
-////        firestoreGetUsersRequest();
-////        locateUser();
-//            }
-//        });
-//        bundleDataHandler.locateUser(this);
     }
 
     private void configureFragmentsDefaultDisplay() {
@@ -276,169 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
-//    private void locateUser() {
-//        FusedLocationProviderClient location = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
-//        location.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//            @Override
-//            public void onSuccess(Location location) {
-//                mUserLat = location.getLatitude();
-//                mUserLng = location.getLongitude();
-//                googleMapsNearbySearchRequest();
-//            }
-//        });
-//    }
-
-//    private void googleMapsNearbySearchRequest() {
-//        mRequestParametersHM.clear();
-//        mRequestParametersHM.put("location", mUserLat + "," + mUserLng);
-//        mRequestParametersHM.put("radius", Integer.toString(500));
-//        mRequestParametersHM.put("type", "restaurant");
-//        mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
 //
-//        PlacesApiCalls.fetchNearbySearch(this, mRequestParametersHM);
-//    }
-
-//    private void googleMpaApiSearchRequest(String searchText) {
-//        mRequestParametersHM.clear();
-//        mRequestParametersHM.put("input", searchText);
-//        mRequestParametersHM.put("inputtype", "textquery");
-//        mRequestParametersHM.put("type", "restaurant");
-//        mRequestParametersHM.put("key", this.getResources().getString(R.string.google_maps_key));
-//
-//        PlacesApiCalls.fetchFromText(this, mRequestParametersHM);
-//    }
-
-//    private void firestoreGetUsersRequest() {
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        CollectionReference usersRef = database.collection("users");
-//
-//        usersRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-//                    User user = documentSnapshot.toObject(User.class);
-//
-//                    String selectedRestaurant;
-//                    if (documentSnapshot.get("userSelected") == null) {
-//                        selectedRestaurant = null;
-//                    } else {
-//                        selectedRestaurant = documentSnapshot.get("userSelected").toString();
-//                    }
-//
-//                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
-//                        mWorkmatesList.add(new Workmates(
-//                                user.getUserId(),
-//                                user.getUserFirstName(),
-//                                user.getUserLastName(),
-//                                user.getUserEmail(),
-//                                user.getUserUrlPicture(),
-//                                selectedRestaurant
-//                        ));
-//                    }
-//                }
-//            }
-//        });
-//    }
-
-//    private void detailsRequest(NearbySearchPojo nearbySearchPojo) {
-//        for (int i = 0; i <= nearbySearchPojo.getNearbySearchResults().size() - 1; i++) {
-//            PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId(), i);
-//        }
-//    }
-//
-//    private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
-//        double restaurantLat = 0;
-//        double restaurantLng = 0;
-//        float distance = 0;
-//        Hours hours = new Hours();
-//        String openingHoursString;
-//        String phoneNumber;
-//        String website;
-//        String photoReference;
-//
-//        if (detailsPojo.getResults().getPhoneNumber() != null) {
-//            phoneNumber = detailsPojo.getResults().getPhoneNumber();
-//        } else {
-//            phoneNumber = null;
-//        }
-//
-//        if (detailsPojo.getResults().getWebsite() != null) {
-//            website = detailsPojo.getResults().getWebsite();
-//        } else {
-//            website = null;
-//        }
-//
-//        if (nearbySearchPojo.getNearbySearchResults().get(index).getPhotos() != null) {
-//            photoReference = nearbySearchPojo.getNearbySearchResults().get(index).getPhotos().get(0).getPhotoReference();
-//        } else {
-//            photoReference = null;
-//        }
-//
-//        if (detailsPojo.getResults().getOpeningHours() != null) {
-//            openingHoursString = hours.getOpeningHours(detailsPojo.getResults().getOpeningHours().getOpenNow(), detailsPojo.getResults().getOpeningHours().getPeriods());
-//        } else {
-//            openingHoursString = null;
-//        }
-//
-//        if(nearbySearchPojo.getNearbySearchResults().get(index).getGeometry() != null) {
-//            restaurantLat = nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat();
-//            restaurantLng = nearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng();
-//            distance = calculateDistance(index);
-//        }
-//
-//        mRestaurantList.add(new Restaurant(
-//                nearbySearchPojo.getNearbySearchResults().get(index).getId(),
-//                nearbySearchPojo.getNearbySearchResults().get(index).getName(),
-//                restaurantLat,
-//                restaurantLng,
-//                nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
-//                false,
-//                new Random().nextInt(4),
-//                false,
-//                phoneNumber,
-//                website,
-//                distance,
-//                photoReference,
-//                openingHoursString));
-//
-//        if (mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
-//            configureBundle();
-//        }
-//    }
-
-//    private float calculateDistance(int index) {
-//        Location userLocation = new Location("user location");
-//        userLocation.setLatitude(mUserLat);
-//        userLocation.setLongitude(mUserLng);
-//
-//        Location restaurantLocation = new Location("restaurant location");
-//        restaurantLocation.setLatitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLat());
-//        restaurantLocation.setLongitude(mNearbySearchPojo.getNearbySearchResults().get(index).getGeometry().getLocation().getLng());
-//
-//        return userLocation.distanceTo(restaurantLocation);
-//    }
-
-//    private void configureBundle() {
-//        Gson gson = new Gson();
-//        String gsonRestaurantsList;
-//        String gsonWorkmatesList;
-//
-//        gsonRestaurantsList = gson.toJson(mRestaurantList);
-//        gsonWorkmatesList = gson.toJson(mWorkmatesList);
-//
-//        Bundle bundle = new Bundle();
-//        bundle.putString("restaurant_list", gsonRestaurantsList);
-//        bundle.putString("workmates_list", gsonWorkmatesList);
-//
-//        MAP.setArguments(bundle);
-//        LIST.setArguments(bundle);
-//        WORKMATES.setArguments(bundle);
-//
-//        if(!search) {
-//            configureFragmentsDefaultDisplay();
-//        }
-//        configureBottomView();
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -450,30 +245,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             permissionsNotGranted();
         }
     }
-
-//    @Override
-//    public void onResponse(NearbySearchPojo nearbySearchPojo) {
-//
-//        mNearbySearchPojo = nearbySearchPojo;
-//
-//        if (mNearbySearchPojo.getNearbySearchResults().size() != 0) {
-//            mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
-//            detailsRequest(mNearbySearchPojo);
-//        } else {
-////            textViewPermissions.setText(R.string.no_restaurant_found);
-////            textViewPermissions.setVisibility(View.VISIBLE);
-//        }
-//    }
-//
-//    @Override
-//    public void onResponse(DetailsPojo detailsPojo, int index) {
-//        fillingRestaurantsList(mNearbySearchPojo, detailsPojo, index);
-//    }
-//
-//    @Override
-//    public void onFailure() {
-//
-//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

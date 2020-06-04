@@ -18,9 +18,6 @@ public class AlarmStartStop {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-//        calendar.set(Calendar.HOUR, 12);
-//        calendar.set(Calendar.MINUTE, 0);
-
         int minute = calendar.get(Calendar.MINUTE);
         minute++;
         calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR));
