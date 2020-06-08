@@ -83,6 +83,16 @@ public class NearbySearchPojo {
         public void setPhotos(List<Photos> photos) {
             this.photos = photos;
         }
+
+
+        @SerializedName("rating")
+        @Expose
+        private float rating;
+
+        public float getRating() { return rating; }
+        public void setRating(float rating) {
+            this.rating = rating;
+        }
     }
 
     public class Geometry {

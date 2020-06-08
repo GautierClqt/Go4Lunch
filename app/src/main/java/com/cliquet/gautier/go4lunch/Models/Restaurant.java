@@ -14,8 +14,9 @@ public class Restaurant implements Parcelable {
     private double mLatitude;
     private double mLongitude;
     private String mAddress;
+    private int numberOfWorkmates;
     private boolean mLikedByUser;
-    private int mAllLikes;
+    private int mRating;
     private boolean mSelectedByUser;
     private String mPhone;
     private String mWebsiteUrl;
@@ -32,14 +33,15 @@ public class Restaurant implements Parcelable {
         this.mId = id;
     }
 
-    public Restaurant(String id, String name, double latitude, double longitude, String address, boolean likedByUser, int allLikes, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, String openingHoursString) {
+    public Restaurant(String id, String name, double latitude, double longitude, String address, int numberOfWorkmates, boolean likedByUser, int rating, boolean selectedByUser, String phone, String websiteUrl, float distance, String photoReference, String openingHoursString) {
         this.mId = id;
         this.mName = name;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
         this.mAddress = address;
+        this.numberOfWorkmates = numberOfWorkmates;
         this.mLikedByUser = likedByUser;
-        this.mAllLikes = allLikes;
+        this.mRating = rating;
         this.mSelectedByUser = selectedByUser;
         this.mPhone = phone;
         this.mWebsiteUrl = websiteUrl;
@@ -54,8 +56,9 @@ public class Restaurant implements Parcelable {
         mLatitude = in.readDouble();
         mLongitude = in.readDouble();
         mAddress = in.readString();
+        numberOfWorkmates = in.readInt();
         mLikedByUser = in.readByte() != 0;
-        mAllLikes = in.readInt();
+        mRating = in.readInt();
         mSelectedByUser = in.readByte() != 0;
         mPhone = in.readString();
         mWebsiteUrl = in.readString();
@@ -82,8 +85,9 @@ public class Restaurant implements Parcelable {
     public double getLatitude() { return mLatitude; }
     public double getLongitude() { return mLongitude; }
     public String getAddress() { return mAddress; }
+    public int getNumberOfWorkmates() { return numberOfWorkmates; }
     public boolean getLikedByUser() { return mLikedByUser; }
-    public int getAllLikes() { return mAllLikes; }
+    public int getRating() { return mRating; }
     public boolean getSelectedByUser() { return mSelectedByUser; }
     public String getPhone() { return mPhone; }
     public String getWebsiteUrl() { return mWebsiteUrl; }
@@ -105,8 +109,9 @@ public class Restaurant implements Parcelable {
         dest.writeDouble(mLatitude);
         dest.writeDouble(mLongitude);
         dest.writeString(mAddress);
+        dest.writeInt(numberOfWorkmates);
         dest.writeByte((byte) (mLikedByUser ? 1 : 0));
-        dest.writeInt(mAllLikes);
+        dest.writeInt(mRating);
         dest.writeByte((byte) (mSelectedByUser ? 1 : 0));
         dest.writeString(mPhone);
         dest.writeString(mWebsiteUrl);

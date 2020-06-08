@@ -48,7 +48,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.security.auth.callback.CallbackHandler;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    final BundleDataHandler mBundleDataHandler = new BundleDataHandler();
 
     private boolean search = false;
 
@@ -115,9 +119,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 if(!searchText.equals("")) {
-                    mRestaurantList.clear();
-                    //googleMpaApiSearchRequest(searchText);
-                    Log.d("tag", "onQueryTextChange: "+searchText);
+//                    mRestaurantList.clear();
+//                    mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
+//                                @Override
+//                                public void onCallback(Bundle bundle) {
+//                                    MAP.setArguments(bundle);
+//                                    LIST.setArguments(bundle);
+//
+//                                    configureBottomView();
+//                                }
+//                            });
+//                            Log.d("tag", "onQueryTextChange: " + searchText);
                 }
                 else {
                     mRestaurantList.clear();
@@ -183,10 +195,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void permissionsGranted() {
         textViewPermissions.setVisibility(View.GONE);
 
-        final BundleDataHandler bundleDataHandler = new BundleDataHandler();
-
         //workmatesList
-        bundleDataHandler.getFirestoreAndGoogleMapsApiDatas(this, new BundleCallback() {
+        mBundleDataHandler.getFirestoreAndGoogleMapsApiDatas(this, new BundleCallback() {
                     @Override
                     public void onCallback(Bundle bundle) {
                         MAP.setArguments(bundle);
@@ -196,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         configureFragmentsDefaultDisplay();
                         configureBottomView();
                     }
-                });
+        });
     }
 
     private void configureFragmentsDefaultDisplay() {
@@ -232,8 +242,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-
-//
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

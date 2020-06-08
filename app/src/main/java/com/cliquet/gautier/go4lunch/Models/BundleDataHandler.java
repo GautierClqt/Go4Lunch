@@ -38,16 +38,19 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
     private double mUserLat;
     private double mUserLng;
 
+    private boolean mRestaurantListOk = false;
+    private boolean mWorkmatesListOk = false;
+
     public void getFirestoreAndGoogleMapsApiDatas(Context context, BundleCallback bundleCallback) {
         this.mContext = context;
         this.mBundleCallback = bundleCallback;
 
         getWorkmatesDatas();
-        getRestaurantsDatas();
+//        getRestaurantsDatas();
     }
 
     private void configureBundle() {
-        if(!mWorkmatesList.isEmpty() && !mRestaurantList.isEmpty()) {
+        if(mWorkmatesListOk && mRestaurantListOk) {
             Gson gson = new Gson();
             String gsonRestaurantsList;
             String gsonWorkmatesList;
@@ -90,7 +93,9 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
                         ));
                     }
                 }
-                configureBundle();
+                mWorkmatesListOk = true;
+//                configureBundle();
+                getRestaurantsDatas();
             }
         });
     }
@@ -104,7 +109,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         });
     }
 
-    public void locateUser(Context context, final UserLocationCallback callback) {
+    private void locateUser(Context context, final UserLocationCallback callback) {
         final double[] userLocation = new double[2];
         FusedLocationProviderClient location = LocationServices.getFusedLocationProviderClient(context);
         location.getLastLocation().addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
@@ -120,7 +125,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         });
     }
     
-    public void googleMapsNearbySearchRequest(String GOOGLE_API_KEY, double userLat, double userLng) {
+    private void googleMapsNearbySearchRequest(String GOOGLE_API_KEY, double userLat, double userLng) {
         HashMap<String, String> requestParameters = new HashMap<>();
         requestParameters.clear();
         requestParameters.put("location", userLat + "," + userLng);
@@ -131,13 +136,9 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         PlacesApiCalls.fetchNearbySearch(this, requestParameters);
     }
 
-    private void googleMapsDetailsRequest(NearbySearchPojo nearbySearchPojo) {
-        for (int i = 0; i <= nearbySearchPojo.getNearbySearchResults().size() - 1; i++) {
-            PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId(), i);
-        }
-    }
+    public void googleMapsApiSearchRequest(String GOOGLE_API_KEY, String searchText, BundleCallback bundleCallback) {
+        mRestaurantListOk = false;
 
-    private void googleMpaApiSearchRequest(String GOOGLE_API_KEY, String searchText) {
         HashMap<String, String> requestParameters = new HashMap<>();
         requestParameters.clear();
         requestParameters.put("input", searchText);
@@ -148,6 +149,12 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         PlacesApiCalls.fetchFromText(this, requestParameters);
     }
 
+    private void googleMapsDetailsRequest(NearbySearchPojo nearbySearchPojo) {
+        for (int i = 0; i <= nearbySearchPojo.getNearbySearchResults().size() - 1; i++) {
+            PlacesApiCalls.fetchDetails(this, nearbySearchPojo.getNearbySearchResults().get(i).getId(), i);
+        }
+    }
+
     public void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
         mNearbySearchPojo = nearbySearchPojo;
 
@@ -155,6 +162,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         double restaurantLng = 0;
         float distance = 0;
         Hours hours = new Hours();
+        int rating;
         String openingHoursString;
         String phoneNumber;
         String website;
@@ -164,6 +172,16 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
             phoneNumber = detailsPojo.getResults().getPhoneNumber();
         } else {
             phoneNumber = null;
+        }
+
+        if(nearbySearchPojo.getNearbySearchResults().get(index).getRating() > 4) {
+            rating = 3;
+        }
+        else if(nearbySearchPojo.getNearbySearchResults().get(index).getRating() > 2) {
+            rating = 2;
+        }
+        else {
+            rating = 1;
         }
 
         if (detailsPojo.getResults().getWebsite() != null) {
@@ -190,14 +208,24 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
             distance = calculateDistance(index);
         }
 
+        int numberOfWorkmates = 0;
+        for(int i = 0; i < mWorkmatesList.size(); i++) {
+            if(mWorkmatesList.get(i).getSelectedRestaurant() != null) {
+                if (mWorkmatesList.get(i).getSelectedRestaurant().equals(nearbySearchPojo.getNearbySearchResults().get(index).getId())) {
+                    numberOfWorkmates++;
+                }
+            }
+        }
+
         mRestaurantList.add(new Restaurant(
                 nearbySearchPojo.getNearbySearchResults().get(index).getId(),
                 nearbySearchPojo.getNearbySearchResults().get(index).getName(),
                 restaurantLat,
                 restaurantLng,
                 nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
+                numberOfWorkmates,
                 false,
-                new Random().nextInt(4),
+                rating,
                 false,
                 phoneNumber,
                 website,
@@ -206,6 +234,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
                 openingHoursString));
 
         if (mRestaurantList.size() == nearbySearchPojo.getNearbySearchResults().size()) {
+            mRestaurantListOk = true;
             configureBundle();
         }
     }
@@ -224,8 +253,9 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
     @Override
     public void onResponse(NearbySearchPojo nearbySearchPojo) {
-
         mNearbySearchPojo = nearbySearchPojo;
+
+        mRestaurantList.clear();
 
         if (mNearbySearchPojo.getNearbySearchResults().size() != 0) {
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());

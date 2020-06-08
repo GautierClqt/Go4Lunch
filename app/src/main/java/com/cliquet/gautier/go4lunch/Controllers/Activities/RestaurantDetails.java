@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,15 +29,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
 
 public class RestaurantDetails extends AppCompatActivity {
 
@@ -76,13 +72,13 @@ public class RestaurantDetails extends AppCompatActivity {
         thirdStar.setVisibility(View.INVISIBLE);
 
         //display stars according to the number of likes
-        if(restaurant.getAllLikes() > 0) {
+        if(restaurant.getRating() > 0) {
             firstStar.setVisibility(View.VISIBLE);
         }
-        if(restaurant.getAllLikes() > 1) {
+        if(restaurant.getRating() > 1) {
             secondStar.setVisibility(View.VISIBLE);
         }
-        if(restaurant.getAllLikes() > 2) {
+        if(restaurant.getRating() > 2) {
             thirdStar.setVisibility(View.VISIBLE);
         }
 

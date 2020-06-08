@@ -45,14 +45,24 @@ public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<Restaurants
         viewHolder.thirdStar.setVisibility(View.INVISIBLE);
 
         //display stars according to the number of likes
-        if(mRestaurantsList.get(i).getAllLikes() > 0) {
+        if(mRestaurantsList.get(i).getRating() > 0) {
             viewHolder.firstStar.setVisibility(View.VISIBLE);
         }
-        if(mRestaurantsList.get(i).getAllLikes() > 1) {
+        if(mRestaurantsList.get(i).getRating() > 1) {
             viewHolder.secondStar.setVisibility(View.VISIBLE);
         }
-        if(mRestaurantsList.get(i).getAllLikes() > 2) {
+        if(mRestaurantsList.get(i).getRating() > 2) {
             viewHolder.thirdStar.setVisibility(View.VISIBLE);
+        }
+
+        if(mRestaurantsList.get(i).getNumberOfWorkmates() > 0) {
+            viewHolder.workmatesIcon.setVisibility(View.VISIBLE);
+            viewHolder.workmatesCount.setVisibility(View.VISIBLE);
+            viewHolder.workmatesCount.setText(String.valueOf(mRestaurantsList.get(i).getNumberOfWorkmates()));
+        }
+        else {
+            viewHolder.workmatesIcon.setVisibility(View.INVISIBLE);
+            viewHolder.workmatesCount.setVisibility(View.INVISIBLE);
         }
 
         viewHolder.name.setText(mRestaurantsList.get(i).getName());
