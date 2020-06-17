@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -65,6 +66,8 @@ public class RestaurantDetails extends AppCompatActivity {
         restaurant = getIntent().getParcelableExtra("restaurant");
 
         name.setText(restaurant.getName());
+        name.setTypeface(Typeface.DEFAULT_BOLD);
+
         address.setText(restaurant.getAddress());
 
         firstStar.setVisibility(View.INVISIBLE);

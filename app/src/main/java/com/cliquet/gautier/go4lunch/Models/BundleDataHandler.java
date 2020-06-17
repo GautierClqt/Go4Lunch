@@ -160,6 +160,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
         double restaurantLat = 0;
         double restaurantLng = 0;
+        String adress;
         float distance = 0;
         Hours hours = new Hours();
         int rating;
@@ -167,6 +168,13 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         String phoneNumber;
         String website;
         String photoReference;
+
+        if(nearbySearchPojo.getNearbySearchResults().get(index).getVicinity() != null) {
+            adress = nearbySearchPojo.getNearbySearchResults().get(index).getVicinity();
+        }
+        else {
+            adress = detailsPojo.getResults().getFormattedAdress();
+        }
 
         if (detailsPojo.getResults().getPhoneNumber() != null) {
             phoneNumber = detailsPojo.getResults().getPhoneNumber();
@@ -222,7 +230,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
                 nearbySearchPojo.getNearbySearchResults().get(index).getName(),
                 restaurantLat,
                 restaurantLng,
-                nearbySearchPojo.getNearbySearchResults().get(index).getVicinity(),
+                adress,
                 numberOfWorkmates,
                 false,
                 rating,

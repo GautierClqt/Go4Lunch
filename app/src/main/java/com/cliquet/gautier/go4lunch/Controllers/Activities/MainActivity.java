@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     final BundleDataHandler mBundleDataHandler = new BundleDataHandler();
 
+    private boolean defaultRequests = false;
     private boolean search = false;
 
     BottomNavigationView bottomNavigationView;
@@ -119,17 +120,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 if(!searchText.equals("")) {
-//                    mRestaurantList.clear();
-//                    mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
-//                                @Override
-//                                public void onCallback(Bundle bundle) {
-//                                    MAP.setArguments(bundle);
-//                                    LIST.setArguments(bundle);
-//
-//                                    configureBottomView();
-//                                }
-//                            });
-//                            Log.d("tag", "onQueryTextChange: " + searchText);
+                    mRestaurantList.clear();
+                    mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
+                                @Override
+                                public void onCallback(Bundle bundle) {
+                                    MAP.setArguments(bundle);
+                                    LIST.setArguments(bundle);
+
+                                    configureBottomView();
+                                }
+                            });
+                            Log.d("tag", "onQueryTextChange: " + searchText);
                 }
                 else {
                     mRestaurantList.clear();
@@ -201,9 +202,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onCallback(Bundle bundle) {
                         MAP.setArguments(bundle);
                         LIST.setArguments(bundle);
-                        WORKMATES.setArguments(bundle);
 
-                        configureFragmentsDefaultDisplay();
+                        if(!defaultRequests) {
+                            WORKMATES.setArguments(bundle);
+                            configureFragmentsDefaultDisplay();
+                        }
+
                         configureBottomView();
                     }
         });
@@ -213,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, WORKMATES, "3").hide(WORKMATES).commit();
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, LIST, "2").hide(LIST).commit();
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, MAP, "1").commit();
+        defaultRequests = true;
     }
 
     private void bindViews() {

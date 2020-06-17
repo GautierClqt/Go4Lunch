@@ -47,10 +47,10 @@
         android:layout_marginStart="16dp"
         android:text="@string/restaurant_address_placeholder"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/activity_restaurant_details_selectrestaurant_button"
         app:layout_constraintBottom_toBottomOf="@id/activity_restaurant_details_backround_view"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="312dp" />
+        app:layout_constraintEnd_toStartOf="@+id/activity_restaurant_details_selectrestaurant_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/activity_restaurant_details_selectrestaurant_button"
@@ -114,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:drawableTop="@drawable/restaurant_like"
+        android:drawableTop="@drawable/restaurant_like_true"
         android:drawableTint="@color/colorPrimary"
         android:text="@string/restaurant_like_button"
         android:textColor="@color/colorPrimary"

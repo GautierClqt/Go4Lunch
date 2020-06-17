@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,8 @@ public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<Restaurants
         }
 
         viewHolder.name.setText(mRestaurantsList.get(i).getName());
+        viewHolder.name.setTypeface(Typeface.DEFAULT_BOLD);
+
         viewHolder.adress.setText(mRestaurantsList.get(i).getAddress());
         viewHolder.hours.setText(mRestaurantsList.get(i).getOpeningHoursString());
         viewHolder.distance.setText(String.format("%.0fm", mRestaurantsList.get(i).getDistance()));

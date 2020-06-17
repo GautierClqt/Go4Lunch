@@ -20,6 +20,10 @@ public class DetailsPojo {
         @Expose
         private OpeningHours openingHours = null;
 
+        @SerializedName("formatted_address")
+        @Expose
+        private String formattedAdress;
+
         @SerializedName("international_phone_number")
         @Expose
         private String phoneNumber;
@@ -28,8 +32,19 @@ public class DetailsPojo {
         @Expose
         private String website;
 
-        public OpeningHours getOpeningHours() { return openingHours; }
-        public void setOpeningHours(OpeningHours openingHours) { this.openingHours = openingHours; }
+        public OpeningHours getOpeningHours() {
+            return openingHours;
+        }
+        public void setOpeningHours(OpeningHours openingHours) {
+            this.openingHours = openingHours;
+        }
+
+        public String getFormattedAdress() {
+            return formattedAdress;
+        }
+        public void setFormattedAdress(String formattedAdress) {
+            this.formattedAdress = formattedAdress;
+        }
 
         public String getPhoneNumber() { return phoneNumber; }
         public void setPhoneNumber(String phoneNumber) {
