@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cliquet.gautier.go4lunch.Controllers.Activities.MainActivity;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
@@ -53,6 +54,10 @@ public class WorkmatesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
                              Bundle savedInstanceState) {
+
+
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Available Workmates");
+
 
         View view =  inflater.inflate(R.layout.fragment_workmates, viewGroup, false);
         Gson gson = new Gson();

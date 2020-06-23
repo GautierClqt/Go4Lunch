@@ -44,6 +44,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +54,8 @@ import javax.security.auth.callback.CallbackHandler;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final BundleDataHandler mBundleDataHandler = new BundleDataHandler();
+    private Bundle mBundle = new Bundle();
+    private Bundle mOriginalBundle = new Bundle();
 
     private boolean defaultRequests = false;
     private boolean search = false;
@@ -106,40 +109,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.toolbar_menu_search_item);
         SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String searchText) {
-                search = true;
-                if(mRestaurantOriginalList.isEmpty()) {
-                    mRestaurantOriginalList.addAll(mRestaurantList);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
                 }
 
-                if(!searchText.equals("")) {
-                    mRestaurantList.clear();
-                    mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
+                @Override
+                public boolean onQueryTextChange(String searchText) {
+                    if (!search) {
+                        search = true;
+                        if (mOriginalBundle.isEmpty()) {
+                            mOriginalBundle.putAll(mBundle);
+                        }
+
+                        if (!searchText.equals("")) {
+                            mRestaurantList.clear();
+                            mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
                                 @Override
                                 public void onCallback(Bundle bundle) {
-                                    MAP.setArguments(bundle);
-                                    LIST.setArguments(bundle);
+                                    mBundle = bundle;
+                                    MAP.setArguments(mBundle);
+                                    LIST.setArguments(mBundle);
 
                                     configureBottomView();
                                 }
                             });
                             Log.d("tag", "onQueryTextChange: " + searchText);
+                        } else {
+                            mBundle.clear();
+                            mBundle.putAll(mOriginalBundle);
+
+                            MAP.setArguments(mBundle);
+                            LIST.setArguments(mBundle);
+
+                            configureBottomView();
+                        }
+                    }
+                    return false;
                 }
-                else {
-                    mRestaurantList.clear();
-//                    mRestaurantList.addAll(mRestaurantOriginalList);
-//                    configureBundle();
-                }
-                return false;
-            }
-        });
+            });
         return true;
     }
 
@@ -182,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+        search = false;
     }
 
     private void permissionsChecking() {
@@ -200,14 +211,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBundleDataHandler.getFirestoreAndGoogleMapsApiDatas(this, new BundleCallback() {
                     @Override
                     public void onCallback(Bundle bundle) {
-                        MAP.setArguments(bundle);
-                        LIST.setArguments(bundle);
+                        mBundle = bundle;
+
+                        MAP.setArguments(mBundle);
+                        LIST.setArguments(mBundle);
 
                         if(!defaultRequests) {
                             WORKMATES.setArguments(bundle);
                             configureFragmentsDefaultDisplay();
                         }
-
                         configureBottomView();
                     }
         });

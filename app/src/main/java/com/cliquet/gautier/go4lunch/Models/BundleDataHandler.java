@@ -46,7 +46,6 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         this.mBundleCallback = bundleCallback;
 
         getWorkmatesDatas();
-//        getRestaurantsDatas();
     }
 
     private void configureBundle() {
@@ -94,7 +93,6 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
                     }
                 }
                 mWorkmatesListOk = true;
-//                configureBundle();
                 getRestaurantsDatas();
             }
         });
@@ -207,7 +205,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         if (detailsPojo.getResults().getOpeningHours() != null) {
             openingHoursString = hours.getOpeningHours(detailsPojo.getResults().getOpeningHours().getOpenNow(), detailsPojo.getResults().getOpeningHours().getPeriods());
         } else {
-            openingHoursString = null;
+            openingHoursString = "";
         }
 
         if(nearbySearchPojo.getNearbySearchResults().get(index).getGeometry() != null) {
@@ -269,8 +267,8 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
             mNearbySearchPojo.setNearbySearchResults(mNearbySearchPojo.getNearbySearchResults());
             googleMapsDetailsRequest(mNearbySearchPojo);
         } else {
-//            textViewPermissions.setText(R.string.no_restaurant_found);
-//            textViewPermissions.setVisibility(View.VISIBLE);
+            mRestaurantListOk = true;
+            configureBundle();
         }
     }
 
@@ -281,7 +279,6 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
     @Override
     public void onFailure() {
-
     }
 
 }

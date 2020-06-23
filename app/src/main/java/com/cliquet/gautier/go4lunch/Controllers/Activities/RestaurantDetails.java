@@ -196,22 +196,19 @@ public class RestaurantDetails extends AppCompatActivity {
 
         RestaurantHelper.createRestaurant(restaurant.getId(), restaurant.getName(), restaurant.getAddress());
 
-        //1. récupérer l'id de l'ancien restaurant sélectionné par user
         UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     final String oldRestaurantId = document.getString("userSelected");
-                    //si le champ est null alors user n'avait pas encore sélectionné de restaurant
+
                     if(oldRestaurantId == null){
                         UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
                         RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
                     }
-                    //si les deux id correspondent, alors le l'utilisateur à déselectionné le restaurant qu'il avait sélectionné
                     else if(newRestaurantId.equals(oldRestaurantId)) {
                         UserHelper.updateSelectedRestaurant(currentUserId, null);
-                        //2. supprimer le document user de l'ancien restaurant
                         RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                     }

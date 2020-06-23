@@ -71,13 +71,21 @@ public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<Restaurants
 
         viewHolder.adress.setText(mRestaurantsList.get(i).getAddress());
         viewHolder.hours.setText(mRestaurantsList.get(i).getOpeningHoursString());
-        viewHolder.distance.setText(String.format("%.0fm", mRestaurantsList.get(i).getDistance()));
+
+        if(mRestaurantsList.get(i).getDistance() < 3000) {
+            viewHolder.distance.setText(String.format("%.0fm", mRestaurantsList.get(i).getDistance()));
+        }
+        else {
+            viewHolder.distance.setText(R.string.long_distance);
+        }
         viewHolder.workmatesCount.setText("(2)");
         viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
 
         final String photoReference = mRestaurantsList.get(i).getPhotoReference();
-        String apiKey = mContext.getString(R.string.google_maps_key);
-        Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(viewHolder.picture);
+        if(photoReference != null) {
+            String apiKey = mContext.getString(R.string.google_maps_key);
+            Glide.with(viewHolder.picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + photoReference + "&maxwidth=600").into(viewHolder.picture);
+        }
 
         viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override

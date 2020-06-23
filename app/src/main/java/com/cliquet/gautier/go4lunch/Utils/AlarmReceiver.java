@@ -151,7 +151,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
             if (mWorkmatesNameList.size() > 0) {
                 int listSize = mWorkmatesNameList.size();
-                notificationString = notificationString + "\n" + context.getString(R.string.notif_join_by);
+                notificationString = notificationString + "\n" + context.getString(R.string.notif_join_by) + " ";
                 for (int i = 0; i < listSize; i++) {
                     notificationString = notificationString + mWorkmatesNameList.get(i);
                     if (i < listSize - 2) {

@@ -77,18 +77,20 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         viewHolder.mainlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RestaurantHelper.getRestaurant(mWorkmatesList.get(viewHolder.getAdapterPosition()).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        final String restaurantId = task.getResult().getId();
-                        for(int i = 0; i < mRestaurantsList.size(); i++) {
-                            if(mRestaurantsList.get(i).getId().equals(restaurantId)) {
-                                Restaurant restaurant = mRestaurantsList.get(i);
-                                startRestaurantDetailsActivity(restaurant);
+                if(mWorkmatesList.get(viewHolder.getAdapterPosition()).getSelectedRestaurant() != null) {
+                    RestaurantHelper.getRestaurant(mWorkmatesList.get(viewHolder.getAdapterPosition()).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            final String restaurantId = task.getResult().getId();
+                            for (int i = 0; i < mRestaurantsList.size(); i++) {
+                                if (mRestaurantsList.get(i).getId().equals(restaurantId)) {
+                                    Restaurant restaurant = mRestaurantsList.get(i);
+                                    startRestaurantDetailsActivity(restaurant);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }
@@ -118,7 +120,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         notifyDataSetChanged();
     }
 
-    public void setRestaurantsList(List<Restaurant> restaurants) {
+    void setRestaurantsList(List<Restaurant> restaurants) {
         this.mRestaurantsList = restaurants;
     }
 
