@@ -52,15 +52,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/activity_restaurant_details_selectrestaurant_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/restaurant_select"
-        android:tint="#555555"
+        android:background="@drawable/ic_check_circle_unselected_60dp"
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_backround_view"
         app:layout_constraintBottom_toBottomOf="@+id/activity_restaurant_details_backround_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,11 +94,11 @@
         app:srcCompat="@drawable/star_outline_filled" />
 
     <Button
-        android:id="@+id/activity_restaurant_details_call_button"
+        android:id="@+id/activity_restaurant_details_phone_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:drawableTop="@drawable/restaurant_phone"
+        android:drawableTop="@drawable/details_phone_40dp"
         android:drawableTint="@color/colorPrimary"
         android:text="@string/restaurant_call_button"
         android:textColor="@color/colorPrimary"
@@ -114,13 +112,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:drawableTop="@drawable/restaurant_like_true"
+        android:drawableTop="@drawable/details_liked_true_40dp"
         android:drawableTint="@color/colorPrimary"
         android:text="@string/restaurant_like_button"
         android:textColor="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="@id/activity_restaurant_details_backround_view2"
         app:layout_constraintBottom_toBottomOf="@id/activity_restaurant_details_backround_view2"
-        app:layout_constraintStart_toEndOf="@id/activity_restaurant_details_call_button"
+        app:layout_constraintStart_toEndOf="@id/activity_restaurant_details_phone_button"
         app:layout_constraintEnd_toStartOf="@id/activity_restaurant_details_website_button"/>
 
     <Button
@@ -128,8 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:drawableTop="@drawable/restaurant_website"
-        android:drawableTint="@color/colorPrimary"
+        android:drawableTop="@drawable/details_website_40dp"
         android:text="@string/restaurant_WEBSITE_button"
         android:textColor="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="@+id/activity_restaurant_details_backround_view2"

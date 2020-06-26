@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 

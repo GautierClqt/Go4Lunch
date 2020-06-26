@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
@@ -47,9 +48,9 @@ public class RestaurantDetails extends AppCompatActivity {
     ImageView firstStar;
     ImageView secondStar;
     ImageView thirdStar;
-    ImageView selected;
-    Button call;
-    Button likeByUser;
+    Button selected;
+    Button phone;
+    Button likedByUser;
     Button website;
     ImageView picture;
     RecyclerView recyclerView;
@@ -89,29 +90,36 @@ public class RestaurantDetails extends AppCompatActivity {
         String apiKey = getString(R.string.google_maps_key);
         Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(picture);
 
-        if(restaurant.getPhone() == null || restaurant.getPhone().equals("")) {
-            call.setEnabled(false);
-        }
-        else {
-            call.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(restaurant.getPhone() == null || restaurant.getPhone().equals("")) {
+                    Toast.makeText(getApplicationContext(), "no phone number found", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     startCallActivity();
                 }
-            });
-        }
+            }
+        });
 
-        if(restaurant.getWebsiteUrl() == null || restaurant.getPhone().equals("")) {
-            website.setEnabled(false);
-        }
-        else {
-            website.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        likedByUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(restaurant.getWebsiteUrl() == null || restaurant.getWebsiteUrl().equals("")) {
+                    Toast.makeText(getApplicationContext(), "no website found", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     startWebsiteActivity();
                 }
-            });
-        }
+            }
+        });
 
         selected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +160,9 @@ public class RestaurantDetails extends AppCompatActivity {
                 for(QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
                     if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(documentSnapshots.getId())) {
                         workmatesIdList.add(documentSnapshots.getId());
+                    }
+                    else {
+                        selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
                     }
                 }
                 getWorkmatesDatasInFirestore(workmatesIdList);
@@ -206,17 +217,20 @@ public class RestaurantDetails extends AppCompatActivity {
                     if(oldRestaurantId == null){
                         UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
                         RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                        selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
                     }
                     else if(newRestaurantId.equals(oldRestaurantId)) {
                         UserHelper.updateSelectedRestaurant(currentUserId, null);
                         RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
+                        selected.setBackgroundResource(R.drawable.ic_check_circle_unselected_60dp);
                     }
                     else {
                         UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
                         RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
                         RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
+                        selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
                     }
                 }
             }
@@ -256,8 +270,8 @@ public class RestaurantDetails extends AppCompatActivity {
         secondStar = findViewById(R.id.activity_restaurant_details_secondstar_imageview);
         thirdStar = findViewById(R.id.activity_restaurant_details_thirdstar_imageview);
         selected = findViewById(R.id.activity_restaurant_details_selectrestaurant_button);
-        call = findViewById(R.id.activity_restaurant_details_call_button);
-        likeByUser = findViewById(R.id.activity_restaurant_details_likebyuser_button);
+        phone = findViewById(R.id.activity_restaurant_details_phone_button);
+        likedByUser = findViewById(R.id.activity_restaurant_details_likebyuser_button);
         website = findViewById(R.id.activity_restaurant_details_website_button);
         picture = findViewById(R.id.activity_restaurant_details_picture_imageview);
         recyclerView = findViewById(R.id.activity_restaurant_details_workmates_recyclerview);
