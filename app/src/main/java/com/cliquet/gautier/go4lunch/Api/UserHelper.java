@@ -3,8 +3,12 @@ package com.cliquet.gautier.go4lunch.Api;
 import com.cliquet.gautier.go4lunch.Models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserHelper {
 
@@ -20,9 +24,19 @@ public class UserHelper {
         return UserHelper.getUsersCollection().document(userId).set(userToCreate);
     }
 
+    public static Task<Void> createLikedRestaurantSubcollection(String userId, String restaurantId) {
+        HashMap<Object, String> likedRestaurantToCreate = new HashMap<>();
+        likedRestaurantToCreate.put("id", restaurantId);
+        return UserHelper.getUsersCollection().document(userId).collection("likedRestaurants").document(restaurantId).set(likedRestaurantToCreate);
+    }
+
     //GET
     public static Task<DocumentSnapshot> getUser(String userId) {
         return UserHelper.getUsersCollection().document(userId).get();
+    }
+
+    public static CollectionReference getLikedRestaurants(String restaurantId) {
+        return getUsersCollection().document(restaurantId).collection("likedRestaurant");
     }
 
     //UPDATE
@@ -33,5 +47,14 @@ public class UserHelper {
     //DELETE
     public static Task<Void> deleteUser(String userId) {
         return UserHelper.getUsersCollection().document(userId).delete();
+    }
+
+    //######EN CHANTIER########
+    public static Task<Void> updateSelectedRestaurant(String restaurantId, String userId, boolean selected) {
+        return RestaurantHelper.getUserSubcollection(restaurantId).document(userId).update("selected", selected);
+    }
+
+    public static Task<Void> updateLikedRestaurant(String restaurantId, String userId, boolean liked) {
+        return RestaurantHelper.getUserSubcollection(restaurantId).document(userId).update("liked", liked);
     }
 }

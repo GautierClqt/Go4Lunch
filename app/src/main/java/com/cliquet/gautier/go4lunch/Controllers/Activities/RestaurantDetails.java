@@ -25,6 +25,7 @@ import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,8 +38,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RestaurantDetails extends AppCompatActivity {
+
+    final String USER_ID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
     Restaurant restaurant;
     WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this);
@@ -105,7 +109,8 @@ public class RestaurantDetails extends AppCompatActivity {
         likedByUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                likedByUser.setBackgroundResource(R.drawable.details_liked_true_40dp);
+                //UserHelper.createLikedRestaurantSubcollection(irebaseAuth.getInstance().getCurrentUser().getUid(), restaurant.getId());
             }
         });
 
@@ -158,7 +163,7 @@ public class RestaurantDetails extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 for(QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
-                    if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(documentSnapshots.getId())) {
+                    if(!USER_ID.equals(documentSnapshots.getId())) {
                         workmatesIdList.add(documentSnapshots.getId());
                     }
                     else {
@@ -198,16 +203,31 @@ public class RestaurantDetails extends AppCompatActivity {
                     setWorkmatesAdapter();
                 }
             });
+
         }
     }
 
+    private void checkForRestaurantInFirestore(final String restaurantId) {
+        RestaurantHelper.getRestaurant(restaurantId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                RestaurantHelper.createRestaurant(restaurantId, restaurant.getName(), restaurant.getAddress());
+                RestaurantHelper.addUserCollection(restaurantId, USER_ID);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                RestaurantHelper.createRestaurant(restaurantId, restaurant.getName(), restaurant.getAddress());
+            }
+        });
+    }
+
     private void handlingFirestoreRequestsAndUi() {
-        final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String newRestaurantId = restaurant.getId();
 
         RestaurantHelper.createRestaurant(restaurant.getId(), restaurant.getName(), restaurant.getAddress());
 
-        UserHelper.getUser(currentUserId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        UserHelper.getUser(USER_ID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
@@ -215,20 +235,20 @@ public class RestaurantDetails extends AppCompatActivity {
                     final String oldRestaurantId = document.getString("userSelected");
 
                     if(oldRestaurantId == null){
-                        UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
-                        RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                        UserHelper.updateSelectedRestaurant(USER_ID, newRestaurantId);
+                        RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
                     }
                     else if(newRestaurantId.equals(oldRestaurantId)) {
-                        UserHelper.updateSelectedRestaurant(currentUserId, null);
-                        RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
+                        UserHelper.updateSelectedRestaurant(USER_ID, null);
+                        RestaurantHelper.deleteUser(oldRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_unselected_60dp);
                     }
                     else {
-                        UserHelper.updateSelectedRestaurant(currentUserId, newRestaurantId);
-                        RestaurantHelper.deleteUser(oldRestaurantId, currentUserId);
-                        RestaurantHelper.addUserCollection(newRestaurantId, currentUserId);
+                        UserHelper.updateSelectedRestaurant(USER_ID, newRestaurantId);
+                        RestaurantHelper.deleteUser(oldRestaurantId, USER_ID);
+                        RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
                     }
@@ -238,7 +258,6 @@ public class RestaurantDetails extends AppCompatActivity {
     }
 
     private void checkAndDeleteEmptyRestaurant(final String oldRestaurantId) {
-        //si la collection "user" du restaurant est vide alors la supprimer.
         CollectionReference restaurantRef = RestaurantHelper.getUserSubcollection(oldRestaurantId);
         restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

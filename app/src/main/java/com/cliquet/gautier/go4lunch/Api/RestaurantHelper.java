@@ -22,7 +22,7 @@ public class RestaurantHelper {
     }
 
     public static CollectionReference getUserSubcollection(String restaurantId) {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME).document(restaurantId).collection("user");
+        return getRestaurantsCollection().document(restaurantId).collection("user");
     }
 
     //CREATE
