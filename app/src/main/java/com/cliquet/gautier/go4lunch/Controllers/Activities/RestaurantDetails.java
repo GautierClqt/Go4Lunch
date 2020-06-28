@@ -67,6 +67,7 @@ public class RestaurantDetails extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_details);
 
         initViews();
+        checkIsLiked();
 
         restaurant = getIntent().getParcelableExtra("restaurant");
 
@@ -109,8 +110,26 @@ public class RestaurantDetails extends AppCompatActivity {
         likedByUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likedByUser.setBackgroundResource(R.drawable.details_liked_true_40dp);
-                //UserHelper.createLikedRestaurantSubcollection(irebaseAuth.getInstance().getCurrentUser().getUid(), restaurant.getId());
+                CollectionReference likedRestaurantsRef = UserHelper.getLikedRestaurants(USER_ID);
+
+                likedRestaurantsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+
+                        for(int i = 0; i < documentSnapshots.size(); i++) {
+                            if(documentSnapshots.get(i).getId().equals(restaurant.getId())) {
+                                UserHelper.removeLikedRestaurantToSubcollection(USER_ID, restaurant.getId());
+                                likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_false_40dp, 0, 0);
+                                break;
+                            }
+                            else {
+                                UserHelper.addLikedRestaurantToSubcollection(USER_ID, restaurant.getId());
+                                likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_true_40dp, 0, 0);
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -144,6 +163,24 @@ public class RestaurantDetails extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 getJoiningWorkmatesInFirestore();
+            }
+        });
+    }
+
+    private void checkIsLiked() {
+        CollectionReference likedRestaurantsRef = UserHelper.getLikedRestaurants(USER_ID);
+
+        likedRestaurantsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+
+                for(int i = 0; i < documentSnapshots.size(); i++) {
+                    if(documentSnapshots.get(i).getId().equals(restaurant.getId())) {
+                        likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_true_40dp, 0, 0);
+                        break;
+                    }
+                }
             }
         });
     }

@@ -24,7 +24,7 @@ public class UserHelper {
         return UserHelper.getUsersCollection().document(userId).set(userToCreate);
     }
 
-    public static Task<Void> createLikedRestaurantSubcollection(String userId, String restaurantId) {
+    public static Task<Void> addLikedRestaurantToSubcollection(String userId, String restaurantId) {
         HashMap<Object, String> likedRestaurantToCreate = new HashMap<>();
         likedRestaurantToCreate.put("id", restaurantId);
         return UserHelper.getUsersCollection().document(userId).collection("likedRestaurants").document(restaurantId).set(likedRestaurantToCreate);
@@ -35,8 +35,8 @@ public class UserHelper {
         return UserHelper.getUsersCollection().document(userId).get();
     }
 
-    public static CollectionReference getLikedRestaurants(String restaurantId) {
-        return getUsersCollection().document(restaurantId).collection("likedRestaurant");
+    public static CollectionReference getLikedRestaurants(String userId) {
+        return getUsersCollection().document(userId).collection("likedRestaurants");
     }
 
     //UPDATE
@@ -47,6 +47,10 @@ public class UserHelper {
     //DELETE
     public static Task<Void> deleteUser(String userId) {
         return UserHelper.getUsersCollection().document(userId).delete();
+    }
+
+    public static Task<Void> removeLikedRestaurantToSubcollection(String userId, String restaurantId) {
+        return UserHelper.getUsersCollection().document(userId).collection("likedRestaurants").document(restaurantId).delete();
     }
 
     //######EN CHANTIER########
