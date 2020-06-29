@@ -2,9 +2,12 @@ package com.cliquet.gautier.go4lunch.Models;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.cliquet.gautier.go4lunch.Controllers.Activities.MainActivity;
+import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.BundleCallback;
 import com.cliquet.gautier.go4lunch.Controllers.UserLocationCallback;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
@@ -53,11 +56,19 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
             String gsonRestaurantsList;
             String gsonWorkmatesList;
 
-            gsonRestaurantsList = gson.toJson(mRestaurantList);
-            gsonWorkmatesList = gson.toJson(mWorkmatesList);
+            if(mRestaurantList.isEmpty()) {
+                mBundle.putString("restaurant_list", null);
+            } else {
+                gsonRestaurantsList = gson.toJson(mRestaurantList);
+                mBundle.putString("restaurant_list", gsonRestaurantsList);
+            }
 
-            mBundle.putString("restaurant_list", gsonRestaurantsList);
-            mBundle.putString("workmates_list", gsonWorkmatesList);
+            if(mWorkmatesList.isEmpty()) {
+                mBundle.putString("workmates_list", null);
+            } else {
+                gsonWorkmatesList = gson.toJson(mWorkmatesList);
+                mBundle.putString("workmates_list", gsonWorkmatesList);
+            }
 
             mBundleCallback.onCallback(mBundle);
         }

@@ -44,4 +44,6 @@
     <string name="notif_and">" et "</string>
     <string name="notif_content_text">C\'est l\'heure du déjeuner!</string>
     <string name="notif_have_a_good_lunch">Bon appétit!</string>
+    <string name="no_search_result">Aucun restaurant trouvé</string>
+    <string name="no_workmates_found">Aucun collègue trouvé</string>
 </resources>

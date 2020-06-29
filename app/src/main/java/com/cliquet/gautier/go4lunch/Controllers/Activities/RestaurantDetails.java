@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,8 @@ import java.util.Objects;
 public class RestaurantDetails extends AppCompatActivity {
 
     final String USER_ID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+    SharedPreferences preferences;
 
     Restaurant restaurant;
     WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this);
@@ -65,6 +69,8 @@ public class RestaurantDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
+
+        preferences = getSharedPreferences("Go4Lunch_Your_Lunch", MODE_PRIVATE);
 
         initViews();
         checkIsLiked();
@@ -116,6 +122,11 @@ public class RestaurantDetails extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+
+                        if(documentSnapshots.isEmpty()) {
+                            UserHelper.addLikedRestaurantToSubcollection(USER_ID, restaurant.getId());
+                            likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_true_40dp, 0, 0);
+                        }
 
                         for(int i = 0; i < documentSnapshots.size(); i++) {
                             if(documentSnapshots.get(i).getId().equals(restaurant.getId())) {
@@ -275,12 +286,14 @@ public class RestaurantDetails extends AppCompatActivity {
                         UserHelper.updateSelectedRestaurant(USER_ID, newRestaurantId);
                         RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
+                        saveYourLunch();
                     }
                     else if(newRestaurantId.equals(oldRestaurantId)) {
                         UserHelper.updateSelectedRestaurant(USER_ID, null);
                         RestaurantHelper.deleteUser(oldRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_unselected_60dp);
+                        deleteYourLunch();
                     }
                     else {
                         UserHelper.updateSelectedRestaurant(USER_ID, newRestaurantId);
@@ -288,10 +301,21 @@ public class RestaurantDetails extends AppCompatActivity {
                         RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
+                        saveYourLunch();
                     }
                 }
             }
         });
+    }
+
+    private void saveYourLunch() {
+        Gson gson = new Gson();
+        String gsonYourLunch = gson.toJson(restaurant);
+        preferences.edit().putString("your_lunch", gsonYourLunch).apply();
+    }
+
+    private void deleteYourLunch() {
+        preferences.edit().remove("your_lunch").apply();
     }
 
     private void checkAndDeleteEmptyRestaurant(final String oldRestaurantId) {

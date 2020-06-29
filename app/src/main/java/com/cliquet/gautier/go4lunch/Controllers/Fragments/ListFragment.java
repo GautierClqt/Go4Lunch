@@ -59,12 +59,13 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
         Gson gson = new Gson();
 
         if (getArguments() != null) {
-            String gsonRestaurantList = getArguments().getString("restaurant_list");
-            mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
+            if(getArguments().getString("restaurant_list") != null) {
+                String gsonRestaurantList = getArguments().getString("restaurant_list");
+                mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>() {}.getType());
+                recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
+                setRecyclerView();
+            }
         }
-
-        recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
-        setRecyclerView();
 
         return view;
     }

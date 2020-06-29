@@ -25,33 +25,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cliquet.gautier.go4lunch.Api.UserHelper;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.BundleCallback;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
-import com.cliquet.gautier.go4lunch.Controllers.UserLocationCallback;
 import com.cliquet.gautier.go4lunch.Models.BundleDataHandler;
-import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
-import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.cliquet.gautier.go4lunch.Utils.AlarmStartStop;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.security.auth.callback.CallbackHandler;
+import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    SharedPreferences preferences;
 
     final BundleDataHandler mBundleDataHandler = new BundleDataHandler();
     private Bundle mBundle = new Bundle();
@@ -64,15 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     DrawerLayout drawer;
     NavigationView navigationView;
-    TextView textViewPermissions;
+    TextView warningTextview;
     TextView userNameTextview;
     TextView userEmailTextview;
     ImageView userPictureImageview;
-
-    private NearbySearchPojo mNearbySearchPojo;
-    private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
-    private ArrayList<Restaurant> mRestaurantOriginalList = new ArrayList<>();
-    private ArrayList<Workmates> mWorkmatesList = new ArrayList<>();
+    ImageView logoImageview;
 
     private final Fragment MAP = new MapFragment();
     private final Fragment LIST = new ListFragment();
@@ -80,12 +67,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment activeFragment = MAP;
 
-    private HashMap<String, String> mRequestParametersHM = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        preferences = getSharedPreferences("Go4Lunch_Your_Lunch", MODE_PRIVATE);
 
         notificationSwitchPosition();
 
@@ -125,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
 
                         if (!searchText.equals("")) {
-                            mRestaurantList.clear();
                             mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
                                 @Override
                                 public void onCallback(Bundle bundle) {
@@ -193,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         search = false;
+        logoImageview.setVisibility(View.GONE);
     }
 
     private void permissionsChecking() {
@@ -201,25 +189,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void permissionsNotGranted() {
-        textViewPermissions.setVisibility(View.VISIBLE);
+        warningTextview.setVisibility(View.VISIBLE);
     }
 
     private void permissionsGranted() {
-        textViewPermissions.setVisibility(View.GONE);
+        warningTextview.setVisibility(View.GONE);
 
-        //workmatesList
         mBundleDataHandler.getFirestoreAndGoogleMapsApiDatas(this, new BundleCallback() {
                     @Override
                     public void onCallback(Bundle bundle) {
                         mBundle = bundle;
 
-                        MAP.setArguments(mBundle);
-                        LIST.setArguments(mBundle);
-
-                        if(!defaultRequests) {
-                            WORKMATES.setArguments(bundle);
-                            configureFragmentsDefaultDisplay();
+                        if(mBundle.get("restaurant_list") == null) {
+                            warningTextview.setText(getString(R.string.no_search_result));
+                            warningTextview.setVisibility(View.VISIBLE);
+                        } else {
+                            warningTextview.setVisibility(View.GONE);
+                            MAP.setArguments(mBundle);
+                            LIST.setArguments(mBundle);
                         }
+
+                        if(mBundle.get("workmates_list") == null) {
+                            warningTextview.setText(getString(R.string.no_workmates_found));
+                            warningTextview.setVisibility(View.VISIBLE);
+                        } else {
+                            if(!defaultRequests) {
+                                warningTextview.setVisibility(View.GONE);
+                                WORKMATES.setArguments(bundle);
+                                configureFragmentsDefaultDisplay();
+                            }
+                        }
+
                         configureBottomView();
                     }
         });
@@ -240,7 +240,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userNameTextview = headerView.findViewById(R.id.nav_header_username_textview);
         userEmailTextview = headerView.findViewById(R.id.nav_header_useremail_textview);
         userPictureImageview = headerView.findViewById(R.id.nav_header_userpicture_imageview);
-        textViewPermissions = findViewById(R.id.activity_main_warning_textview);
+        warningTextview = findViewById(R.id.activity_main_warning_textview);
+        logoImageview = findViewById(R.id.activity_main_logo_imageview);
     }
 
     private void setNavigationDrawerViews() {
@@ -277,22 +278,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(itemId) {
             case R.id.drawer_menu_your_lunch_item:
-                UserHelper.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.getResult().get("userSelected")!= null) {
-                            String restaurantId = task.getResult().get("userSelected").toString();
-                            for(int i = 0; i < mRestaurantList.size(); i++) {
-                                if(mRestaurantList.get(i).getId().equals(restaurantId)) {
-                                    startActivityRestaurantDetails(mRestaurantList.get(i));
-                                }
-                            }
-                        }
-                        else {
-                            toastNoRestaurantSelected();
-                        }
-                    }
-                });
+                String yourLunch = preferences.getString("your_lunch", null);
+                if(yourLunch != null) {
+                    Gson gson = new Gson();
+                    Restaurant restaurant = gson.fromJson(yourLunch, new TypeToken<Restaurant>() {}.getType());
+                    startActivityRestaurantDetails(restaurant);
+                }
+                else {
+                    toastNoRestaurantSelected();
+                }
                 break;
 
             case R.id.drawer_menu_settings_item:

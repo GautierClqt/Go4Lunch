@@ -81,25 +81,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         Gson gson = new Gson();
 
-        String gsonRestaurantList = getArguments().getString("restaurant_list");
-        mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
+        if (getArguments() != null) {
+            if(getArguments().getString("restaurant_list") != null) {
+                String gsonRestaurantList = getArguments().getString("restaurant_list");
+                mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
 
-        SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        supportMapFragment.getMapAsync(this);
+                SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                        .findFragmentById(R.id.map);
+                supportMapFragment.getMapAsync(this);
 
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference restaurantRef = db.collection("restaurants");
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                CollectionReference restaurantRef = db.collection("restaurants");
 
-        restaurantRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                List<DocumentSnapshot> selectedRestaurantlist = queryDocumentSnapshots.getDocuments();
+                restaurantRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        List<DocumentSnapshot> selectedRestaurantlist = queryDocumentSnapshots.getDocuments();
 
-                getMarkersOnList(selectedRestaurantlist);
+                        getMarkersOnList(selectedRestaurantlist);
+                    }
+                });
             }
-        });
+        }
 
         return view;
     }

@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/activity_main_warning_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AAAAAA"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/permissions_required"
+        android:textSize="25sp"
+        android:visibility="gone" />
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
@@ -61,15 +72,12 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
-    <TextView
-        android:id="@+id/activity_main_warning_textview"
+    <ImageView
+        android:id="@+id/activity_main_logo_imageview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#AAAAAA"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="@string/permissions_required"
-        android:textSize="25sp"
-        android:visibility="gone" />
+        android:src="@drawable/ic_fulllogo_go4lunch"
+        android:background="@color/colorPrimary"
+        tools:visibility="gone"/>
 
 </RelativeLayout>
