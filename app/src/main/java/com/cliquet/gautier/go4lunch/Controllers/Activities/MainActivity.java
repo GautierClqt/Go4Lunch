@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             LIST.setArguments(mBundle);
 
                             configureBottomView();
+                            warningTextview.setVisibility(View.GONE);
                         }
                     }
                     return false;
