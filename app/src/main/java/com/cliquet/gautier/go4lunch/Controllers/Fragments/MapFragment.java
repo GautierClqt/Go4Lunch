@@ -1,6 +1,7 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,15 +64,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private double mUserLat;
     private double mUserLng;
 
+    private String clickOnMarkerTitle = "";
+
     private OnFragmentInteractionListener mListener;
 
     public MapFragment() {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance() {
-        MapFragment fragment = new MapFragment();
-        return fragment;
+    private static MapFragment newInstance() {
+        return new MapFragment();
     }
 
     @Override
@@ -91,6 +96,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                 SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
                         .findFragmentById(R.id.map);
+                assert supportMapFragment != null;
                 supportMapFragment.getMapAsync(this);
 
 
@@ -131,6 +137,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             LatLng marker = new LatLng(placeLat, placeLong);
             mMarkersList.add(new MarkerOptions().position(marker)
                     .title(placeName).icon(icon));
+        }
+
+        mGoogleMaps.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                clickOnAMarker(marker);
+                return true;
+            }
+        });
+    }
+
+    private void clickOnAMarker(Marker marker) {
+        if(marker.getTitle().equals(clickOnMarkerTitle)) {
+            for (int i = 0; i < mRestaurantList.size(); i++) {
+                if (marker.getTitle().equals(mRestaurantList.get(i).getName())) {
+                    Log.d("marker", mRestaurantList.get(i).getId());
+                    clickOnMarkerTitle = "";
+                    Intent restaurantDetailsActivityIntent = new Intent(getContext(), RestaurantDetails.class);
+                    restaurantDetailsActivityIntent.putExtra("restaurant", mRestaurantList.get(i));
+                    startActivity(restaurantDetailsActivityIntent);
+                    break;
+                }
+            }
+        } else {
+            marker.showInfoWindow();
+            clickOnMarkerTitle = marker.getTitle();
         }
     }
 
@@ -179,7 +211,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
     }
@@ -192,7 +224,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onPoiClick(PointOfInterest pointOfInterest) {
-
     }
 
     @Override

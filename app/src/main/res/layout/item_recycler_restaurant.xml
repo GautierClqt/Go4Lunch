@@ -116,7 +116,7 @@
         android:layout_height="80dp"
         android:scaleType="centerCrop"
         android:contentDescription="@string/restaurant_restaurantpictures_imageview_contentdescription_placeholder"
-        android:src="@drawable/recyclerview_default_restaurant_picture"
+        android:src="@drawable/default_restaurant_picture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -163,16 +163,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.bottom_navigation_menu_map:
+                        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
                         fragmentManager.beginTransaction().hide(activeFragment).show(MAP).commit();
                         activeFragment = MAP;
                         return true;
 
                     case R.id.bottom_navigation_menu_list:
+                        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
                         fragmentManager.beginTransaction().hide(activeFragment).show(LIST).commit();
                         activeFragment = LIST;
                         return true;
 
                     case R.id.bottom_navigation_menu_workmates:
+                        checkForEmptyList("workmates", mBundle.get("workmates_list"));
                         fragmentManager.beginTransaction().hide(activeFragment).show(WORKMATES).commit();
                         activeFragment = WORKMATES;
                         return true;
@@ -182,6 +185,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         search = false;
         logoImageview.setVisibility(View.GONE);
+    }
+
+    private void checkForEmptyList(String key, Object object) {
+        if(object == null) {
+            if(key.equals("restaurant")) {
+                warningTextview.setText(getString(R.string.no_restaurant_found));
+            } else if(key.equals("workmates")) {
+                warningTextview.setText(getString(R.string.no_workmates_found));
+            }
+            warningTextview.setVisibility(View.VISIBLE);
+        }
+        else {
+            warningTextview.setVisibility(View.GONE);
+        }
     }
 
     private void permissionsChecking() {
@@ -227,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void configureFragmentsDefaultDisplay() {
+        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, WORKMATES, "3").hide(WORKMATES).commit();
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, LIST, "2").hide(LIST).commit();
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, MAP, "1").commit();

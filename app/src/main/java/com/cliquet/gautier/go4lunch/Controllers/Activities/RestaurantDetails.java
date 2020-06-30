@@ -98,8 +98,12 @@ public class RestaurantDetails extends AppCompatActivity {
         }
 
         final String photoReference = restaurant.getPhotoReference();
-        String apiKey = getString(R.string.google_maps_key);
-        Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key="+apiKey+"&photoreference="+photoReference+"&maxwidth=600").into(picture);
+        if(photoReference != null) {
+            String apiKey = getString(R.string.google_maps_key);
+            Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + photoReference + "&maxwidth=600").into(picture);
+        } else {
+            Glide.with(picture).load(R.drawable.default_restaurant_picture).into(picture);
+        }
 
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
