@@ -13,9 +13,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -76,7 +76,10 @@ public class LoginActivity extends AppCompatActivity {
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
             String fullName = firebaseUser.getDisplayName();
-            String[] splitNames = fullName.split(" ");
+            String[] splitNames = new String[2];
+            if(fullName != null) {
+                splitNames = fullName.split(" ");
+            }
 
             UserHelper.createUser(
                     firebaseUser.getUid(),
@@ -93,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         UserHelper.getUser(userId).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult().exists()) {
+                if(Objects.requireNonNull(task.getResult()).exists()) {
                     startMainActivity();
                 }
                 else {

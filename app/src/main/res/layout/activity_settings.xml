@@ -7,12 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".Controllers.Activities.SettingsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Settings"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/activity_settings_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="76dp"
         android:text="@string/notifications"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

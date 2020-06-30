@@ -5,6 +5,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -26,7 +27,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -94,10 +97,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 CollectionReference restaurantRef = db.collection("restaurants");
 
-                restaurantRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        List<DocumentSnapshot> selectedRestaurantlist = queryDocumentSnapshots.getDocuments();
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<DocumentSnapshot> selectedRestaurantlist = Objects.requireNonNull(task.getResult()).getDocuments();
 
                         getMarkersOnList(selectedRestaurantlist);
                     }
