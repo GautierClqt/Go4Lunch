@@ -123,12 +123,17 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         location.getLastLocation().addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                mUserLat = location.getLatitude();
-                mUserLng = location.getLongitude();
+                if(location != null) {
+                    mUserLat = location.getLatitude();
+                    mUserLng = location.getLongitude();
 
-                userLocation[0] = mUserLat;
-                userLocation[1] = mUserLng;
-                callback.onCallback(userLocation);
+                    userLocation[0] = mUserLat;
+                    userLocation[1] = mUserLng;
+                    callback.onCallback(userLocation);
+                } else {
+                    mRestaurantListOk = true;
+                    configureBundle();
+                }
             }
         });
     }
@@ -163,7 +168,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         }
     }
 
-    public void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
+    private void fillingRestaurantsList(NearbySearchPojo nearbySearchPojo, DetailsPojo detailsPojo, int index) {
         mNearbySearchPojo = nearbySearchPojo;
 
         double restaurantLat = 0;
