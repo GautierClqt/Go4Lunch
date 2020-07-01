@@ -87,32 +87,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        Gson gson = new Gson();
-
-        if (getArguments() != null) {
-            if(getArguments().getString("restaurant_list") != null) {
-                String gsonRestaurantList = getArguments().getString("restaurant_list");
-                mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
-
-                SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                        .findFragmentById(R.id.map);
-                assert supportMapFragment != null;
-                supportMapFragment.getMapAsync(this);
-
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                CollectionReference restaurantRef = db.collection("restaurants");
-
-                restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        List<DocumentSnapshot> selectedRestaurantlist = Objects.requireNonNull(task.getResult()).getDocuments();
-
-                        getMarkersOnList(selectedRestaurantlist);
-                    }
-                });
-            }
-        }
+        SupportMapFragment supportMapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        assert supportMapFragment != null;
+        supportMapFragment.getMapAsync(this);
 
         return view;
     }
@@ -139,13 +117,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     .title(placeName).icon(icon));
         }
 
-        mGoogleMaps.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                clickOnAMarker(marker);
-                return true;
-            }
-        });
+        if(mRestaurantList.size() != 0) {
+            addMarkersOnMap();
+        }
     }
 
     private void clickOnAMarker(Marker marker) {
@@ -175,12 +149,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 mUserLng = location.getLongitude();
                 LatLng latlng = new LatLng(mUserLat, mUserLng);
                 setCameraOnMap(mGoogleMaps, latlng);
-
-                if(mRestaurantList.size() != 0) {
-                    addMarkersOnMap();
-                }
             }
         });
+    }
+
+    private void getRestaurantList() {
+        Gson gson = new Gson();
+
+        if (getArguments() != null) {
+            if(getArguments().getString("restaurant_list") != null) {
+                String gsonRestaurantList = getArguments().getString("restaurant_list");
+                mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>(){}.getType());
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                CollectionReference restaurantRef = db.collection("restaurants");
+
+                restaurantRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<DocumentSnapshot> selectedRestaurantlist = Objects.requireNonNull(task.getResult()).getDocuments();
+
+                        getMarkersOnList(selectedRestaurantlist);
+                    }
+                });
+            }
+        }
+
     }
 
     private void setCameraOnMap(GoogleMap googleMap, LatLng latLng) {
@@ -201,6 +195,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         for(int i = 0; i < mMarkersList.size(); i++) {
             mGoogleMaps.addMarker(mMarkersList.get(i));
         }
+
+        mGoogleMaps.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                clickOnAMarker(marker);
+                return true;
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -232,6 +234,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mGoogleMaps.setMyLocationEnabled(true);
         mGoogleMaps.setOnPoiClickListener(this);
 
+        getRestaurantList();
         getUserLocation();
     }
 
