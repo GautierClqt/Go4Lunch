@@ -57,6 +57,8 @@ import java.util.Objects;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
+    private Gson gson = new Gson();
+
     private GoogleMap mGoogleMaps;
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<MarkerOptions> mMarkersList = new ArrayList<>();
@@ -141,23 +143,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void getUserLocation() {
-        FusedLocationProviderClient location = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this.getActivity()));
-        location.getLastLocation().addOnSuccessListener(this.getActivity(), new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null) {
-                    mUserLat = location.getLatitude();
-                    mUserLng = location.getLongitude();
+        double[] userLocation;
+        if(getArguments() != null) {
+            if(getArguments().getString("user_location") != null) {
+                userLocation = gson.fromJson(getArguments().getString("user_location"), new TypeToken<double[]>() {
+                }.getType());
+                if (userLocation != null) {
+                    mUserLat = userLocation[0];
+                    mUserLng = userLocation[1];
                     LatLng latlng = new LatLng(mUserLat, mUserLng);
                     setCameraOnMap(mGoogleMaps, latlng);
                 }
             }
-        });
+        }
     }
 
     private void getRestaurantList() {
-        Gson gson = new Gson();
-
         if (getArguments() != null) {
             if(getArguments().getString("restaurant_list") != null) {
                 String gsonRestaurantList = getArguments().getString("restaurant_list");
@@ -170,7 +171,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         List<DocumentSnapshot> selectedRestaurantlist = Objects.requireNonNull(task.getResult()).getDocuments();
-
                         getMarkersOnList(selectedRestaurantlist);
                     }
                 });

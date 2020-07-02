@@ -32,6 +32,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
     private Context mContext;
     private Bundle mBundle = new Bundle();
     private BundleCallback mBundleCallback;
+    private Gson gson = new Gson();
 
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
     private NearbySearchPojo mNearbySearchPojo = new NearbySearchPojo();
@@ -52,22 +53,17 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
     private void configureBundle() {
         if(mWorkmatesListOk && mRestaurantListOk) {
-            Gson gson = new Gson();
-            String gsonRestaurantsList;
-            String gsonWorkmatesList;
 
             if(mRestaurantList.isEmpty()) {
                 mBundle.putString("restaurant_list", null);
             } else {
-                gsonRestaurantsList = gson.toJson(mRestaurantList);
-                mBundle.putString("restaurant_list", gsonRestaurantsList);
+                mBundle.putString("restaurant_list", gson.toJson(mRestaurantList));
             }
 
             if(mWorkmatesList.isEmpty()) {
                 mBundle.putString("workmates_list", null);
             } else {
-                gsonWorkmatesList = gson.toJson(mWorkmatesList);
-                mBundle.putString("workmates_list", gsonWorkmatesList);
+                mBundle.putString("workmates_list", gson.toJson(mWorkmatesList));
             }
 
             mBundleCallback.onCallback(mBundle);
@@ -129,9 +125,12 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
                     userLocation[0] = mUserLat;
                     userLocation[1] = mUserLng;
+                    mBundle.putString("user_location", gson.toJson(userLocation));
+
                     callback.onCallback(userLocation);
                 } else {
                     mRestaurantListOk = true;
+                    mBundle.putString("user_location", null);
                     configureBundle();
                 }
             }

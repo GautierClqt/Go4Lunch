@@ -7,6 +7,7 @@
 
     <!-- warning texts in main activity -->
     <string name="permissions_required">This app required the Location permission in order to work. Please check the app\'s or device\'s settings to grant the permission.</string>
+    <string name="no_location">We can\'t find your location</string>
     <string name="no_restaurant_found">No restaurant found close to your location.</string>
     <string name="no_search_result">No restaurant found</string>
     <string name="no_workmates_found">No workmates found</string>

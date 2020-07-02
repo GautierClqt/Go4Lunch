@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 public boolean onQueryTextChange(String searchText) {
-                    if (!search) {
+                    if (!search && mBundle.get("user_location") != null) {
                         search = true;
                         if (mOriginalBundle.isEmpty()) {
                             mOriginalBundle.putAll(mBundle);
@@ -188,9 +188,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void checkForEmptyList(String key, Object object) {
+
         if(object == null) {
             if(key.equals("restaurant")) {
-                warningTextview.setText(getString(R.string.no_restaurant_found));
+                if(mBundle.get("user_location") != null) {
+                    warningTextview.setText(getString(R.string.no_restaurant_found));
+                }
+                else {
+                    warningTextview.setText(R.string.no_location);
+                }
             } else if(key.equals("workmates")) {
                 warningTextview.setText(getString(R.string.no_workmates_found));
             }
@@ -199,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else {
             warningTextview.setVisibility(View.GONE);
         }
+
     }
 
     private void permissionsChecking() {
@@ -237,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 configureFragmentsDefaultDisplay();
                             }
                         }
-
                         configureBottomView();
                     }
         });
