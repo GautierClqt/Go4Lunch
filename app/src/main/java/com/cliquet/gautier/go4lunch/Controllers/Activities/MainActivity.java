@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         permissionsChecking();
         configureDrawerLayout();
         bindViews();
-        setNavigationDrawerViews(); 
+        setNavigationDrawerViews();
     }
 
     @Override
@@ -98,46 +100,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem menuItem = menu.findItem(R.id.toolbar_menu_search_item);
         SearchView searchView = (SearchView) menuItem.getActionView();
 
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String searchText) {
-                    if (!search && mBundle.get("user_location") != null) {
-                        search = true;
-                        if (mOriginalBundle.isEmpty()) {
-                            mOriginalBundle.putAll(mBundle);
-                        }
-
-                        if (!searchText.equals("")) {
-                            mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
-                                @Override
-                                public void onCallback(Bundle bundle) {
-                                    mBundle = bundle;
-                                    MAP.setArguments(mBundle);
-                                    LIST.setArguments(mBundle);
-
-                                    configureBottomView();
-                                }
-                            });
-                            Log.d("tag", "onQueryTextChange: " + searchText);
-                        } else {
-                            mBundle.clear();
-                            mBundle.putAll(mOriginalBundle);
-
-                            MAP.setArguments(mBundle);
-                            LIST.setArguments(mBundle);
-
-                            configureBottomView();
-                            warningTextview.setVisibility(View.GONE);
-                        }
+            @Override
+            public boolean onQueryTextChange(String searchText) {
+                if (!search && mBundle.get("user_location") != null) {
+                    search = true;
+                    if (mOriginalBundle.isEmpty()) {
+                        mOriginalBundle.putAll(mBundle);
                     }
-                    return false;
+
+                    if (!searchText.equals("")) {
+                        mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
+                            @Override
+                            public void onCallback(Bundle bundle) {
+                                mBundle = bundle;
+                                MAP.setArguments(mBundle);
+                                LIST.setArguments(mBundle);
+
+                                configureBottomView();
+                            }
+                        });
+                        Log.d("tag", "onQueryTextChange: " + searchText);
+                    } else {
+                        mBundle.clear();
+                        mBundle.putAll(mOriginalBundle);
+
+                        MAP.setArguments(mBundle);
+                        LIST.setArguments(mBundle);
+
+                        configureBottomView();
+                        //warningTextview.setVisibility(View.GONE);
+                    }
                 }
-            });
+                return false;
+            }
+        });
         return true;
     }
 
@@ -147,10 +149,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean switchPosition = preferences.getBoolean("switch_position", true);
 
         AlarmStartStop alarm = new AlarmStartStop();
-        if(switchPosition) {
+        if (switchPosition) {
             alarm.startAlarm(this);
-        }
-        else {
+        } else {
             alarm.stopAlarm(this);
         }
     }
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void configureBottomView() {
         fragmentManager.beginTransaction().detach(LIST).attach(LIST).addToBackStack(null).commit();
         fragmentManager.beginTransaction().detach(MAP).attach(MAP).addToBackStack(null).commit();
+        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -189,20 +191,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void checkForEmptyList(String key, Object object) {
 
-        if(object == null) {
-            if(key.equals("restaurant")) {
-                if(mBundle.get("user_location") != null) {
+        if (object == null) {
+            if (key.equals("restaurant")) {
+                if (mBundle.get("user_location") != null) {
                     warningTextview.setText(getString(R.string.no_restaurant_found));
-                }
-                else {
+                } else {
                     warningTextview.setText(R.string.no_location);
                 }
-            } else if(key.equals("workmates")) {
+            } else if (key.equals("workmates")) {
                 warningTextview.setText(getString(R.string.no_workmates_found));
             }
             warningTextview.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             warningTextview.setVisibility(View.GONE);
         }
 
@@ -221,31 +221,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         warningTextview.setVisibility(View.GONE);
 
         mBundleDataHandler.getFirestoreAndGoogleMapsApiDatas(this, new BundleCallback() {
-                    @Override
-                    public void onCallback(Bundle bundle) {
-                        mBundle = bundle;
+            @Override
+            public void onCallback(Bundle bundle) {
+                mBundle = bundle;
 
-                        if(mBundle.get("restaurant_list") == null) {
-                            warningTextview.setText(getString(R.string.no_search_result));
-                            warningTextview.setVisibility(View.VISIBLE);
-                        } else {
-                            warningTextview.setVisibility(View.GONE);
-                            MAP.setArguments(mBundle);
-                            LIST.setArguments(mBundle);
-                        }
+                if (mBundle.get("restaurant_list") == null) {
+                    warningTextview.setText(getString(R.string.no_search_result));
+                    warningTextview.setVisibility(View.VISIBLE);
+                } else {
+                    warningTextview.setVisibility(View.GONE);
+                    MAP.setArguments(mBundle);
+                    LIST.setArguments(mBundle);
+                }
 
-                        if(mBundle.get("workmates_list") == null) {
-                            warningTextview.setText(getString(R.string.no_workmates_found));
-                            warningTextview.setVisibility(View.VISIBLE);
-                        } else {
-                            if(!defaultRequests) {
-                                warningTextview.setVisibility(View.GONE);
-                                WORKMATES.setArguments(bundle);
-                                configureFragmentsDefaultDisplay();
-                            }
-                        }
-                        configureBottomView();
+                if (mBundle.get("workmates_list") == null) {
+                    warningTextview.setText(getString(R.string.no_workmates_found));
+                    warningTextview.setVisibility(View.VISIBLE);
+                } else {
+                    if (!defaultRequests) {
+                        warningTextview.setVisibility(View.GONE);
+                        WORKMATES.setArguments(bundle);
+                        configureFragmentsDefaultDisplay();
                     }
+                }
+                configureBottomView();
+            }
         });
     }
 
@@ -289,6 +289,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        BroadcastReceiver GPS = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
+                    int test = 123456;
+                }
+            }
+        };
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             permissionsGranted();
