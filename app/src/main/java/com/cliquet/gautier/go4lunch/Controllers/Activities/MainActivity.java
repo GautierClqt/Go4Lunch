@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import com.cliquet.gautier.go4lunch.Controllers.Fragments.BundleCallback;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
+import com.cliquet.gautier.go4lunch.Controllers.SearchCallback;
 import com.cliquet.gautier.go4lunch.Models.BundleDataHandler;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
@@ -42,6 +44,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences preferences;
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Bundle mOriginalBundle = new Bundle();
 
     private boolean defaultRequests = false;
+    Calendar calendar = Calendar.getInstance();
+    private long mDelay;
     private boolean search = false;
 
     BottomNavigationView bottomNavigationView;
@@ -62,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView userEmailTextview;
     ImageView userPictureImageview;
     ImageView logoImageview;
+
+    String mQueryString;
+    Handler mHandler = new Handler();
 
     private final Fragment MAP = new MapFragment();
     private final Fragment LIST = new ListFragment();
@@ -108,39 +117,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String searchText) {
-                if (!search && mBundle.get("user_location") != null) {
-                    search = true;
-                    if (mOriginalBundle.isEmpty()) {
-                        mOriginalBundle.putAll(mBundle);
-                    }
 
-                    if (!searchText.equals("")) {
-                        mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), searchText, new BundleCallback() {
-                            @Override
-                            public void onCallback(Bundle bundle) {
-                                mBundle = bundle;
+                mQueryString = searchText;
+                mHandler.removeCallbacksAndMessages(null);
+
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!search && mBundle.get("user_location") != null) {
+                            search = true;
+                            if (mOriginalBundle.isEmpty()) {
+                                mOriginalBundle.putAll(mBundle);
+                            }
+
+                            if (!mQueryString.equals("")) {
+                                mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), mQueryString, new BundleCallback() {
+                                    @Override
+                                    public void onCallback(Bundle bundle) {
+                                        mBundle = bundle;
+                                        MAP.setArguments(mBundle);
+                                        LIST.setArguments(mBundle);
+
+                                        configureBottomView();
+                                    }
+                                });
+                                Log.d("tag", "onQueryTextChange: " + mQueryString);
+                            } else {
+                                mBundle.clear();
+                                mBundle.putAll(mOriginalBundle);
+
                                 MAP.setArguments(mBundle);
                                 LIST.setArguments(mBundle);
 
                                 configureBottomView();
                             }
-                        });
-                        Log.d("tag", "onQueryTextChange: " + searchText);
-                    } else {
-                        mBundle.clear();
-                        mBundle.putAll(mOriginalBundle);
-
-                        MAP.setArguments(mBundle);
-                        LIST.setArguments(mBundle);
-
-                        configureBottomView();
-                        //warningTextview.setVisibility(View.GONE);
+                        }
                     }
-                }
+                }, 2000);
+
                 return false;
             }
         });
         return true;
+    }
+
+    private void startDelay(SearchCallback callback) {
+        mDelay = Calendar.getInstance().getTimeInMillis();
+        long countdown = mDelay;
+        while(countdown <= mDelay+2000) {
+            calendar = Calendar.getInstance();
+            countdown = calendar.getTimeInMillis();
+        }
+
+        callback.onActiveSearch(true);
     }
 
     private void notificationSwitchPosition() {
@@ -194,7 +223,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (object == null) {
             if (key.equals("restaurant")) {
                 if (mBundle.get("user_location") != null) {
-                    warningTextview.setText(getString(R.string.no_restaurant_found));
+                    if(!mQueryString.equals("")) {
+                        warningTextview.setText(getString(R.string.no_restaurant_found));
+                    }
+                    else {
+                        warningTextview.setText(R.string.no_search_result);
+                    }
                 } else {
                     warningTextview.setText(R.string.no_location);
                 }
