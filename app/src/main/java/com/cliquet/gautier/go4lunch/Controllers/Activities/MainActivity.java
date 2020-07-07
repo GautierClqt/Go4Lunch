@@ -32,7 +32,6 @@ import com.cliquet.gautier.go4lunch.Controllers.Fragments.BundleCallback;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
-import com.cliquet.gautier.go4lunch.Controllers.SearchCallback;
 import com.cliquet.gautier.go4lunch.Models.BundleDataHandler;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
@@ -44,8 +43,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences preferences;
@@ -55,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Bundle mOriginalBundle = new Bundle();
 
     private boolean defaultRequests = false;
-    Calendar calendar = Calendar.getInstance();
-    private long mDelay;
     private boolean search = false;
+    private String mSearchText = "";
+    private Handler mHandler = new Handler();
 
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar;
@@ -68,9 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView userEmailTextview;
     ImageView userPictureImageview;
     ImageView logoImageview;
-
-    String mQueryString;
-    Handler mHandler = new Handler();
 
     private final Fragment MAP = new MapFragment();
     private final Fragment LIST = new ListFragment();
@@ -118,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextChange(String searchText) {
 
-                mQueryString = searchText;
+                mSearchText = searchText;
                 mHandler.removeCallbacksAndMessages(null);
 
                 mHandler.postDelayed(new Runnable() {
@@ -130,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 mOriginalBundle.putAll(mBundle);
                             }
 
-                            if (!mQueryString.equals("")) {
-                                mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), mQueryString, new BundleCallback() {
+                            if (!mSearchText.equals("")) {
+                                mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), mSearchText, new BundleCallback() {
                                     @Override
                                     public void onCallback(Bundle bundle) {
                                         mBundle = bundle;
@@ -141,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         configureBottomView();
                                     }
                                 });
-                                Log.d("tag", "onQueryTextChange: " + mQueryString);
+                                Log.d("tag", "onQueryTextChange: " + mSearchText);
                             } else {
                                 mBundle.clear();
                                 mBundle.putAll(mOriginalBundle);
@@ -159,17 +153,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         return true;
-    }
-
-    private void startDelay(SearchCallback callback) {
-        mDelay = Calendar.getInstance().getTimeInMillis();
-        long countdown = mDelay;
-        while(countdown <= mDelay+2000) {
-            calendar = Calendar.getInstance();
-            countdown = calendar.getTimeInMillis();
-        }
-
-        callback.onActiveSearch(true);
     }
 
     private void notificationSwitchPosition() {
@@ -223,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (object == null) {
             if (key.equals("restaurant")) {
                 if (mBundle.get("user_location") != null) {
-                    if(!mQueryString.equals("")) {
+                    if(mSearchText.equals("")) {
                         warningTextview.setText(getString(R.string.no_restaurant_found));
                     }
                     else {
