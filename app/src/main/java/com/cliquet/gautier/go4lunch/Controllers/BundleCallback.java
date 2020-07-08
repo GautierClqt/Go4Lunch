@@ -1,4 +1,4 @@
-package com.cliquet.gautier.go4lunch.Controllers.Fragments;
+package com.cliquet.gautier.go4lunch.Controllers;
 
 import android.os.Bundle;
 

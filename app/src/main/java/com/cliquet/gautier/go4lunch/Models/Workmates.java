@@ -5,48 +5,48 @@ import android.os.Parcelable;
 
 public class Workmates implements Parcelable {
 
-    private String mId;
-    private String mFirstName;
-    private String mLastName;
-    private String mEmail;
-    private String mUrlPicture;
-    private String mSelectedRestaurant;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String urlPicture;
+    private String selectedRestaurant;
 
     public Workmates() {}
 
     public Workmates(String id, String firstName, String lastName, String email, String urlPicture, String selectedRestaurant) {
-        this.mId = id;
-        this.mFirstName = firstName;
-        this.mLastName = lastName;
-        this.mEmail = email;
-        this.mUrlPicture = urlPicture;
-        this.mSelectedRestaurant = selectedRestaurant;
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.urlPicture = urlPicture;
+        this.selectedRestaurant = selectedRestaurant;
     }
 
     public String getId() {
-        return mId;
+        return id;
     }
     public String getFirstName() {
-        return mFirstName;
+        return firstName;
     }
     public String getLastName() {
-        return mLastName;
+        return lastName;
     }
     public String getEmail() {
-        return mEmail;
+        return email;
     }
     public String getUrlPicture() {
-        return mUrlPicture;
+        return urlPicture;
     }
-    public String getSelectedRestaurant() { return mSelectedRestaurant; }
+    public String getSelectedRestaurant() { return selectedRestaurant; }
 
     protected Workmates(Parcel in) {
-        mId = in.readString();
-        mFirstName = in.readString();
-        mLastName = in.readString();
-        mEmail = in.readString();
-        mUrlPicture = in.readString();
-        mSelectedRestaurant = in.readString();
+        id = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        email = in.readString();
+        urlPicture = in.readString();
+        selectedRestaurant = in.readString();
     }
 
     public static final Creator<Workmates> CREATOR = new Creator<Workmates>() {
@@ -68,11 +68,11 @@ public class Workmates implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeString(mFirstName);
-        dest.writeString(mLastName);
-        dest.writeString(mEmail);
-        dest.writeString(mUrlPicture);
-        dest.writeString(mSelectedRestaurant);
+        dest.writeString(id);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(email);
+        dest.writeString(urlPicture);
+        dest.writeString(selectedRestaurant);
     }
 }

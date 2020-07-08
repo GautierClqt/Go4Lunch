@@ -55,9 +55,7 @@ public class WorkmatesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
                              Bundle savedInstanceState) {
 
-
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Available Workmates");
-
 
         View view =  inflater.inflate(R.layout.fragment_workmates, viewGroup, false);
         Gson gson = new Gson();
@@ -90,23 +88,16 @@ public class WorkmatesFragment extends Fragment {
                 mWorkmatesList.clear();
 
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    User user = documentSnapshot.toObject(User.class);
+                    Workmates workmates = documentSnapshot.toObject(Workmates.class);
 
-                    String selectedRestaurant;
-                    if (documentSnapshot.get("userSelected") == null) {
-                        selectedRestaurant = null;
-                    } else {
-                        selectedRestaurant = documentSnapshot.get("userSelected").toString();
-                    }
-
-                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
+                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(workmates.getId())) {
                         mWorkmatesList.add(new Workmates(
-                                user.getUserId(),
-                                user.getUserFirstName(),
-                                user.getUserLastName(),
-                                user.getUserEmail(),
-                                user.getUserUrlPicture(),
-                                selectedRestaurant
+                                workmates.getId(),
+                                workmates.getFirstName(),
+                                workmates.getLastName(),
+                                workmates.getEmail(),
+                                workmates.getUrlPicture(),
+                                workmates.getSelectedRestaurant()
                         ));
                     }
                 }

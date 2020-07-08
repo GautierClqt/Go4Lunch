@@ -25,12 +25,25 @@ public class RestaurantHelper {
         return getRestaurantsCollection().document(restaurantId).collection("user");
     }
 
-    //CREATE
-    public static Task<Void> createRestaurant(String restaurantId, String restaurantName, String restaurantAddress) {
+    public static Task<Void> createRestaurant(Restaurant restaurant) {
         Map<String, Object> restaurantToCreate = new HashMap<>();
-        restaurantToCreate.put("name", restaurantName);
-        restaurantToCreate.put("address", restaurantAddress);
-        return RestaurantHelper.getRestaurantsCollection().document(restaurantId).set(restaurantToCreate);
+
+        restaurantToCreate.put("id", restaurant.getId());
+        restaurantToCreate.put("name", restaurant.getName());
+        restaurantToCreate.put("latitude", restaurant.getLatitude());
+        restaurantToCreate.put("longitude", restaurant.getLongitude());
+        restaurantToCreate.put("adress", restaurant.getAddress());
+        restaurantToCreate.put("number_of_workmates", restaurant.getNumberOfWorkmates());
+        restaurantToCreate.put("liked_by_user", restaurant.getLikedByUser());
+        restaurantToCreate.put("rating", restaurant.getRating());
+        restaurantToCreate.put("selected_by_user", restaurant.getSelectedByUser());
+        restaurantToCreate.put("phone", restaurant.getPhone());
+        restaurantToCreate.put("website_url", restaurant.getWebsiteUrl());
+        restaurantToCreate.put("distance", restaurant.getDistance());
+        restaurantToCreate.put("photo_reference", restaurant.getPhotoReference());
+        restaurantToCreate.put("opening_hours", restaurant.getOpeningHoursString());
+
+        return RestaurantHelper.getRestaurantsCollection().document(restaurant.getId()).set(restaurantToCreate);
     }
 
     public static Task<Void> addUserCollection(String restaurantId, String userId) {

@@ -28,7 +28,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cliquet.gautier.go4lunch.Controllers.Fragments.BundleCallback;
+import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
+import com.cliquet.gautier.go4lunch.Api.UserHelper;
+import com.cliquet.gautier.go4lunch.Controllers.BundleCallback;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.ListFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.MapFragment;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesFragment;
@@ -36,10 +38,13 @@ import com.cliquet.gautier.go4lunch.Models.BundleDataHandler;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
 import com.cliquet.gautier.go4lunch.Utils.AlarmStartStop;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -171,19 +176,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void configureBottomView() {
         fragmentManager.beginTransaction().detach(LIST).attach(LIST).addToBackStack(null).commit();
         fragmentManager.beginTransaction().detach(MAP).attach(MAP).addToBackStack(null).commit();
-        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
+        checkForEmptyList("mRestaurant", mBundle.get("restaurant_list"));
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.bottom_navigation_menu_map:
-                        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
+                        checkForEmptyList("mRestaurant", mBundle.get("restaurant_list"));
                         fragmentManager.beginTransaction().hide(activeFragment).show(MAP).commit();
                         activeFragment = MAP;
                         return true;
 
                     case R.id.bottom_navigation_menu_list:
-                        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
+                        checkForEmptyList("mRestaurant", mBundle.get("restaurant_list"));
                         fragmentManager.beginTransaction().hide(activeFragment).show(LIST).commit();
                         activeFragment = LIST;
                         return true;
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void checkForEmptyList(String key, Object object) {
 
         if (object == null) {
-            if (key.equals("restaurant")) {
+            if (key.equals("mRestaurant")) {
                 if (mBundle.get("user_location") != null) {
                     if(mSearchText.equals("")) {
                         warningTextview.setText(getString(R.string.no_restaurant_found));
@@ -267,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void configureFragmentsDefaultDisplay() {
-        checkForEmptyList("restaurant", mBundle.get("restaurant_list"));
+        checkForEmptyList("mRestaurant", mBundle.get("restaurant_list"));
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, WORKMATES, "3").hide(WORKMATES).commit();
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, LIST, "2").hide(LIST).commit();
         fragmentManager.beginTransaction().add(R.id.activity_main_framelayout, MAP, "1").commit();
@@ -329,15 +334,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(itemId) {
             case R.id.drawer_menu_your_lunch_item:
-                String yourLunch = preferences.getString("your_lunch", null);
-                if(yourLunch != null) {
-                    Gson gson = new Gson();
-                    Restaurant restaurant = gson.fromJson(yourLunch, new TypeToken<Restaurant>() {}.getType());
-                    startActivityRestaurantDetails(restaurant);
-                }
-                else {
-                    toastNoRestaurantSelected();
-                }
+                UserHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.getResult().get("userSelected") != null) {
+                            String test = (String) task.getResult().get("userSelected");
+                            RestaurantHelper.getRestaurant(test).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    Restaurant restaurant = task.getResult().toObject(Restaurant.class);
+                                    startActivityRestaurantDetails(restaurant);
+                                }
+                            });
+                        }
+                        else {
+                            toastNoRestaurantSelected();
+                        }
+                    }
+                });
                 break;
 
             case R.id.drawer_menu_settings_item:
@@ -365,6 +379,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void toastNoRestaurantSelected() {
-        Toast.makeText(this, "No restaurant selected",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "No mRestaurant selected",Toast.LENGTH_LONG).show();
     }
 }

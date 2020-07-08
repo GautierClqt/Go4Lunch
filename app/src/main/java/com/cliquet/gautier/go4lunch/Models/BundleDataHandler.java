@@ -2,13 +2,10 @@ package com.cliquet.gautier.go4lunch.Models;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
-import com.cliquet.gautier.go4lunch.Controllers.Activities.MainActivity;
-import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
-import com.cliquet.gautier.go4lunch.Controllers.Fragments.BundleCallback;
+import com.cliquet.gautier.go4lunch.Controllers.BundleCallback;
 import com.cliquet.gautier.go4lunch.Controllers.UserLocationCallback;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.PlacesApiCalls;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;

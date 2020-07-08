@@ -37,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,8 @@ public class RestaurantDetails extends AppCompatActivity {
 
     SharedPreferences preferences;
 
-    Restaurant restaurant;
+    Restaurant mRestaurant;
+    String mRestaurantId;
     WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this);
 
     TextView name;
@@ -75,29 +77,29 @@ public class RestaurantDetails extends AppCompatActivity {
         initViews();
         checkIsLiked();
 
-        restaurant = getIntent().getParcelableExtra("restaurant");
+        mRestaurant = getIntent().getParcelableExtra("restaurant");
 
-        name.setText(restaurant.getName());
+        name.setText(mRestaurant.getName());
         name.setTypeface(Typeface.DEFAULT_BOLD);
 
-        address.setText(restaurant.getAddress());
+        address.setText(mRestaurant.getAddress());
 
         firstStar.setVisibility(View.INVISIBLE);
         secondStar.setVisibility(View.INVISIBLE);
         thirdStar.setVisibility(View.INVISIBLE);
 
         //display stars according to the number of likes
-        if(restaurant.getRating() > 0) {
+        if(mRestaurant.getRating() > 0) {
             firstStar.setVisibility(View.VISIBLE);
         }
-        if(restaurant.getRating() > 1) {
+        if(mRestaurant.getRating() > 1) {
             secondStar.setVisibility(View.VISIBLE);
         }
-        if(restaurant.getRating() > 2) {
+        if(mRestaurant.getRating() > 2) {
             thirdStar.setVisibility(View.VISIBLE);
         }
 
-        final String photoReference = restaurant.getPhotoReference();
+        final String photoReference = mRestaurant.getPhotoReference();
         if(photoReference != null) {
             String apiKey = getString(R.string.google_maps_key);
             Glide.with(picture).load("https://maps.googleapis.com/maps/api/place/photo?key=" + apiKey + "&photoreference=" + photoReference + "&maxwidth=600").into(picture);
@@ -108,7 +110,7 @@ public class RestaurantDetails extends AppCompatActivity {
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(restaurant.getPhone() == null || restaurant.getPhone().equals("")) {
+                if(mRestaurant.getPhone() == null || mRestaurant.getPhone().equals("")) {
                     Toast.makeText(getApplicationContext(), "no phone number found", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -128,18 +130,17 @@ public class RestaurantDetails extends AppCompatActivity {
                         List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
 
                         if(documentSnapshots.isEmpty()) {
-                            UserHelper.addLikedRestaurantToSubcollection(USER_ID, restaurant.getId());
+                            UserHelper.addLikedRestaurantToSubcollection(USER_ID, mRestaurant.getId());
                             likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_true_40dp, 0, 0);
                         }
-
                         for(int i = 0; i < documentSnapshots.size(); i++) {
-                            if(documentSnapshots.get(i).getId().equals(restaurant.getId())) {
-                                UserHelper.removeLikedRestaurantToSubcollection(USER_ID, restaurant.getId());
+                            if(documentSnapshots.get(i).getId().equals(mRestaurant.getId())) {
+                                UserHelper.removeLikedRestaurantToSubcollection(USER_ID, mRestaurant.getId());
                                 likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_false_40dp, 0, 0);
                                 break;
                             }
                             else {
-                                UserHelper.addLikedRestaurantToSubcollection(USER_ID, restaurant.getId());
+                                UserHelper.addLikedRestaurantToSubcollection(USER_ID, mRestaurant.getId());
                                 likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_true_40dp, 0, 0);
                             }
                         }
@@ -151,7 +152,7 @@ public class RestaurantDetails extends AppCompatActivity {
         website.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(restaurant.getWebsiteUrl() == null || restaurant.getWebsiteUrl().equals("")) {
+                if(mRestaurant.getWebsiteUrl() == null || mRestaurant.getWebsiteUrl().equals("")) {
                     Toast.makeText(getApplicationContext(), "no website found", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -172,7 +173,7 @@ public class RestaurantDetails extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        CollectionReference usersRef = RestaurantHelper.getUserSubcollection(restaurant.getId());
+        CollectionReference usersRef = RestaurantHelper.getUserSubcollection(mRestaurant.getId());
 
         usersRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -191,7 +192,7 @@ public class RestaurantDetails extends AppCompatActivity {
                 List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
 
                 for(int i = 0; i < documentSnapshots.size(); i++) {
-                    if(documentSnapshots.get(i).getId().equals(restaurant.getId())) {
+                    if(documentSnapshots.get(i).getId().equals(mRestaurant.getId())) {
                         likedByUser.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.details_liked_true_40dp, 0, 0);
                         break;
                     }
@@ -210,7 +211,7 @@ public class RestaurantDetails extends AppCompatActivity {
     private void getJoiningWorkmatesInFirestore() {
         final List<String> workmatesIdList = new ArrayList<>();
 
-        RestaurantHelper.getUserSubcollection(restaurant.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        RestaurantHelper.getUserSubcollection(mRestaurant.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
@@ -233,61 +234,67 @@ public class RestaurantDetails extends AppCompatActivity {
             UserHelper.getUser(workmatesIdList.get(i)).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    User user = task.getResult().toObject(User.class);
-
+                    Workmates workmates = task.getResult().toObject(Workmates.class);
                     DocumentSnapshot doc = task.getResult();
+
                     String selectedRestaurant;
                     if(doc.get("userSelected") == null) {
-                        selectedRestaurant = null;
+                        mRestaurantId = null;
                     }
                     else {
                         selectedRestaurant = doc.get("userSelected").toString();
+                        RestaurantHelper.getRestaurant(selectedRestaurant).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                mRestaurantId = task.getResult().toObject(Restaurant.class).getId();
+                            }
+                        });
                     }
 
                     mJoiningWorkmatesList.add(new Workmates(
-                            user.getUserId(),
-                            user.getUserFirstName(),
-                            user.getUserLastName(),
-                            user.getUserEmail(),
-                            user.getUserUrlPicture(),
-                            selectedRestaurant
+                            workmates.getId(),
+                            workmates.getFirstName(),
+                            workmates.getLastName(),
+                            workmates.getEmail(),
+                            workmates.getUrlPicture(),
+                            workmates.getSelectedRestaurant()
                     ));
                     setWorkmatesAdapter();
                 }
             });
-
         }
     }
 
-    private void checkForRestaurantInFirestore(final String restaurantId) {
-        RestaurantHelper.getRestaurant(restaurantId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                RestaurantHelper.createRestaurant(restaurantId, restaurant.getName(), restaurant.getAddress());
-                RestaurantHelper.addUserCollection(restaurantId, USER_ID);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                RestaurantHelper.createRestaurant(restaurantId, restaurant.getName(), restaurant.getAddress());
-            }
-        });
-    }
+//    private void checkForRestaurantInFirestore(final String restaurantId) {
+//        RestaurantHelper.getRestaurant(restaurantId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                RestaurantHelper.createRestaurant(restaurantId, mRestaurant.getName(), mRestaurant.getAddress());
+//                RestaurantHelper.addUserCollection(restaurantId, USER_ID);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                RestaurantHelper.createRestaurant(restaurantId, mRestaurant.getName(), mRestaurant.getAddress());
+//            }
+//        });
+//    }
 
     private void handlingFirestoreRequestsAndUi() {
-        final String newRestaurantId = restaurant.getId();
+        final String newRestaurantId = mRestaurant.getId();
 
-        RestaurantHelper.createRestaurant(restaurant.getId(), restaurant.getName(), restaurant.getAddress());
+        RestaurantHelper.createRestaurant(mRestaurant);
 
         UserHelper.getUser(USER_ID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+
                     final String oldRestaurantId = document.getString("userSelected");
 
                     if(oldRestaurantId == null){
-                        UserHelper.updateSelectedRestaurant(USER_ID, newRestaurantId);
+                        UserHelper.updateSelectedRestaurant(USER_ID, mRestaurant.getId());
                         RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
                         saveYourLunch();
@@ -300,7 +307,7 @@ public class RestaurantDetails extends AppCompatActivity {
                         deleteYourLunch();
                     }
                     else {
-                        UserHelper.updateSelectedRestaurant(USER_ID, newRestaurantId);
+                        UserHelper.updateSelectedRestaurant(USER_ID, mRestaurant.getId());
                         RestaurantHelper.deleteUser(oldRestaurantId, USER_ID);
                         RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
@@ -314,7 +321,7 @@ public class RestaurantDetails extends AppCompatActivity {
 
     private void saveYourLunch() {
         Gson gson = new Gson();
-        String gsonYourLunch = gson.toJson(restaurant);
+        String gsonYourLunch = gson.toJson(mRestaurant);
         preferences.edit().putString("your_lunch", gsonYourLunch).apply();
     }
 
@@ -337,13 +344,13 @@ public class RestaurantDetails extends AppCompatActivity {
     }
 
     private void startCallActivity() {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" +restaurant.getPhone()));
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mRestaurant.getPhone()));
         startActivity(intent);
     }
 
     private void startWebsiteActivity() {
         Intent intent = new Intent(this, WebsiteActivity.class);
-        intent.putExtra("url", restaurant.getWebsiteUrl());
+        intent.putExtra("url", mRestaurant.getWebsiteUrl());
         startActivity(intent);
     }
 

@@ -1,11 +1,13 @@
 package com.cliquet.gautier.go4lunch.Api;
 
+import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.Models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
