@@ -3,10 +3,9 @@ package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,15 +30,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListFragment extends Fragment implements RestaurantClickCallback {
 
     private RecyclerView recyclerView;
     private List<Restaurant> mRestaurantList = new ArrayList<>();
-    private OnFragmentInteractionListener mListener;
 
     private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
 
     public ListFragment() {
     }
@@ -55,7 +53,7 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, viewGroup, false);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("I'm Hungry!");
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("I'm Hungry!");
 
         Gson gson = new Gson();
 
@@ -64,8 +62,8 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
                 String gsonRestaurantList = getArguments().getString("restaurant_list");
                 mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>() {}.getType());
                 Sort sort = new Sort();
-//                sort.sortList(mRestaurantList, "Default");
-                mRestaurantList = sort.sortList(mRestaurantList, R.id.activity_setting_sortnames_radiobutton);
+
+                mRestaurantList = sort.sortList(mRestaurantList, getArguments().getInt("sort_type"));
                 recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
                 setRecyclerView();
             }
@@ -75,24 +73,25 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
     }
 
     private void setRecyclerView() {
-        RestaurantsRecyclerAdapter adapter = new RestaurantsRecyclerAdapter(this.getContext(),  mRestaurantList, this);
+        ListRecyclerAdapter adapter = new ListRecyclerAdapter(this.getContext(),  mRestaurantList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_menu, menu);
         MenuItem item = menu.findItem(R.id.toolbar_menu_search_item);
-        SearchManager searchManger = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManger = (SearchManager) Objects.requireNonNull(getActivity()).getSystemService(Context.SEARCH_SERVICE);
 
         if(item != null) {
             searchView = (SearchView) item.getActionView();
         }
         if(searchView != null) {
+            assert searchManger != null;
             searchView.setSearchableInfo(searchManger.getSearchableInfo(getActivity().getComponentName()));
 
-            queryTextListener = new SearchView.OnQueryTextListener() {
+            SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -112,22 +111,14 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -135,10 +126,5 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
         Intent restaurantDetailsActivityIntent = new Intent(getContext(), RestaurantDetails.class);
         restaurantDetailsActivityIntent.putExtra("restaurant", restaurant);
         startActivity(restaurantDetailsActivityIntent);
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

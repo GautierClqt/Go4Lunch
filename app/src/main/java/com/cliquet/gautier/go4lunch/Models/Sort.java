@@ -1,5 +1,7 @@
 package com.cliquet.gautier.go4lunch.Models;
 
+import android.content.SharedPreferences;
+
 import com.cliquet.gautier.go4lunch.R;
 
 import java.util.ArrayList;
@@ -15,10 +17,10 @@ public class Sort {
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private int mSortType;
 
-    public List<Restaurant> sortList(List<Restaurant> restaurantList, int sortType) {
-        mRestaurantList = restaurantList;
-        mSortType = sortType;
+    public List<Restaurant> sortList(List<Restaurant> restaurantList, int sortRadioButtonId) {
 
+        mRestaurantList = restaurantList;
+        mSortType = sortRadioButtonId;
         checkSortingType();
 
         return mRestaurantList;
@@ -26,7 +28,8 @@ public class Sort {
 
     private void checkSortingType() {
         switch(mSortType) {
-            case R.id.activity_setting_sortdefault_radiobutton : break;
+            case R.id.activity_setting_sortdefault_radiobutton :
+                break;
 
             case R.id.activity_setting_sortnames_radiobutton: sortByNames();
                 break;

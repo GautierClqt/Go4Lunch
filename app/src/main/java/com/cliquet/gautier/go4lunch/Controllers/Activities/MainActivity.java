@@ -45,13 +45,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -178,6 +171,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void SelectedSortType() {
+        SharedPreferences sortPreferences;
+        sortPreferences = getSharedPreferences("Go4Lunch_Settings", MODE_PRIVATE);
+        int sortRadioButtonId = sortPreferences.getInt("radiobutton_checked", 0);
+        mBundle.putInt("sort_type", sortRadioButtonId);
+    }
+
     private void configureBottomView() {
         fragmentManager.beginTransaction().detach(LIST).attach(LIST).addToBackStack(null).commit();
         fragmentManager.beginTransaction().detach(MAP).attach(MAP).addToBackStack(null).commit();
@@ -271,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         configureFragmentsDefaultDisplay();
                     }
                 }
+                SelectedSortType();
                 configureBottomView();
             }
         });

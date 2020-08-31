@@ -19,13 +19,13 @@ import com.cliquet.gautier.go4lunch.R;
 
 import java.util.List;
 
-public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<RestaurantsRecyclerAdapter.ViewHolder> {
+public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapter.ViewHolder> {
 
     private Context mContext;
     private RestaurantClickCallback listener;
     private List<Restaurant> mRestaurantsList;
 
-    public RestaurantsRecyclerAdapter(Context context, List<Restaurant> restaurantList, RestaurantClickCallback listener) {
+    public ListRecyclerAdapter(Context context, List<Restaurant> restaurantList, RestaurantClickCallback listener) {
         this.mContext = context;
         this.mRestaurantsList = restaurantList;
         this.listener = listener;
