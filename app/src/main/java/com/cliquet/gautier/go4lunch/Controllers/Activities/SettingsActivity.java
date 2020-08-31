@@ -49,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         preferences = getSharedPreferences("Go4Lunch_Settings", MODE_PRIVATE);
         boolean switchPosition = preferences.getBoolean("switch_position", true);
         String jsonCheckBoxId = preferences.getString("checkboxes_id_list", null);
+        int radioButtonId = preferences.getInt("radiobutton_checked", 0);
 
         bindView();
         setClickOnViewListener();
@@ -62,7 +63,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             preferencesCheckboxesPosition(jsonCheckBoxId);
         }
 
-        //PREFERENCES RADIO BUTTON!!!!!!!!!!!
+        if(radioButtonId == 0) {
+            sortRadioGroup.check(R.id.activity_setting_sortdefault_radiobutton);
+        }
+        else {
+            sortRadioGroup.check(radioButtonId);
+        }
 
         checkSwitchPosition();
 

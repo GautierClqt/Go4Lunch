@@ -12,10 +12,10 @@ import java.util.prefs.Preferences;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Sort {
-    private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
+    private List<Restaurant> mRestaurantList = new ArrayList<>();
     private int mSortType;
 
-    public ArrayList<Restaurant> sortList(ArrayList<Restaurant> restaurantList, int sortType) {
+    public List<Restaurant> sortList(List<Restaurant> restaurantList, int sortType) {
         mRestaurantList = restaurantList;
         mSortType = sortType;
 

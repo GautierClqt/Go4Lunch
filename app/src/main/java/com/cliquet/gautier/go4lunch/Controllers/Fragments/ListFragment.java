@@ -64,7 +64,8 @@ public class ListFragment extends Fragment implements RestaurantClickCallback {
                 String gsonRestaurantList = getArguments().getString("restaurant_list");
                 mRestaurantList = gson.fromJson(gsonRestaurantList, new TypeToken<List<Restaurant>>() {}.getType());
                 Sort sort = new Sort();
-                //sort.sortList(mRestaurantList, "Default");
+//                sort.sortList(mRestaurantList, "Default");
+                mRestaurantList = sort.sortList(mRestaurantList, R.id.activity_setting_sortnames_radiobutton);
                 recyclerView = view.findViewById(R.id.activity_restaurants_list_recycler);
                 setRecyclerView();
             }
