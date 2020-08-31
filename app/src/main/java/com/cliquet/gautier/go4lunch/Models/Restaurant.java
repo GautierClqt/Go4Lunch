@@ -9,7 +9,7 @@ public class Restaurant implements Parcelable {
     private String name;
     private double latitude;
     private double longitude;
-    private String address;
+    private String adress;
     private int numberOfWorkmates;
     private boolean likedByUser;
     private int rating;
@@ -18,7 +18,7 @@ public class Restaurant implements Parcelable {
     private String websiteUrl;
     private float distance;
     private String photoReference;
-    private String openingHoursString;
+    private String openingHours;
 
     public Restaurant() {
     }
@@ -32,7 +32,7 @@ public class Restaurant implements Parcelable {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.address = address;
+        this.adress = address;
         this.numberOfWorkmates = numberOfWorkmates;
         this.likedByUser = likedByUser;
         this.rating = rating;
@@ -41,7 +41,7 @@ public class Restaurant implements Parcelable {
         this.websiteUrl = websiteUrl;
         this.distance = distance;
         this.photoReference = photoReference;
-        this.openingHoursString = openingHoursString;
+        this.openingHours = openingHoursString;
     }
 
     protected Restaurant(Parcel in) {
@@ -49,7 +49,7 @@ public class Restaurant implements Parcelable {
         name = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        address = in.readString();
+        adress = in.readString();
         numberOfWorkmates = in.readInt();
         likedByUser = in.readByte() != 0;
         rating = in.readInt();
@@ -58,7 +58,7 @@ public class Restaurant implements Parcelable {
         websiteUrl = in.readString();
         distance = in.readFloat();
         photoReference = in.readString();
-        openingHoursString = in.readString();
+        openingHours = in.readString();
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -77,7 +77,7 @@ public class Restaurant implements Parcelable {
     public String getName() { return name; }
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
-    public String getAddress() { return address; }
+    public String getAdress() { return adress; }
     public int getNumberOfWorkmates() { return numberOfWorkmates; }
     public boolean getLikedByUser() { return likedByUser; }
     public int getRating() { return rating; }
@@ -86,7 +86,7 @@ public class Restaurant implements Parcelable {
     public String getWebsiteUrl() { return websiteUrl; }
     public float getDistance() { return distance; }
     public String getPhotoReference() { return photoReference; }
-    public String getOpeningHoursString() { return openingHoursString; }
+    public String getOpeningHours() { return openingHours; }
 
     @Override
     public int describeContents() {
@@ -99,7 +99,7 @@ public class Restaurant implements Parcelable {
         dest.writeString(name);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
-        dest.writeString(address);
+        dest.writeString(adress);
         dest.writeInt(numberOfWorkmates);
         dest.writeByte((byte) (likedByUser ? 1 : 0));
         dest.writeInt(rating);
@@ -108,6 +108,6 @@ public class Restaurant implements Parcelable {
         dest.writeString(websiteUrl);
         dest.writeFloat(distance);
         dest.writeString(photoReference);
-        dest.writeString(openingHoursString);
+        dest.writeString(openingHours);
     }
 }

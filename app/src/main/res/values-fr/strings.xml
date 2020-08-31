@@ -32,7 +32,7 @@
     <string name="Sunday">Dimanche</string>
     <string name="friday">Vendredi</string>
     <string name="monday">Lundi</string>
-    <string name="notifications">Notifications</string>
+    <string name="setting_notifications">Notifications</string>
     <string name="enabling_notifications">Activer?</string>
     <string name="saturday">Samedi</string>
     <string name="thursday">Jeudi</string>
@@ -47,4 +47,10 @@
     <string name="no_search_result">Aucun restaurant trouvé</string>
     <string name="no_workmates_found">Aucun collègue trouvé</string>
     <string name="no_location">Il semble que nous ne pouvons pas vous localiser</string>
+    <string name="sort_Workmates">Collègues</string>
+    <string name="sort_names">Noms</string>
+    <string name="sort_proximity">Proximité</string>
+    <string name="sort_rating">Notes</string>
+    <string name="setting_sortby">Tri de la liste des restaurants</string>
+    <string name="sort_default">Par défaut</string>
 </resources>

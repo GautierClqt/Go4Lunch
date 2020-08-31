@@ -67,8 +67,10 @@
     <string name="close" translatable="false">close</string>
 
     <!-- Settings strings -->
-    <string name="notifications" translatable="true">Notifications</string>
+    <string name="setting_notifications" translatable="true">Notifications</string>
     <string name="enabling_notifications" translatable="true">Enabling ?</string>
+    <string name="setting_sortby" translatable="true">Sort by</string>
+
     <string name="monday" translatable="true">Monday</string>
     <string name="thursday" translatable="true">Thursday</string>
     <string name="wednesday" translatable="true">Wednesday</string>
@@ -76,6 +78,12 @@
     <string name="friday" translatable="true">Friday</string>
     <string name="saturday" translatable="true">Saturday</string>
     <string name="Sunday" translatable="true">Sunday</string>
+
+    <string name="sort_default" translatable="true">Default</string>
+    <string name="sort_names" translatable="true">Names</string>
+    <string name="sort_Workmates" translatable="true">Workmates</string>
+    <string name="sort_rating" translatable="true">Rating</string>
+    <string name="sort_proximity" translatable="true">Proximity</string>
 
     <!-- notification string -->
     <string name="notif_content_text" translatable="true">It\'s lunch time!</string>

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import com.cliquet.gautier.go4lunch.R;
@@ -14,6 +16,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -30,6 +35,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     CheckBox fridayCheckBox;
     CheckBox saturdayCheckBox;
     CheckBox sundayCheckBox;
+
+    RadioGroup sortRadioGroup;
 
     String jsonCheckBoxId;
     Gson gson = new Gson();
@@ -55,12 +62,20 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             preferencesCheckboxesPosition(jsonCheckBoxId);
         }
 
+        //PREFERENCES RADIO BUTTON!!!!!!!!!!!
+
         checkSwitchPosition();
 
         enablingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkSwitchPosition();
+            }
+        });
+        sortRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                preferences.edit().putInt("radiobutton_checked", checkedId).apply();
             }
         });
     }
@@ -199,6 +214,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         fridayCheckBox = findViewById(R.id.activity_settings_friday_checkbox);
         saturdayCheckBox = findViewById(R.id.activity_settings_saturday_checkbox);
         sundayCheckBox = findViewById(R.id.activity_settings_sunday_checkbox);
+
+        sortRadioGroup = findViewById(R.id.activity_setting_sortradiogroup_radiogroup);
     }
 
     private void setClickOnViewListener() {

@@ -8,94 +8,175 @@
     tools:context=".Controllers.Activities.SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar3"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:title="Settings"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Settings" />
 
-    <TextView
-        android:id="@+id/activity_settings_title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="76dp"
-        android:text="@string/notifications"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="369dp"
+        android:layout_height="224dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar3">
 
-    <TextView
-        android:id="@+id/activity_settings_enabling_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/enabling_notifications"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_title_textview"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_title_textview" />
+        <TextView
+            android:id="@+id/activity_settings_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/setting_notifications"
+            style="@style/SettingsText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.468"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/activity_settings_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_settings_enabling_textview"
-        app:layout_constraintStart_toEndOf="@+id/activity_settings_enabling_textview"
-        app:layout_constraintTop_toTopOf="@+id/activity_settings_enabling_textview" />
+        <TextView
+            android:id="@+id/activity_settings_enabling_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/enabling_notifications"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_title_textview" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_monday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="216dp"
-        android:text="@string/monday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_title_textview"
-        app:layout_constraintTop_toTopOf="@+id/activity_settings_switch" />
+        <Switch
+            android:id="@+id/activity_settings_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_settings_enabling_textview"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_enabling_textview"
+            app:layout_constraintTop_toTopOf="@+id/activity_settings_enabling_textview" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_tuesday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tuesday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_monday_checkbox" />
+        <CheckBox
+            android:id="@+id/activity_settings_monday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/monday"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_switch" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_wednesday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wednesday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_tuesday_checkbox" />
+        <CheckBox
+            android:id="@+id/activity_settings_tuesday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tuesday"
+            app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_monday_checkbox" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_thursday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/thursday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_wednesday_checkbox" />
+        <CheckBox
+            android:id="@+id/activity_settings_wednesday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wednesday"
+            app:layout_constraintStart_toStartOf="@+id/activity_settings_tuesday_checkbox"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_tuesday_checkbox" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_friday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/friday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_thursday_checkbox" />
+        <CheckBox
+            android:id="@+id/activity_settings_thursday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:text="@string/thursday"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_monday_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/activity_settings_monday_checkbox" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_saturday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/saturday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_friday_checkbox" />
+        <CheckBox
+            android:id="@+id/activity_settings_friday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/friday"
+            app:layout_constraintStart_toStartOf="@+id/activity_settings_thursday_checkbox"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_thursday_checkbox" />
 
-    <CheckBox
-        android:id="@+id/activity_settings_sunday_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Sunday"
-        app:layout_constraintStart_toStartOf="@+id/activity_settings_monday_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/activity_settings_saturday_checkbox" />
+        <CheckBox
+            android:id="@+id/activity_settings_saturday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saturday"
+            app:layout_constraintStart_toStartOf="@+id/activity_settings_friday_checkbox"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_friday_checkbox" />
+
+        <CheckBox
+            android:id="@+id/activity_settings_sunday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:text="@string/Sunday"
+            app:layout_constraintStart_toEndOf="@+id/activity_settings_thursday_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/activity_settings_thursday_checkbox" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="366dp"
+        android:layout_height="208dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <TextView
+            android:id="@+id/activity_settings_sortby_title_textview"
+            style="@style/SettingsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/setting_sortby"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/activity_setting_sortradiogroup_radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.025"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_settings_sortby_title_textview">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/activity_setting_sortdefault_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_default" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/activity_setting_sortnames_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_names" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/activity_setting_sortworkmates_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_Workmates" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/activity_setting_sortrating_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_rating" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/activity_setting_sortproximity_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_proximity" />
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

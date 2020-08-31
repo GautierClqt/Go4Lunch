@@ -152,7 +152,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     mUserLat = userLocation[0];
                     mUserLng = userLocation[1];
                     LatLng latlng = new LatLng(mUserLat, mUserLng);
-                    setCameraOnMap(mGoogleMaps, latlng);
+                    setCameraOnMap(latlng);
                 }
             }
         }
@@ -179,7 +179,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     }
 
-    private void setCameraOnMap(GoogleMap googleMap, LatLng latLng) {
+    private void setCameraOnMap(LatLng latLng) {
         LatLngBounds.Builder bld = new LatLngBounds.Builder();
 
         for(int i = 0; i < mRestaurantList.size(); i++) {
@@ -207,17 +207,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
     }
 
     @Override

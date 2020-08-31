@@ -69,8 +69,8 @@ public class RestaurantsRecyclerAdapter extends RecyclerView.Adapter<Restaurants
         viewHolder.name.setText(mRestaurantsList.get(i).getName());
         viewHolder.name.setTypeface(Typeface.DEFAULT_BOLD);
 
-        viewHolder.adress.setText(mRestaurantsList.get(i).getAddress());
-        viewHolder.hours.setText(mRestaurantsList.get(i).getOpeningHoursString());
+        viewHolder.adress.setText(mRestaurantsList.get(i).getAdress());
+        viewHolder.hours.setText(mRestaurantsList.get(i).getOpeningHours());
 
         if(mRestaurantsList.get(i).getDistance() < 3000) {
             viewHolder.distance.setText(String.format("%.0fm", mRestaurantsList.get(i).getDistance()));

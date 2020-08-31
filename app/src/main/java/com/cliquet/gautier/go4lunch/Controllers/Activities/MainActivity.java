@@ -48,6 +48,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences preferences;
@@ -379,6 +384,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void toastNoRestaurantSelected() {
-        Toast.makeText(this, "No mRestaurant selected",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "No restaurant selected",Toast.LENGTH_LONG).show();
     }
 }

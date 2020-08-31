@@ -22,11 +22,9 @@ import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Api.UserHelper;
 import com.cliquet.gautier.go4lunch.Controllers.Fragments.WorkmatesRecyclerAdapter;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
-import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +79,7 @@ public class RestaurantDetails extends AppCompatActivity {
         name.setText(mRestaurant.getName());
         name.setTypeface(Typeface.DEFAULT_BOLD);
 
-        address.setText(mRestaurant.getAddress());
+        address.setText(mRestaurant.getAdress());
 
         firstStar.setVisibility(View.INVISIBLE);
         secondStar.setVisibility(View.INVISIBLE);
@@ -269,13 +266,13 @@ public class RestaurantDetails extends AppCompatActivity {
 //        RestaurantHelper.getRestaurant(restaurantId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
 //            @Override
 //            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                RestaurantHelper.createRestaurant(restaurantId, mRestaurant.getName(), mRestaurant.getAddress());
+//                RestaurantHelper.createRestaurant(restaurantId, mRestaurant.getName(), mRestaurant.getAdress());
 //                RestaurantHelper.addUserCollection(restaurantId, USER_ID);
 //            }
 //        }).addOnFailureListener(new OnFailureListener() {
 //            @Override
 //            public void onFailure(@NonNull Exception e) {
-//                RestaurantHelper.createRestaurant(restaurantId, mRestaurant.getName(), mRestaurant.getAddress());
+//                RestaurantHelper.createRestaurant(restaurantId, mRestaurant.getName(), mRestaurant.getAdress());
 //            }
 //        });
 //    }
@@ -301,14 +298,14 @@ public class RestaurantDetails extends AppCompatActivity {
                     }
                     else if(newRestaurantId.equals(oldRestaurantId)) {
                         UserHelper.updateSelectedRestaurant(USER_ID, null);
-                        RestaurantHelper.deleteUser(oldRestaurantId, USER_ID);
+                        RestaurantHelper.deleteUserInRestaurant(oldRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_unselected_60dp);
                         deleteYourLunch();
                     }
                     else {
                         UserHelper.updateSelectedRestaurant(USER_ID, mRestaurant.getId());
-                        RestaurantHelper.deleteUser(oldRestaurantId, USER_ID);
+                        RestaurantHelper.deleteUserInRestaurant(oldRestaurantId, USER_ID);
                         RestaurantHelper.addUserCollection(newRestaurantId, USER_ID);
                         checkAndDeleteEmptyRestaurant(oldRestaurantId);
                         selected.setBackgroundResource(R.drawable.ic_check_circle_selected_60dp);
