@@ -64,12 +64,13 @@
         android:layout_width="20dp"
         android:layout_height="21dp"
         android:layout_marginEnd="4dp"
+        app:srcCompat="@drawable/recyclerview_workmatesicon"
+        android:visibility="invisible"
         android:contentDescription="@string/restaurant_workmates_imageview_contentdescription_placeholder"
         app:layout_constraintBottom_toTopOf="@+id/item_recycler_restaurant_firststar_imageview"
         app:layout_constraintEnd_toStartOf="@+id/item_recycler_restaurant_workmates_textview"
         app:layout_constraintTop_toBottomOf="@+id/item_recycler_restaurant_distance_textview"
-        app:layout_constraintVertical_bias="0.521"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:layout_constraintVertical_bias="0.521" />
 
     <TextView
         android:id="@+id/item_recycler_restaurant_workmates_textview"

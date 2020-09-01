@@ -27,18 +27,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecyclerAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Workmates> mWorkmatesList;
-    private List<Restaurant> mRestaurantsList;
     private int mActiveActivity;
 
     public WorkmatesRecyclerAdapter(Context context) {
         this.mContext = context;
         this.mWorkmatesList = new ArrayList<>();
-        this.mRestaurantsList = new ArrayList<>();
     }
 
     @NonNull
@@ -56,7 +55,6 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         sortWorkmatesList();
 
         if(mWorkmatesList.get(i).getSelectedRestaurant() == null) {
-            mWorkmatesList.get(i).getFirstName();
             String text = mContext.getResources().getString(R.string.workmates_hasnt_chose, mWorkmatesList.get(i).getFirstName());
             viewHolder.text.setText(text);
             viewHolder.text.setTextColor(Color.parseColor("#999999"));
@@ -66,7 +64,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
             RestaurantHelper.getRestaurant(mWorkmatesList.get(i).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    final String restaurantName = task.getResult().get("name").toString();
+                    final String restaurantName = Objects.requireNonNull(Objects.requireNonNull(task.getResult()).get("name")).toString();
                     setViewholderText(viewHolder, restaurantName, index);
                 }
             });
@@ -81,7 +79,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
                     RestaurantHelper.getRestaurant(mWorkmatesList.get(viewHolder.getAdapterPosition()).getSelectedRestaurant()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            Restaurant restaurant = task.getResult().toObject(Restaurant.class);
+                            Restaurant restaurant = Objects.requireNonNull(task.getResult()).toObject(Restaurant.class);
                             startRestaurantDetailsActivity(restaurant);
                         }
                     });
@@ -101,7 +99,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         ImageView picture;
         TextView text;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mainlayout = itemView.findViewById(R.id.item_recycler_workmates_mainlayout);
@@ -113,10 +111,6 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
     public void setWorkmatesList(List<Workmates> workmates) {
         this.mWorkmatesList = workmates;
         notifyDataSetChanged();
-    }
-
-    void setRestaurantsList(List<Restaurant> restaurants) {
-        this.mRestaurantsList = restaurants;
     }
 
     public void setActiveActivity(int activeActivity) {
@@ -148,7 +142,7 @@ public class WorkmatesRecyclerAdapter extends RecyclerView.Adapter<WorkmatesRecy
         }
     }
 
-    public void setViewholderText(ViewHolder viewHolder, String restaurantName, int i) {
+    private void setViewholderText(ViewHolder viewHolder, String restaurantName, int i) {
         String text = "";
         if(mActiveActivity == 1) {
             text = mContext.getResources().getString(R.string.workmates_has_chosen, mWorkmatesList.get(i).getFirstName(), restaurantName);

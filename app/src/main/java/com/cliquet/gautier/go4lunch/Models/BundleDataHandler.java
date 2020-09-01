@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
 
@@ -75,23 +76,16 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    User user = documentSnapshot.toObject(User.class);
+                    Workmates workmates = documentSnapshot.toObject(Workmates.class);
 
-                    String selectedRestaurant;
-                    if (documentSnapshot.get("userSelected") == null) {
-                        selectedRestaurant = null;
-                    } else {
-                        selectedRestaurant = documentSnapshot.get("userSelected").toString();
-                    }
-
-                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getUserId())) {
+                    if (!Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().equals(workmates.getId())) {
                         mWorkmatesList.add(new Workmates(
-                                user.getUserId(),
-                                user.getUserFirstName(),
-                                user.getUserLastName(),
-                                user.getUserEmail(),
-                                user.getUserUrlPicture(),
-                                selectedRestaurant
+                                workmates.getId(),
+                                workmates.getFirstName(),
+                                workmates.getLastName(),
+                                workmates.getEmail(),
+                                workmates.getUrlPicture(),
+                                workmates.getSelectedRestaurant()
                         ));
                     }
                 }
@@ -145,7 +139,7 @@ public class BundleDataHandler implements PlacesApiCalls.GoogleMapsCallback {
         PlacesApiCalls.fetchNearbySearch(this, requestParameters);
     }
 
-    public void googleMapsApiSearchRequest(String GOOGLE_API_KEY, String searchText, BundleCallback bundleCallback) {
+    public void googleMapsApiSearchRequest(String GOOGLE_API_KEY, String searchText) {
         mRestaurantListOk = false;
 
         HashMap<String, String> requestParameters = new HashMap<>();

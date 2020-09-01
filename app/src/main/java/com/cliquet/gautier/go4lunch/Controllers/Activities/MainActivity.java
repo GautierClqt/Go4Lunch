@@ -46,6 +46,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences preferences;
@@ -128,16 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
 
                             if (!mSearchText.equals("")) {
-                                mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), mSearchText, new BundleCallback() {
-                                    @Override
-                                    public void onCallback(Bundle bundle) {
-                                        mBundle = bundle;
-                                        MAP.setArguments(mBundle);
-                                        LIST.setArguments(mBundle);
-
-                                        configureBottomView();
-                                    }
-                                });
+                                mBundleDataHandler.googleMapsApiSearchRequest(getString(R.string.google_api_key), mSearchText);
                                 Log.d("tag", "onQueryTextChange: " + mSearchText);
                             } else {
                                 mBundle.clear();
@@ -299,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setNavigationDrawerViews() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        userNameTextview.setText(auth.getCurrentUser().getDisplayName());
+        userNameTextview.setText(Objects.requireNonNull(auth.getCurrentUser()).getDisplayName());
         userEmailTextview.setText(auth.getCurrentUser().getEmail());
         Glide.with(userPictureImageview).load(auth.getCurrentUser().getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(userPictureImageview);
     }
@@ -318,15 +311,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        BroadcastReceiver GPS = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
-                    int test = 123456;
-                }
-            }
-        };
-
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             permissionsGranted();
         } else {
@@ -343,12 +327,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 UserHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.getResult().get("userSelected") != null) {
+                        if(Objects.requireNonNull(task.getResult()).get("userSelected") != null) {
                             String test = (String) task.getResult().get("userSelected");
                             RestaurantHelper.getRestaurant(test).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    Restaurant restaurant = task.getResult().toObject(Restaurant.class);
+                                    Restaurant restaurant = Objects.requireNonNull(task.getResult()).toObject(Restaurant.class);
                                     startActivityRestaurantDetails(restaurant);
                                 }
                             });

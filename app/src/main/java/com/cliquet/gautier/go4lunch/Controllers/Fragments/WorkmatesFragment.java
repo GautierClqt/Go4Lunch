@@ -1,7 +1,6 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cliquet.gautier.go4lunch.Controllers.Activities.MainActivity;
-import com.cliquet.gautier.go4lunch.Models.Restaurant;
-import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,12 +28,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WorkmatesFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Workmates> mWorkmatesList = new ArrayList<>();
-    private List<Restaurant> mRestaurantsList = new ArrayList<>();
-    private OnFragmentInteractionListener mListener;
 
     public WorkmatesFragment() {
     }
@@ -55,16 +51,14 @@ public class WorkmatesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
                              Bundle savedInstanceState) {
 
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Available Workmates");
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("Available Workmates");
 
         View view =  inflater.inflate(R.layout.fragment_workmates, viewGroup, false);
         Gson gson = new Gson();
 
         if (getArguments() != null) {
             String gsonWorkmatesList = getArguments().getString("workmates_list");
-            String gsonRestaurantsList = getArguments().getString("restaurant_list");
             mWorkmatesList = gson.fromJson(gsonWorkmatesList, new TypeToken<List<Workmates>>(){}.getType());
-            mRestaurantsList = gson.fromJson(gsonRestaurantsList, new TypeToken<List<Restaurant>>(){}.getType());
         }
 
         recyclerView = view.findViewById(R.id.activity_workmates_list_recycler);
@@ -87,10 +81,11 @@ public class WorkmatesFragment extends Fragment {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 mWorkmatesList.clear();
 
+                assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Workmates workmates = documentSnapshot.toObject(Workmates.class);
 
-                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(workmates.getId())) {
+                    if (!Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().equals(workmates.getId())) {
                         mWorkmatesList.add(new Workmates(
                                 workmates.getId(),
                                 workmates.getFirstName(),
@@ -109,32 +104,18 @@ public class WorkmatesFragment extends Fragment {
     private void setWorkmatesAdapter() {
         WorkmatesRecyclerAdapter adapter = new WorkmatesRecyclerAdapter(this.getContext());
         adapter.setWorkmatesList(mWorkmatesList);
-        adapter.setRestaurantsList(mRestaurantsList);
         adapter.setActiveActivity(1);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

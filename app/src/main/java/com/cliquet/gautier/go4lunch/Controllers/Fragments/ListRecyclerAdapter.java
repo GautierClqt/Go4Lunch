@@ -1,5 +1,6 @@
 package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.RestaurantClickCallback;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
+import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 
 import java.util.List;
@@ -24,8 +26,9 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
     private Context mContext;
     private RestaurantClickCallback listener;
     private List<Restaurant> mRestaurantsList;
+    private List<Workmates> mWorkmatesList;
 
-    public ListRecyclerAdapter(Context context, List<Restaurant> restaurantList, RestaurantClickCallback listener) {
+    ListRecyclerAdapter(Context context, List<Restaurant> restaurantList, RestaurantClickCallback listener) {
         this.mContext = context;
         this.mRestaurantsList = restaurantList;
         this.listener = listener;
@@ -39,6 +42,7 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
         return new ViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.firstStar.setVisibility(View.INVISIBLE);
@@ -78,8 +82,6 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
         else {
             viewHolder.distance.setText(R.string.long_distance);
         }
-        viewHolder.workmatesCount.setText("(2)");
-        viewHolder.workmatesIcon.setImageResource(R.drawable.recyclerview_workmatesicon);
 
         final String photoReference = mRestaurantsList.get(i).getPhotoReference();
         if(photoReference != null) {
