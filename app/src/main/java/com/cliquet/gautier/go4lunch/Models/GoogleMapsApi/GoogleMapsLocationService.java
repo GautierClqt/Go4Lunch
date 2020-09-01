@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.cliquet.gautier.go4lunch.BuildConfig;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.DetailsPojo;
 import com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo.NearbySearchPojo;
-import com.cliquet.gautier.go4lunch.R;
 
 import java.io.IOException;
 import java.util.Map;

@@ -2,12 +2,10 @@ package com.cliquet.gautier.go4lunch.Controllers.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,8 +16,6 @@ import android.view.ViewGroup;
 import com.cliquet.gautier.go4lunch.Controllers.Activities.RestaurantDetails;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
 import com.cliquet.gautier.go4lunch.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,13 +28,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,14 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MapFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPoiClickListener {
 
     private Gson gson = new Gson();
@@ -63,19 +48,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private List<Restaurant> mRestaurantList = new ArrayList<>();
     private List<MarkerOptions> mMarkersList = new ArrayList<>();
 
-    private double mUserLat;
-    private double mUserLng;
-
     private String clickOnMarkerTitle = "";
 
-    private OnFragmentInteractionListener mListener;
-
     public MapFragment() {
-    }
-
-    // TODO: Rename and change types and number of parameters
-    private static MapFragment newInstance() {
-        return new MapFragment();
     }
 
     @Override
@@ -149,8 +124,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 userLocation = gson.fromJson(getArguments().getString("user_location"), new TypeToken<double[]>() {
                 }.getType());
                 if (userLocation != null) {
-                    mUserLat = userLocation[0];
-                    mUserLng = userLocation[1];
+                    double mUserLat = userLocation[0];
+                    double mUserLng = userLocation[1];
                     LatLng latlng = new LatLng(mUserLat, mUserLng);
                     setCameraOnMap(latlng);
                 }
@@ -215,7 +190,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -230,11 +204,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         getRestaurantList();
         getUserLocation();
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

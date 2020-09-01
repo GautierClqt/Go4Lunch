@@ -1,7 +1,5 @@
 package com.cliquet.gautier.go4lunch.Models.GoogleMapsApi.Pojo;
 
-
-import com.cliquet.gautier.go4lunch.Models.OpeningHours;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,14 +16,6 @@ public class NearbySearchPojo {
     public void setNearbySearchResults(List<NearbySearchResults> nearbySearchResults) {
         this.nearbySearchResults = nearbySearchResults;
     }
-
-
-    @SerializedName("next_page_token")
-    @Expose
-    private String nextPageToken;
-
-    public String getNextPageToken() { return nextPageToken; }
-    public void setNextPageToken(String nextPageToken) { this.nextPageToken = nextPageToken; }
 
     public class NearbySearchResults {
         @SerializedName("name")
@@ -53,7 +43,6 @@ public class NearbySearchPojo {
         private String vicinity;
 
         public String getVicinity() { return vicinity; }
-        public void setVicinity(String vicinity) { this.vicinity = vicinity; }
 
         @SerializedName("geometry")
         @Expose
@@ -62,16 +51,12 @@ public class NearbySearchPojo {
         public Geometry getGeometry() {
             return geometry;
         }
-        public void setGeometry(Geometry geometry) {
-            this.geometry = geometry;
-        }
 
         @SerializedName("opening_hours")
         @Expose
         private OpeningHours openingHours = null;
 
         public OpeningHours getOpeningHours() { return openingHours; }
-        public void setOpeningHours(OpeningHours openingHours) { this.openingHours = openingHours; }
 
         @SerializedName("photos")
         @Expose
@@ -80,9 +65,6 @@ public class NearbySearchPojo {
         public List<Photos> getPhotos() {
             return photos;
         }
-        public void setPhotos(List<Photos> photos) {
-            this.photos = photos;
-        }
 
 
         @SerializedName("rating")
@@ -90,9 +72,6 @@ public class NearbySearchPojo {
         private float rating;
 
         public float getRating() { return rating; }
-        public void setRating(float rating) {
-            this.rating = rating;
-        }
     }
 
     public class Geometry {
@@ -102,9 +81,6 @@ public class NearbySearchPojo {
 
         public Location getLocation() {
             return location;
-        }
-        public void setLocation(Location location) {
-            this.location = location;
         }
     }
 
@@ -117,20 +93,12 @@ public class NearbySearchPojo {
             return lat;
         }
 
-        public void setLat(double lat) {
-            this.lat = lat;
-        }
-
         @SerializedName("lng")
         @Expose
         private double lng;
 
         public double getLng() {
             return lng;
-        }
-
-        public void setLng(double lng) {
-            this.lng = lng;
         }
     }
 
@@ -143,8 +111,5 @@ public class NearbySearchPojo {
             return photoReference;
         }
 
-        public void setPhotoReference(String photoReference) {
-            this.photoReference = photoReference;
-        }
     }
 }

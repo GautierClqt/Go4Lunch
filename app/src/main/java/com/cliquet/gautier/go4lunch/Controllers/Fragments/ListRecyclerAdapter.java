@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cliquet.gautier.go4lunch.Controllers.RestaurantClickCallback;
 import com.cliquet.gautier.go4lunch.Models.Restaurant;
-import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 
 import java.util.List;
@@ -26,7 +25,6 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
     private Context mContext;
     private RestaurantClickCallback listener;
     private List<Restaurant> mRestaurantsList;
-    private List<Workmates> mWorkmatesList;
 
     ListRecyclerAdapter(Context context, List<Restaurant> restaurantList, RestaurantClickCallback listener) {
         this.mContext = context;

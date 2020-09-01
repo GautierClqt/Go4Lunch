@@ -12,7 +12,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.cliquet.gautier.go4lunch.Api.RestaurantHelper;
 import com.cliquet.gautier.go4lunch.Api.UserHelper;
-import com.cliquet.gautier.go4lunch.Models.User;
 import com.cliquet.gautier.go4lunch.Models.Workmates;
 import com.cliquet.gautier.go4lunch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +27,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import static com.cliquet.gautier.go4lunch.Go4LunchNotificationChannel.CHANNEL_TIME_TO_EAT;
 
@@ -74,8 +74,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         UserHelper.getUser(mUserName).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult().getString("userSelected") != null) {
-                    String selectedRestaurant = task.getResult().get("userSelected").toString();
+                if(Objects.requireNonNull(task.getResult()).getString("userSelected") != null) {
+                    String selectedRestaurant = Objects.requireNonNull(task.getResult().get("userSelected")).toString();
                     getSelectedRestaurantInFirestore(selectedRestaurant);
                 }
                 else {
@@ -89,9 +89,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         RestaurantHelper.getRestaurant(selectedRestaurant).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                mRestaurantName = task.getResult().get("name").toString();
+                mRestaurantName = Objects.requireNonNull(Objects.requireNonNull(task.getResult()).get("name")).toString();
                 if(task.getResult().get("address") != null) {
-                    mRestaurantAddress = task.getResult().get("address").toString();
+                    mRestaurantAddress = Objects.requireNonNull(task.getResult().get("address")).toString();
                 } else {
                     mRestaurantAddress = null;
                 }
@@ -104,7 +104,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         if(!queryDocumentSnapshots.isEmpty()) {
 
                             for (QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
-                                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(documentSnapshots.getId())) {
+                                if (!Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().equals(documentSnapshots.getId())) {
                                     workmatesIdList.add(documentSnapshots.getId());
                                 }
                             }
@@ -127,8 +127,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 UserHelper.getUser(workmatesIdList.get(i)).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        User user = task.getResult().toObject(User.class);
-                        mWorkmatesNameList.add(user.getUserFirstName());
+                        Workmates workmates = Objects.requireNonNull(task.getResult()).toObject(Workmates.class);
+                        assert workmates != null;
+                        mWorkmatesNameList.add(workmates.getFirstName());
                         if (mWorkmatesNameList.size() == workmatesIdList.size()) {
                             createNotificationString();
                         }
@@ -139,34 +140,34 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void createNotificationString() {
-        String notificationString;
+        StringBuilder notificationString;
 
         if(mRestaurantName != null) {
-            notificationString = mRestaurantName;
+            notificationString = new StringBuilder(mRestaurantName);
             if(mRestaurantAddress != null) {
-                notificationString = notificationString + "\n" + mRestaurantAddress;
+                notificationString.append("\n").append(mRestaurantAddress);
             }
             else {
-                notificationString = notificationString + "\n" + context.getString(R.string.notif_no_address);
+                notificationString.append("\n").append(context.getString(R.string.notif_no_address));
             }
             if (mWorkmatesNameList.size() > 0) {
                 int listSize = mWorkmatesNameList.size();
-                notificationString = notificationString + "\n" + context.getString(R.string.notif_join_by) + " ";
+                notificationString.append("\n").append(context.getString(R.string.notif_join_by)).append(" ");
                 for (int i = 0; i < listSize; i++) {
-                    notificationString = notificationString + mWorkmatesNameList.get(i);
+                    notificationString.append(mWorkmatesNameList.get(i));
                     if (i < listSize - 2) {
-                        notificationString = notificationString + ", ";
+                        notificationString.append(", ");
                     } else if (i == listSize - 2) {
-                        notificationString = notificationString + " " + context.getString(R.string.notif_and) + " ";
+                        notificationString.append(" ").append(context.getString(R.string.notif_and)).append(" ");
                     }
                 }
             }
-            notificationString = notificationString + "\n\n" + context.getString(R.string.notif_have_a_good_lunch);
+            notificationString.append("\n\n").append(context.getString(R.string.notif_have_a_good_lunch));
         }
         else {
-            notificationString = context.getString(R.string.notif_no_restaurant_pick);
+            notificationString = new StringBuilder(context.getString(R.string.notif_no_restaurant_pick));
         }
-        sendNotification(notificationString);
+        sendNotification(notificationString.toString());
     }
 
     private void sendNotification(String notificationString) {

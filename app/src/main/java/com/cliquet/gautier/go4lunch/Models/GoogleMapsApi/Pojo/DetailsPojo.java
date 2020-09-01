@@ -11,9 +11,6 @@ public class DetailsPojo {
     private Results results;
 
     public Results getResults() { return results; }
-    public void setResults(Results results) {
-        this.results = results;
-    }
 
     public class Results {
         @SerializedName("opening_hours")
@@ -35,26 +32,14 @@ public class DetailsPojo {
         public OpeningHours getOpeningHours() {
             return openingHours;
         }
-        public void setOpeningHours(OpeningHours openingHours) {
-            this.openingHours = openingHours;
-        }
 
         public String getFormattedAdress() {
             return formattedAdress;
         }
-        public void setFormattedAdress(String formattedAdress) {
-            this.formattedAdress = formattedAdress;
-        }
 
         public String getPhoneNumber() { return phoneNumber; }
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-        }
 
         public String getWebsite() { return website; }
-        public void setWebsite(String website) {
-            this.phoneNumber = phoneNumber;
-        }
     }
 
     public class OpeningHours {
@@ -137,9 +122,6 @@ public class DetailsPojo {
         @Expose
         private String time;
 
-        public int getDay() {
-            return day;
-        }
         public void setDay(int day) {
             this.day = day;
         }

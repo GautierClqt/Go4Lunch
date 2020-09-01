@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
@@ -14,11 +13,7 @@ import com.cliquet.gautier.go4lunch.R;
 import com.cliquet.gautier.go4lunch.Utils.AlarmStartStop;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 

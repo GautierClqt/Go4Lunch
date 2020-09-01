@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(requestCode == RC_SIGN_IN) {
             if(resultCode == RESULT_OK) {
-                checkForExistingUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                checkForExistingUser(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             }
         }
     }
@@ -72,23 +72,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createNewUserInFirestore() {
-        if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            String fullName = firebaseUser.getDisplayName();
-            String[] splitNames = new String[2];
-            if(fullName != null) {
-                splitNames = fullName.split(" ");
-            }
-
-            UserHelper.createUser(
-                    firebaseUser.getUid(),
-                    splitNames[0],
-                    splitNames[1],
-                    firebaseUser.getEmail(),
-                    firebaseUser.getPhotoUrl().toString()
-            );
+        String fullName = firebaseUser.getDisplayName();
+        String[] splitNames = new String[2];
+        if(fullName != null) {
+            splitNames = fullName.split(" ");
         }
+
+        UserHelper.createUser(
+                firebaseUser.getUid(),
+                splitNames[0],
+                splitNames[1],
+                firebaseUser.getEmail(),
+                Objects.requireNonNull(firebaseUser.getPhotoUrl()).toString()
+        );
         startMainActivity();
     }
 
